@@ -54,7 +54,7 @@ public class SelectHouse1 extends StringPrompt {
 			PM.house(false);
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);
-			return new TownGovernmentRegions(plugin, player, 0);
+			return new HudConversationMain(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
 		

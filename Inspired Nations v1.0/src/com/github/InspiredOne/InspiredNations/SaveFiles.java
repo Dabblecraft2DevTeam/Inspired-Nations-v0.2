@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.github.InspiredOne.InspiredNations.Regions.Cell;
 import com.github.InspiredOne.InspiredNations.Regions.ChestShop;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
@@ -108,10 +109,10 @@ public class SaveFiles {
 			}
 			dataFileConfig.addDefault(key + ".population", country.getPopulation());
 			dataFileConfig.addDefault(key + ".area.size", country.getChunks().Chunks.size());
-			dataFileConfig.addDefault(key + ".area.world", country.getChunks().getWorld());
 			for (int i = 0; i < country.getChunks().Chunks.size() ; i++) {
-				dataFileConfig.addDefault(key + ".area." + i + ".x", country.getChunks().Chunks.get(i).x);
-				dataFileConfig.addDefault(key + ".area." + i + ".y", country.getChunks().Chunks.get(i).y);
+				dataFileConfig.addDefault(key + ".area." + i + ".x", country.getChunks().Chunks.get(i).point.x);
+				dataFileConfig.addDefault(key + ".area." + i + ".y", country.getChunks().Chunks.get(i).point.y);
+				dataFileConfig.addDefault(key + ".area." + i + ".world", country.getChunks().Chunks.get(i).world);
 			}
 			dataFileConfig.addDefault(key + ".parks.size", country.getParks().size());
 			for (Park park : country.getParks()) {
@@ -143,10 +144,10 @@ public class SaveFiles {
 			}
 			dataFileConfig.set(key + ".population", country.getPopulation());
 			dataFileConfig.set(key + ".area.size", country.getChunks().Chunks.size());
-			dataFileConfig.set(key + ".area.world", country.getChunks().getWorld());
 			for (int i = 0; i < country.getChunks().Chunks.size() ; i++) {
-				dataFileConfig.set(key + ".area." + i + ".x", country.getChunks().Chunks.get(i).x);
-				dataFileConfig.set(key + ".area." + i + ".y", country.getChunks().Chunks.get(i).y);
+				dataFileConfig.set(key + ".area." + i + ".x", country.getChunks().Chunks.get(i).point.x);
+				dataFileConfig.set(key + ".area." + i + ".y", country.getChunks().Chunks.get(i).point.y);
+				dataFileConfig.set(key + ".area." + i + ".world", country.getChunks().Chunks.get(i).world);
 			}
 			dataFileConfig.set(key + ".parks.size", country.getParks().size());
 					// serializePark() updates values as well.
@@ -163,7 +164,7 @@ public class SaveFiles {
 	
 	public HashMap<String, Country> deserializeCountryData() {
 		HashMap<String, Country> temp = new HashMap<String, Country>();
-		plugin.chunks = new HashMap<Point, String>();
+		plugin.chunks = new HashMap<ChunkData, String>();
 		String name;
 		String ruler;
 		for (int index = 0; index < dataFileConfig.getInt("size"); index++) {
@@ -184,11 +185,9 @@ public class SaveFiles {
 			for (int j = 0; j < dataFileConfig.getInt(key + ".parks.size") ; j++) {
 				countrytemp.addPark(deserializePark(key + ".parks." + j));
 			}
-			area.setWorld(dataFileConfig.getString(key + ".area.world"));
 			for (int j = 0; j < dataFileConfig.getInt(key + ".area.size"); j ++) {
-				Point pointtemp = new Point(dataFileConfig.getInt(key + ".area." + j + ".x"), dataFileConfig.getInt(key + ".area." + j + ".y"));
-				area.addChunk(pointtemp);
-				plugin.chunks.put(pointtemp, name);
+				ChunkData chunktemp = new ChunkData(new Point(dataFileConfig.getInt(key + ".area." + j + ".x"),  dataFileConfig.getInt(key + ".area." + j + ".y")),dataFileConfig.getString(key + ".area." + j + ".world"));
+				countrytemp.addChunk(chunktemp);
 			}
 			countrytemp.setRequest(deserializeVector(key + ".residentrequest"));
 			countrytemp.setOffer(deserializeVector(key + "residentoffer"));
@@ -537,10 +536,10 @@ public class SaveFiles {
 		
 
 		dataFileConfig.addDefault(key + ".area.size", chunks.Chunks.size());
-		dataFileConfig.addDefault(key + ".area.world", chunks.getWorld());
 		for (int i = 0; i < chunks.Chunks.size() ; i++) {
-			dataFileConfig.addDefault(key + ".area." + i + ".x", chunks.Chunks.get(i).x);
-			dataFileConfig.addDefault(key + ".area." + i + ".y", chunks.Chunks.get(i).y);
+			dataFileConfig.addDefault(key + ".area." + i + ".x", chunks.Chunks.get(i).point.x);
+			dataFileConfig.addDefault(key + ".area." + i + ".y", chunks.Chunks.get(i).point.y);
+			dataFileConfig.addDefault(key + ".area." + i + ".world", chunks.Chunks.get(i).world);
 		}
 		dataFileConfig.addDefault(key + ".protectionLevel", town.getProtectionLevel());
 		dataFileConfig.addDefault(key + ".nationTax", town.getNationTax());
@@ -575,10 +574,10 @@ public class SaveFiles {
 		dataFileConfig.set(key + ".hasprison", town.hasPrison());
 		dataFileConfig.set(key + ".hasbank", town.hasBank());
 		dataFileConfig.set(key + ".area.size", chunks.Chunks.size());
-		dataFileConfig.set(key + ".area.world", chunks.getWorld());
 		for (int i = 0; i < chunks.Chunks.size() ; i++) {
-			dataFileConfig.set(key + ".area." + i + ".x", chunks.Chunks.get(i).x);
-			dataFileConfig.set(key + ".area." + i + ".y", chunks.Chunks.get(i).y);
+			dataFileConfig.set(key + ".area." + i + ".x", chunks.Chunks.get(i).point.x);
+			dataFileConfig.set(key + ".area." + i + ".y", chunks.Chunks.get(i).point.y);
+			dataFileConfig.set(key + ".area." + i + ".world", chunks.Chunks.get(i).world);
 		}
 		dataFileConfig.set(key + ".protectionLevel", town.getProtectionLevel());
 		dataFileConfig.set(key + ".nationTax", town.getNationTax());
@@ -636,10 +635,9 @@ public class SaveFiles {
 		for (int i = 0; i < dataFileConfig.getInt(key + ".serviceBusiness.size"); i++) {
 			town.addServiceBusiness(deserializeServiceBusiness(key + ".serviceBusiness." + i));
 		}
-		area.setWorld(dataFileConfig.getString(key + ".area.world"));
 		for (int j = 0; j < dataFileConfig.getInt(key + ".area.size"); j ++) {
-			Point pointtemp = new Point(dataFileConfig.getInt(key + ".area." + j + ".x"), dataFileConfig.getInt(key + ".area." + j + ".y"));
-			area.addChunk(pointtemp);
+			ChunkData chunktemp = new ChunkData(new Point(dataFileConfig.getInt(key + ".area." + j + ".x"), dataFileConfig.getInt(key + ".area." + j + ".y")), dataFileConfig.getString(key + ".area.world"));
+			area.addChunk(chunktemp);
 		}
 		town.setChunks(area);
 		town.setRequest(deserializeVector(key + ".residentrequest"));

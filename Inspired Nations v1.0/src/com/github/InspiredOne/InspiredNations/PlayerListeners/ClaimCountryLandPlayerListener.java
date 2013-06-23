@@ -15,6 +15,7 @@ import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 
@@ -45,7 +46,7 @@ public class ClaimCountryLandPlayerListener {
 		Chunks area = country.getChunks();
 		Location spot = player.getLocation();
 		boolean aloud = false;
-		Point tile = new Point(spot.getChunk().getX(), spot.getChunk().getZ());
+		ChunkData tile = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());
 		
 		// Select Country
 
@@ -53,11 +54,7 @@ public class ClaimCountryLandPlayerListener {
 		generateMap();
 		if (!PM.countrySelect()) return;
 		if (area.isIn(spot)) return;
-		if (!area.isIn(spot) && plugin.chunks.containsKey(tile)){
-			if (plugin.countrydata.get(plugin.chunks.get(tile)).getProtectionLevel() == 0) {
-				plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
-			}
-		}
+
 		spot.setX(spot.getX() + 16);
 		if (area.isIn(spot)) aloud = true;
 		spot.setX(spot.getX() - 32);
@@ -70,20 +67,22 @@ public class ClaimCountryLandPlayerListener {
 		spot.setZ(spot.getZ() + 16);
 		if (area.Area() == 0) {
 			aloud = true;
-			area.setWorld(spot.getWorld().getName());
 		}
+
 		if (country.getMoney().compareTo(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			aloud = false;
 		}
-		
-		if (aloud) {
-			area.addChunk(tile);
-			country.transferMoneyToNPC(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
-			if (!area.isIn(spot) && plugin.chunks.containsKey(tile)){
-				plugin.countrydata.get(plugin.chunks.get(tile)).getChunks().removeChunk(tile);
+		if (aloud && !area.isIn(spot) && plugin.chunks.containsKey(tile)){
+			if (plugin.countrydata.get(plugin.chunks.get(tile)).getProtectionLevel() == 0) {
+				plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
 			}
-			country.setChunks(area);
-			plugin.chunks.put(tile, country.getName());
+			else {
+				aloud = false;
+			}
+		}
+		if (aloud) {
+			country.addChunk(tile);
+			country.transferMoneyToNPC(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
 			//player.sendRawMessage(generateMap(country, player));
 			generateMap();
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {

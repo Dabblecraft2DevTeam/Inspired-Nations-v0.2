@@ -18,49 +18,48 @@ import org.bukkit.Location;
 
 public class Chunks {
 
-	public Vector<Point> Chunks = new Vector<Point>();
-	String world = "";
-	
+	public Vector<ChunkData> Chunks = new Vector<ChunkData>();
 	public Chunks() {
-		world = " ";
 	}
-	
+
 	public Chunks(Vector<Chunk> tiles) {
-		Vector<Point> temp = new Vector<Point>();
+		Vector<ChunkData> temp = new Vector<ChunkData>();
 		for (int i = 0; i < tiles.size(); i++) {
-			temp.add(new Point(tiles.get(i).getX(), tiles.get(i).getZ()));
+			temp.add(new ChunkData(new Point(tiles.get(i).getX(), tiles.get(i).getZ()), tiles.get(i).getWorld().getName()));
 		}
 		Chunks.addAll(temp);
-		world = tiles.get(0).getWorld().getName();
-	}
-	
-	public Chunks(Vector<Point> tiles, String worldtemp) {
-		Chunks.addAll(tiles);
-		world = worldtemp;
 	}
 	
 	public void addChunks(Vector<Chunk> tiles) {
-		Vector<Point> temp = new Vector<Point>();
+		Vector<ChunkData> temp = new Vector<ChunkData>();
 		for (int i = 0; i < tiles.size(); i++) {
-			temp.add(new Point(tiles.get(i).getX(), tiles.get(i).getZ()));
+			temp.add(new ChunkData(new Point(tiles.get(i).getX(), tiles.get(i).getZ()), tiles.get(i).getWorld().getName()));
 		}
 		Chunks.addAll(temp);
 	}
 	
-	public void addChunk(Point tile) {
-		Chunks.add(tile);
+	public void addChunk(Point tile, String worldname) {
+		Chunks.add(new ChunkData(tile, worldname));
+	}
+	
+	public void addChunk(ChunkData data) {
+		Chunks.add(data);
 	}
 	
 	public void addChunk(Chunk tile) {
-		Chunks.add(new Point(tile.getX(), tile.getZ()));
+		Chunks.add(new ChunkData(new Point(tile.getX(), tile.getZ()), tile.getWorld().getName()));
 	}
 	
 	public void removeChunk(Chunk tile) {
-		Chunks.remove(new Point(tile.getX(), tile.getZ()));
+		Chunks.remove(new ChunkData(new Point(tile.getX(), tile.getZ()), tile.getWorld().getName()));
 	}
 	
-	public void removeChunk(Point tile) {
+	public void removeChunk(ChunkData tile) {
 		Chunks.remove(tile);
+	}
+	
+	public void removeChunk(Point tile, String worldname) {
+		Chunks.remove(new ChunkData(tile, worldname));
 	}
 	
 	public void removeLast() {
@@ -69,12 +68,19 @@ public class Chunks {
 
 	public boolean isIn(Location spot) {
 		Chunk temp = spot.getChunk();
-		if (Chunks.contains(new Point(temp.getX(), temp.getZ())) && spot.getWorld().getName().equals(world)) return true;
+		if (Chunks.contains(new ChunkData(new Point(temp.getX(), temp.getZ()), temp.getWorld().getName()))) return true;
+		else return false;
+	}
+	
+	public boolean isIn(ChunkData spot) {
+		if (Chunks.contains(spot)) {
+			return true;
+		}
 		else return false;
 	}
 	
 	public boolean isIn(Point spot, String worldname) {
-		if (Chunks.contains(spot) && world.equals(worldname)) return true;
+		if (Chunks.contains(new ChunkData(spot, worldname))) return true;
 		else return false;
 	}
 	
@@ -86,11 +92,4 @@ public class Chunks {
 		return Area()*256;
 	}
 	
-	public String getWorld() {
-		return world;
-	}
-	
-	public void setWorld(String name) {
-		world = name;
-	}
 }

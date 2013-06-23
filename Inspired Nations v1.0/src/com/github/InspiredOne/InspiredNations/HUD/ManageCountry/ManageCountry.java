@@ -17,6 +17,7 @@ import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry2;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry3;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
@@ -148,7 +149,7 @@ public class ManageCountry extends StringPrompt{
 				plugin.countrydata.remove(country.getName());
 				plugin.countrydata.put(arg.substring(2), country);
 				country.setName(arg.substring(2));
-				for(Point point:plugin.chunks.keySet())	{
+				for(ChunkData point:plugin.chunks.keySet())	{
 					if(plugin.chunks.get(point).equals(name)) {
 						plugin.chunks.put(point, country.getName());
 					}

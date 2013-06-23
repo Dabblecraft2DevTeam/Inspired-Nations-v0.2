@@ -769,4 +769,9 @@ public class Town {
 	public void setNationTaxOld(double nationTaxOld) {
 		this.nationTaxOld = nationTaxOld;
 	}
+	
+	public void removeChunk(ChunkData tile) {
+		this.getChunks().removeChunk(tile);
+		this.removeCutOutRegions();
+	}
 }

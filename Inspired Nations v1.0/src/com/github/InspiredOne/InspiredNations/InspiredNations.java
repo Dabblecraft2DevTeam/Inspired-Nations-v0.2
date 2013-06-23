@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.InspiredOne.InspiredNations.Economy.TaxTimer;
 import com.github.InspiredOne.InspiredNations.PlayerListeners.InspiredNationsPlayerListener;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 
 
@@ -28,7 +29,7 @@ public class InspiredNations extends JavaPlugin {
 	private StartStop SS = new StartStop(this); // Deals with start-up and shut-down 
 	public HashMap<String, PlayerData> playerdata; // Stores all data associated with players
 	public HashMap<String, Country> countrydata; // Stores all data associated with countries
-	public HashMap<Point, String> chunks; // Stores every chunks that's been claimed along with its country
+	public HashMap<ChunkData, String> chunks; // Stores every chunks that's been claimed along with its country
 	public HashMap<String, PlayerModes> playermodes; // Details of what a player is involved with
 	public InspiredNationsCommandExecutor InspiredNationsCE = new InspiredNationsCommandExecutor(this);
 	public InspiredNationsPlayerListener InspiredNationsPL = new InspiredNationsPlayerListener(this);

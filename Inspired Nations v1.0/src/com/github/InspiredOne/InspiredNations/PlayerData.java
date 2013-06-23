@@ -754,14 +754,7 @@ public class PlayerData {
 	
 	// Country Resides, put in Null if not resident of a Country
 	public void setCountryResides(Country theCountryResides) {
-		try {
-			countryResides.removeResident(playername);
-			if(this.getIsTownResident()) {
-				townResides.removeResident(playername);
-			}
-		} catch (Exception e) {
 
-		}
 		countryResides = theCountryResides;
 	}
 	

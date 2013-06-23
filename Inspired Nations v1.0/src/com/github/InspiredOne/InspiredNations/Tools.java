@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.House;
@@ -900,7 +901,7 @@ public class Tools {
 				ChatColor.AQUA, ChatColor.DARK_BLUE, ChatColor.DARK_AQUA, ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE};
 
 		Location spot = player.getLocation();
-		Point chunk = new Point(spot.getChunk().getX(), spot.getChunk().getZ());
+		ChunkData chunk = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());
 		String map = "";
 		
 		switch(size) {
@@ -926,7 +927,7 @@ public class Tools {
 		
 		for (int z = -above; z < below; z++) {
 			for (int x = -26; x < 27; x++) {
-				Point test = new Point(chunk.x + x, chunk.y + z);
+				ChunkData test = new ChunkData(new Point(chunk.point.x + x, chunk.point.y + z), chunk.world);
 				if (z == 0 && x == 0) {
 					if (plugin.chunks.containsKey(chunk)) {
 						if(!countrycolors.containsKey(plugin.chunks.get(chunk))) {
@@ -935,12 +936,8 @@ public class Tools {
 							if(n == 11) n = 0;
 						}
 						
-						if (plugin.countrydata.get(plugin.chunks.get(chunk)).getChunks().getWorld().equals(spot.getWorld().getName())) {
-							map = map.concat(countrycolors.get(plugin.chunks.get(chunk)) + "@");
-						}
-						else {
-							map = map.concat(ChatColor.GRAY + "@");
-						}
+						map = map.concat(countrycolors.get(plugin.chunks.get(chunk)) + "@");
+
 					}
 					else {
 						map = map.concat(ChatColor.GRAY + "@");
@@ -955,12 +952,8 @@ public class Tools {
 								n = 0;
 							}
 						}
-						if (plugin.countrydata.get(plugin.chunks.get(test)).getChunks().getWorld().equals(spot.getWorld().getName())) {
-							map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
-						}
-						else {
-							map = map.concat(ChatColor.GRAY + "/");
-						}
+						map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
+
 					}
 					else {
 						map = map.concat(ChatColor.GRAY + "/");
@@ -997,13 +990,14 @@ public class Tools {
 	
 	// A method to draw the map with towns included
 	public String drawTownMap(Player player, mapSize size) {
+	
 		PlayerData PDI = plugin.playerdata.get(player.getName());
 		int below = 0;
 		int above = 0;
 		HashMap<String, ChatColor> countrycolors = new HashMap<String,ChatColor>();
 		HashMap<String, ChatColor> towncolors = new HashMap<String, ChatColor>();
 		Location spot = player.getLocation();
-		Point chunk = new Point(spot.getChunk().getX(), spot.getChunk().getZ());
+		ChunkData chunk = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());
 		String map = "";
 		switch(size) {
 		case SMALL:
@@ -1046,7 +1040,7 @@ public class Tools {
 		
 		for (int z = -above; z < below; z++) {
 			for (int x = -26; x < 27; x++) {
-				Point test = new Point(chunk.x + x, chunk.y + z);
+				ChunkData test = new ChunkData(new Point(chunk.point.x + x, chunk.point.y + z), spot.getWorld().getName());
 				if (z == 0 && x == 0) {
 					
 					// If the chunk data has a country, but the country isn't in the color map yet, add it
@@ -1060,9 +1054,7 @@ public class Tools {
 							}
 
 						}
-						
-						// Check to make sure the countrydata is in this world and not another world. 
-						if (plugin.countrydata.get(plugin.chunks.get(chunk)).getChunks().getWorld().equals(spot.getWorld().getName())) {
+						 
 							// Check if the country of this particular chunk is the one that player is in.
 							try {
 								if (plugin.countrydata.get(plugin.chunks.get(chunk)).equals(PDI.getCountryIn())) {
@@ -1081,10 +1073,6 @@ public class Tools {
 								map = map.concat(countrycolors.get(plugin.chunks.get(chunk)) + "@");
 							}
 
-						}
-						else {
-							map = map.concat(ChatColor.GRAY + "@");
-						}
 					}
 					else {
 						map = map.concat(ChatColor.GRAY + "@");
@@ -1102,26 +1090,21 @@ public class Tools {
 								n = 0;
 							}
 						}
-						if (plugin.countrydata.get(plugin.chunks.get(test)).getChunks().getWorld().equals(spot.getWorld().getName())) {
-							try {
-								if (plugin.countrydata.get(plugin.chunks.get(test)).equals(PDI.getCountryIn())) {
-									if(plugin.countrydata.get(plugin.chunks.get(test)).townClaimed(test)){
-										map = map.concat(towncolors.get(plugin.countrydata.get(plugin.chunks.get(test)).TownOfChunk(test).getName()) + "+");
-									}
-									else {
-										map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
-									}
+						try {
+							if (plugin.countrydata.get(plugin.chunks.get(test)).equals(PDI.getCountryIn())) {
+								if(plugin.countrydata.get(plugin.chunks.get(test)).townClaimed(test)){
+									map = map.concat(towncolors.get(plugin.countrydata.get(plugin.chunks.get(test)).TownOfChunk(test).getName()) + "+");
 								}
 								else {
 									map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
 								}
 							}
-							catch(Exception ex) {
+							else {
 								map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
 							}
 						}
-						else {
-							map = map.concat(ChatColor.GRAY + "/");
+						catch(Exception ex) {
+							map = map.concat(countrycolors.get(plugin.chunks.get(test)) + "+");
 						}
 					}
 					else {

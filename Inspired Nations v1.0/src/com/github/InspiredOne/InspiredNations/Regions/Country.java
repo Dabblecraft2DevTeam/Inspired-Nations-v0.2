@@ -290,6 +290,14 @@ public class Country {
 		area = newarea;
 	}
 	
+	public void addChunk(ChunkData tile) {
+		if(plugin.chunks.containsKey(tile) && !plugin.countrydata.get(plugin.chunks.get(tile)).equals(this)) {
+			plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
+		}
+		this.getChunks().addChunk(tile);
+		plugin.chunks.put(tile, this.getName());
+	}
+	
 	public void setPluralMoney(String moneyname) {
 		pluralMoneyName = moneyname;
 		try {
@@ -589,10 +597,21 @@ public class Country {
 		return result;
 	}
 	
-	public boolean townClaimed(Point chunk) {
+	public boolean townClaimed(Point chunk, String worldname) {
 		boolean result = false;
 		for (Town town: this.getTowns()) {
-			if (town.getChunks().Chunks.contains(chunk)) {
+			if (town.getChunks().Chunks.contains(new ChunkData(chunk, worldname))) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	public boolean townClaimed(ChunkData chunk) {
+		boolean result = false;
+		for(Town town: this.getTowns()) {
+			if(town.getChunks().Chunks.contains(chunk)) {
 				result = true;
 				break;
 			}
@@ -602,14 +621,14 @@ public class Country {
 	
 	public Town TownOfChunk(Chunk chunk) {
 		for (Town town:this.getTowns()) {
-			if(town.getChunks().Chunks.contains(tools.ChunktoPoint(chunk))) {
+			if(town.getChunks().Chunks.contains(new ChunkData(tools.ChunktoPoint(chunk), chunk.getWorld().getName()))) {
 				return town;
 			}
 		}
 		return null;
 	}
 	
-	public Town TownOfChunk(Point chunk) {
+	public Town TownOfChunk(ChunkData chunk) {
 		for (Town town:this.getTowns()) {
 			if(town.getChunks().Chunks.contains(chunk)) {
 				return town;
@@ -695,18 +714,25 @@ public class Country {
 		return protectionLevel;
 	}
 	
-	public void removeChunk(Point tile) {
-		plugin.chunks.remove(tile);
-		CutTowns(tile);
+	public void removeChunk(Point tile, String worldname) {
+		this.getChunks().removeChunk(new ChunkData(tile,worldname));
+		plugin.chunks.remove(new ChunkData(tile, worldname));
+		CutTowns(tile, worldname);
 	}
 	
-	public void CutTowns(Point tile) {
+	public void removeChunk(ChunkData tile) {
+		this.getChunks().removeChunk(tile);
+		plugin.chunks.remove((tile));
+		CutTowns(tile.point, tile.world);
+	}
+	
+	public void CutTowns(Point tile, String worldname) {
 		// Check towns to see if any of them got cut out
 		for (Iterator<Town> i = getTowns().iterator(); i.hasNext();) {
 			Town town = i.next();
-			if (town.getChunks().isIn(tile, this.getChunks().getWorld())) {
+			if (town.getChunks().isIn(tile, worldname)) {
 				TownMethods TM = new TownMethods(plugin, town);
-				town.getChunks().removeChunk(tile);
+				town.getChunks().removeChunk(tile, worldname);
 				transferMoneyToTown(TM.getCostPerChunk(taxType.OLD), town.getName(), getName());
 				town.removeCutOutRegions();
 			}

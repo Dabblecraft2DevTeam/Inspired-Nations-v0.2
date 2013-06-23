@@ -324,6 +324,7 @@ public class PlayerMethods {
 		return ServiceBusinessArea;
 	}
 	
+	// Citizenship methods
 	public boolean leaveCountry() {
 		if (PDI.getIsCountryRuler() || PDI.getIsTownMayor() || !PDI.getIsCountryResident()) return false;
 		Country countryFrom = PDI.getCountryResides();

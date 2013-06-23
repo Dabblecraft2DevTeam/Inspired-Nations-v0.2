@@ -27,6 +27,7 @@ import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 import com.github.InspiredOne.InspiredNations.ManageTown.ClaimTownLand;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
@@ -60,7 +61,7 @@ public class ClaimTownLandPlayerListener {
 		Chunks area = town.getChunks();
 		Location spot = player.getLocation();
 		boolean aloud = false;
-		Point tile = new Point(spot.getChunk().getX(), spot.getChunk().getZ());	
+		ChunkData tile = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());	
 		// Select Town
 
 		generateMap(player);
@@ -89,22 +90,22 @@ public class ClaimTownLandPlayerListener {
 		spot.setZ(spot.getZ() + 16);
 		if (area.Area() == 0) {
 			aloud = true;
-			area.setWorld(spot.getWorld().getName());
 		}
 		spot = player.getLocation();
+
+		if(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
+			aloud = false;
+		}
+		
 		for(Town towntest:country.getTowns()) {
-			if(towntest.isIn(spot) && towntest != town) {
+			if(aloud && towntest.isIn(spot) && towntest != town) {
 				if (towntest.getProtectionLevel() == 0) {
-					TownMethods TMtest = new TownMethods(plugin, towntest);
-					towntest.getChunks().removeChunk(tile);
-					country.transferMoneyToTown(TMtest.getCostPerChunk(taxType.OLD), towntest.getName(), country.getName());
-					towntest.removeCutOutRegions();
+					//TownMethods TMtest = new TownMethods(plugin, towntest);
+					towntest.removeChunk(tile);
+					//country.transferMoneyToTown(TMtest.getCostPerChunk(taxType.OLD), towntest.getName(), country.getName());
 				}
 				else aloud = false;
 			}
-		}
-		if(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
-			aloud = false;
 		}
 		
 		if (aloud) {

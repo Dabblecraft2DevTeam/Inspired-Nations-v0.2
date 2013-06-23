@@ -25,6 +25,7 @@ import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.ManageTown.UnclaimTownLand;
+import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
@@ -53,7 +54,7 @@ public class UnclaimTownLandPlayerListener {
 		Chunks area = town.getChunks();
 		Location spot = player.getLocation();
 		boolean aloud = false;
-		Point tile = new Point(spot.getChunk().getX(), spot.getChunk().getZ());
+		ChunkData tile = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());
 	
 		// Deselect Town
 		if (!player.isConversing()) {
@@ -67,9 +68,7 @@ public class UnclaimTownLandPlayerListener {
 		if ((!area.isIn(spot) || !chunkAdjacent(area, spot, tile)) && area.Chunks.size() != 0) return;
 		else aloud = true;
 		if (aloud) {
-			area.removeChunk(tile);
-			town.setChunks(area);
-			town.removeCutOutRegions();
+			town.removeChunk(tile);
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);
 				PM.resetLocationBooleans();
@@ -78,42 +77,42 @@ public class UnclaimTownLandPlayerListener {
 		}
 	}
 	// A method to determine if a chunk is aloud to be removed
-	public boolean chunkAdjacent(Chunks area, Location spot, Point tile) {
+	public boolean chunkAdjacent(Chunks area, Location spot, ChunkData tile) {
 		boolean aloud = true;
 		int in = 0;
 		if (area.Area() < 3) return aloud;
 		
-		Point tile1 = new Point(tile.x, tile.y + 1);
-		Point tile1L = new Point(tile.x - 1, tile.y + 1);
-		Point tile1R = new Point(tile.x + 1, tile.y + 1);
-		Point tile2 = new Point(tile.x + 1, tile.y);
-		Point tile2T = new Point(tile.x + 1, tile.y + 1);
-		Point tile2B = new Point(tile.x + 1, tile.y - 1);
-		Point tile3 = new Point(tile.x, tile.y - 1);
-		Point tile3L = new Point(tile.x - 1, tile.y - 1);
-		Point tile3R = new Point(tile.x + 1, tile.y - 1);
-		Point tile4 = new Point(tile.x - 1, tile.y);
-		Point tile4T = new Point(tile.x - 1, tile.y + 1);
-		Point tile4B = new Point(tile.x - 1, tile.y - 1);
+		ChunkData tile1 = new ChunkData(new Point(tile.point.x, tile.point.y + 1), tile.world);
+		ChunkData tile1L = new ChunkData(new Point(tile.point.x - 1, tile.point.y + 1), tile.world);
+		ChunkData tile1R = new ChunkData(new Point(tile.point.x + 1, tile.point.y + 1), tile.world);
+		ChunkData tile2 = new ChunkData(new Point(tile.point.x + 1, tile.point.y), tile.world);
+		ChunkData tile2T = new ChunkData(new Point(tile.point.x + 1, tile.point.y + 1), tile.world);
+		ChunkData tile2B = new ChunkData(new Point(tile.point.x + 1, tile.point.y - 1), tile.world);
+		ChunkData tile3 = new ChunkData(new Point(tile.point.x, tile.point.y - 1), tile.world);
+		ChunkData tile3L = new ChunkData(new Point(tile.point.x - 1, tile.point.y - 1), tile.world);
+		ChunkData tile3R = new ChunkData(new Point(tile.point.x + 1, tile.point.y - 1), tile.world);
+		ChunkData tile4 = new ChunkData(new Point(tile.point.x - 1, tile.point.y), tile.world);
+		ChunkData tile4T = new ChunkData(new Point(tile.point.x - 1, tile.point.y + 1), tile.world);
+		ChunkData tile4B = new ChunkData(new Point(tile.point.x - 1, tile.point.y - 1), tile.world);
 		if (area.isIn(spot)) {
-			if (area.isIn(tile1, spot.getWorld().getName())) {
-				if((!area.isIn(tile1R, spot.getWorld().getName()) || !area.isIn(tile2, spot.getWorld().getName())) &&
-						(!area.isIn(tile1L, spot.getWorld().getName()) || !area.isIn(tile4, spot.getWorld().getName()))) aloud = false;
+			if (area.isIn(tile1)) {
+				if((!area.isIn(tile1R) || !area.isIn(tile2)) &&
+						(!area.isIn(tile1L) || !area.isIn(tile4))) aloud = false;
 				in++;
 			}
-			if (area.isIn(tile2, spot.getWorld().getName())) {
-				if ((!area.isIn(tile2B, spot.getWorld().getName()) || !area.isIn(tile3, spot.getWorld().getName())) && (!area.isIn(tile2T, spot.getWorld().getName())
-						|| !area.isIn(tile1, spot.getWorld().getName()))) aloud = false;
+			if (area.isIn(tile2)) {
+				if ((!area.isIn(tile2B) || !area.isIn(tile3)) && (!area.isIn(tile2T)
+						|| !area.isIn(tile1))) aloud = false;
 				in++;
 			}
-			if (area.isIn(tile3, spot.getWorld().getName())) {
-				if ((!area.isIn(tile3L, spot.getWorld().getName()) || !area.isIn(tile4, spot.getWorld().getName())) && (!area.isIn(tile3R, spot.getWorld().getName())
-						|| !area.isIn(tile2, spot.getWorld().getName()))) aloud = false;
+			if (area.isIn(tile3)) {
+				if ((!area.isIn(tile3L) || !area.isIn(tile4)) && (!area.isIn(tile3R)
+						|| !area.isIn(tile2))) aloud = false;
 				in++;
 			}
-			if (area.isIn(tile4, spot.getWorld().getName())) {
-				if ((!area.isIn(tile4B, spot.getWorld().getName()) || !area.isIn(tile3, spot.getWorld().getName())) && (!area.isIn(tile4T, spot.getWorld().getName())
-						|| !area.isIn(tile1, spot.getWorld().getName()))) aloud = false;
+			if (area.isIn(tile4)) {
+				if ((!area.isIn(tile4B) || !area.isIn(tile3)) && (!area.isIn(tile4T)
+						|| !area.isIn(tile1))) aloud = false;
 				in++;
 			}
 		}
