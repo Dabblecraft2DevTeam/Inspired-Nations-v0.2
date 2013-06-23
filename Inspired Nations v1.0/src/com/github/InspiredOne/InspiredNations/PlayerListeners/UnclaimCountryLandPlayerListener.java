@@ -12,10 +12,8 @@ package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
 import java.awt.Point;
 import java.math.BigDecimal;
-import java.util.Iterator;
 
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
@@ -26,13 +24,9 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.UnclaimCountryLand;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
-import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 
 public class UnclaimCountryLandPlayerListener{
 	
@@ -80,15 +74,7 @@ public class UnclaimCountryLandPlayerListener{
 
 			
 			// Check towns to see if any of them got cut out
-			for (Iterator<Town> i = country.getTowns().iterator(); i.hasNext();) {
-				Town town = i.next();
-				if (town.getChunks().isIn(tile, spot.getWorld().getName())) {
-					TownMethods TM = new TownMethods(plugin, town);
-					town.getChunks().removeChunk(tile);
-					country.transferMoneyToTown(TM.getCostPerChunk(taxType.OLD), town.getName(), country.getName());
-					town.removeCutOutRegions();
-				}
-			}
+			country.CutTowns(tile);
 			
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);

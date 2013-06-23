@@ -13,7 +13,6 @@ import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry1;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 

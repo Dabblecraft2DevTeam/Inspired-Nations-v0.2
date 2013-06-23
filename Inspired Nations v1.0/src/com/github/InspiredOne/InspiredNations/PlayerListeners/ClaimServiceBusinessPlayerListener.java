@@ -11,7 +11,6 @@
 package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
 import java.awt.Point;
-import java.math.BigDecimal;
 
 
 import org.bukkit.ChatColor;
@@ -27,7 +26,6 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
-import com.github.InspiredOne.InspiredNations.ManageTown.SelectBank2;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.Point3D;
 import com.github.InspiredOne.InspiredNations.Regions.Town;

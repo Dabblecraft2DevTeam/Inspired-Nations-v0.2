@@ -11,7 +11,6 @@
 package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
 import java.awt.Point;
-import java.math.BigDecimal;
 
 
 import org.bukkit.ChatColor;

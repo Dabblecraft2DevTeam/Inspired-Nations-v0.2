@@ -607,6 +607,12 @@ public class Tools {
 						break;
 					case FEDERALPARK:
 						break;
+				case COUNTRY:
+					break;
+				case TOWN:
+					break;
+				default:
+					break;
 				}
 			}
 			if (PM.isSelectingCuboid()) {
@@ -779,6 +785,12 @@ public class Tools {
 						break;
 					case FEDERALPARK:
 						break;
+				case COUNTRY:
+					break;
+				case TOWN:
+					break;
+				default:
+					break;
 				}
 			}
 			return true;
@@ -856,7 +868,6 @@ public class Tools {
 	// A method that draws the map for any player
 	public String drawCountryMap(Player player, mapSize size){
 		PlayerData PDI = plugin.playerdata.get(player.getName());
-		String playername = player.getName();
 		int above = 0;
 		int below = 0;
 		HashMap<String, ChatColor> countrycolors = new HashMap<String,ChatColor>();
@@ -962,7 +973,6 @@ public class Tools {
 	// A method to draw the map with towns included
 	public String drawTownMap(Player player, mapSize size) {
 		PlayerData PDI = plugin.playerdata.get(player.getName());
-		String playername = player.getName();
 		int below = 0;
 		int above = 0;
 		HashMap<String, ChatColor> countrycolors = new HashMap<String,ChatColor>();
@@ -995,17 +1005,17 @@ public class Tools {
 			if(PDI.getIsTownResident()) {
 				towncolors.put(PDI.getTownResides().getName(), ChatColor.BLUE);
 			}
-			if(PDI.getIsInCountry()) {
-				for(Town town:PDI.getCountryIn().getTowns()) {
-					if (!towncolors.containsKey(town.getName())) {
-						towncolors.put(town.getName(), TColors[m]);
-						m++;
-						if(m == 5){
-							m = 0;
-						}
+		}
+		if(PDI.getIsInCountry()) {
+			for(Town town:PDI.getCountryIn().getTowns()) {
+				if (!towncolors.containsKey(town.getName())) {
+					towncolors.put(town.getName(), TColors[m]);
+					m++;
+					if(m == 5){
+						m = 0;
 					}
-				}	
-			}
+				}
+			}	
 		}
 		
 		

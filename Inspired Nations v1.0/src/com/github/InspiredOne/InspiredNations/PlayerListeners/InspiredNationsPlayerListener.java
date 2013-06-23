@@ -20,7 +20,6 @@ import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
 import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
 import com.github.InspiredOne.InspiredNations.HUD.ShowMap;
-import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectBank2;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark2;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectPrison2;
@@ -55,7 +54,6 @@ public class InspiredNationsPlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		PlayerData PDI = plugin.playerdata.get(playername);
 		PlayerModes PM = plugin.playermodes.get(playername);
 		PM.setBlocksBack();
 	}
@@ -64,7 +62,6 @@ public class InspiredNationsPlayerListener implements Listener {
 	public void onPlayerKick(PlayerKickEvent event) {
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		PlayerData PDI = plugin.playerdata.get(playername);
 		PlayerModes PM = plugin.playermodes.get(playername);
 		PM.setBlocksBack();
 	}
@@ -73,7 +70,6 @@ public class InspiredNationsPlayerListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		PlayerData PDI = plugin.playerdata.get(playername);
 		PlayerModes PM = plugin.playermodes.get(playername);
 		
 		if(resetPlayerModes(player, PM)) return;

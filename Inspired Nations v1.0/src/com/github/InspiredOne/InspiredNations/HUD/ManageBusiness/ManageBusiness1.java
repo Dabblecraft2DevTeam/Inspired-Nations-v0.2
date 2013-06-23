@@ -5,7 +5,6 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
@@ -17,7 +16,7 @@ import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
-public class ManageBusiness1 extends StringPrompt {
+public class ManageBusiness1 implements Prompt {
 
 	InspiredNations plugin;
 	Tools tools;
@@ -44,12 +43,18 @@ public class ManageBusiness1 extends StringPrompt {
 		for(ServiceBusiness business: PDI.getServiceBusinessOwned()) {
 			inputs.add(business.getName());
 		}
-
-
+	}
+	
+	@Override
+	public boolean blocksForInput(ConversationContext arg0) {
 		if (inputs.size() == 1) {
 			PDI.getConversation().acceptInput("1");
+			return true;
 		}
-
+		else {
+			plugin.logger.info("I'm there");
+			return false;
+		}
 	}
 	
 	@Override
@@ -59,7 +64,7 @@ public class ManageBusiness1 extends StringPrompt {
 		String options = "";
 		String end = tools.footer(false);
 		String errmsg = ChatColor.RED + tools.errors.get(error);
-		
+		plugin.logger.info(inputs.size() + "");
 		options = options.concat(tools.options(inputs));
 		return space + main + options + end + errmsg;
 	}
@@ -84,10 +89,11 @@ public class ManageBusiness1 extends StringPrompt {
 		if (answer > inputs.size()-1) {
 			return new ManageBusiness1(plugin, player, 2);
 		}
-		player.sendRawMessage("I made it here");
 		return new ManageBusiness2(plugin, player, 0, inputs.get(answer));
 		//return new ManageBusiness1(plugin, player, 2);
 	}
+
+
 
 
 

@@ -1,7 +1,6 @@
 package com.github.InspiredOne.InspiredNations.HUD;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Vector;
 
 import org.bukkit.ChatColor;
@@ -9,7 +8,6 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.github.InspiredOne.InspiredNations.Board;
 import com.github.InspiredOne.InspiredNations.InspiredNations;

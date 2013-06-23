@@ -13,7 +13,6 @@ import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness1;
 import com.github.InspiredOne.InspiredNations.ManageTown.InvalidSelection;
-import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
@@ -88,7 +87,7 @@ public class SelectBusiness3 extends StringPrompt {
 					
 				}
 				else {
-					PM.house(false);
+					PM.serviceBusiness(false);
 					PM.setBlocksBack();
 					return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.SERVICEBUSINESS);
 				}
@@ -104,13 +103,13 @@ public class SelectBusiness3 extends StringPrompt {
 					
 				}
 				else {
-					PM.house(false);
+					PM.goodBusiness(false);
 					PM.setBlocksBack();
 					return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.GOODBUSINESS);
 				}
 			}
 		}
-		return new SelectHouse2(plugin, player, 2);
+		return new SelectBusiness3(plugin, player, 2);
 	}
 
 

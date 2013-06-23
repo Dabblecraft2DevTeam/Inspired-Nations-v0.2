@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
 
-import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 
 
 public class InspiredNationsCommandExecutor implements CommandExecutor{

@@ -136,6 +136,14 @@ public class InvalidSelection extends StringPrompt{
 			case BANK:
 				PM.localBank(true);
 				return new SelectBank2(plugin, player, 0);
+			case COUNTRY:
+				break;
+			case FEDERALPARK:
+				break;
+			case TOWN:
+				break;
+			default:
+				break;
 			}
 		}
 		else if(inputs.get(answer).equals("Cancel")) {
@@ -170,6 +178,14 @@ public class InvalidSelection extends StringPrompt{
 				return new TownGovernmentRegions(plugin, player, 0);
 			case BANK:
 				return new TownGovernmentRegions(plugin, player, 0);
+			case COUNTRY:
+				break;
+			case FEDERALPARK:
+				break;
+			case TOWN:
+				break;
+			default:
+				break;
 			}
 		}
 		return new InvalidSelection(plugin, player, 2, selectionError, Region);

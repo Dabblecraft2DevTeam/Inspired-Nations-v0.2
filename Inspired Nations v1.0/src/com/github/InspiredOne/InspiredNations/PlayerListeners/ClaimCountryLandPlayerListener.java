@@ -2,8 +2,6 @@ package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
 import java.awt.Point;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
@@ -56,8 +54,8 @@ public class ClaimCountryLandPlayerListener {
 		if (!PM.countrySelect()) return;
 		if (area.isIn(spot)) return;
 		if (!area.isIn(spot) && plugin.chunks.containsKey(tile)){
-			if (plugin.countrydata.get(plugin.chunks.get(tile)).getProtectionLevel() != 0) {
-				return;	
+			if (plugin.countrydata.get(plugin.chunks.get(tile)).getProtectionLevel() == 0) {
+				plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
 			}
 		}
 		spot.setX(spot.getX() + 16);

@@ -10,11 +10,9 @@
  ******************************************************************************/
 package com.github.InspiredOne.InspiredNations.Regions;
 
-import java.awt.Rectangle;
 import java.util.Vector;
 
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;

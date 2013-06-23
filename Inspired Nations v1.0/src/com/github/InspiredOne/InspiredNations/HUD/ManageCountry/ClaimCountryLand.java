@@ -14,7 +14,6 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
@@ -76,7 +75,6 @@ public class ClaimCountryLand extends StringPrompt {
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
-		int answer = 0;
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}

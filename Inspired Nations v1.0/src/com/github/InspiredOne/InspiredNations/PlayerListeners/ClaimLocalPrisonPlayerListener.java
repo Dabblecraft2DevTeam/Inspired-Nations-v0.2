@@ -11,8 +11,6 @@
 package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
 import java.awt.Point;
-import java.math.BigDecimal;
-
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectPrison2;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.Point3D;

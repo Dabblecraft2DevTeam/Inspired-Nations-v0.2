@@ -16,6 +16,8 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.TownMethods;
+import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 
 public class Country {
 	
@@ -39,7 +41,6 @@ public class Country {
 	private BigDecimal loan;
 	private BigDecimal maxLoan;
 	private int protectionLevel = 1;
-	private int futureprotectionlevel = 1;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	
@@ -143,7 +144,6 @@ public class Country {
 			PlayerData PDITarget = plugin.playerdata.get(rulertemp);
 			PDITarget.setCountryRuled(this);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -223,7 +223,6 @@ public class Country {
 	// this method takes care of the player data, and country data
 	public void removeResident(String person) {
 		person = tools.findPerson(person).get(0);
-		PlayerData PDITarget = plugin.playerdata.get(person);
 		PlayerMethods PM = new PlayerMethods(plugin,person);
 		PM.leaveCountry();
 		removePopulation();
@@ -694,5 +693,23 @@ public class Country {
 	
 	public int getProtectionLevel() {
 		return protectionLevel;
+	}
+	
+	public void removeChunk(Point tile) {
+		plugin.chunks.remove(tile);
+		CutTowns(tile);
+	}
+	
+	public void CutTowns(Point tile) {
+		// Check towns to see if any of them got cut out
+		for (Iterator<Town> i = getTowns().iterator(); i.hasNext();) {
+			Town town = i.next();
+			if (town.getChunks().isIn(tile, this.getChunks().getWorld())) {
+				TownMethods TM = new TownMethods(plugin, town);
+				town.getChunks().removeChunk(tile);
+				transferMoneyToTown(TM.getCostPerChunk(taxType.OLD), town.getName(), getName());
+				town.removeCutOutRegions();
+			}
+		}
 	}
 }

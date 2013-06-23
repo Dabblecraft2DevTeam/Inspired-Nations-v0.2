@@ -64,7 +64,6 @@ public class UnclaimTownLand extends StringPrompt {
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
-		int answer = 0;
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}

@@ -12,8 +12,6 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.ManageTown.ManagePark;
-import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
 public class ManageHouse extends StringPrompt {

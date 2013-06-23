@@ -13,8 +13,6 @@ package com.github.InspiredOne.InspiredNations.PlayerListeners;
 import java.awt.Point;
 import java.math.BigDecimal;
 
-
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;

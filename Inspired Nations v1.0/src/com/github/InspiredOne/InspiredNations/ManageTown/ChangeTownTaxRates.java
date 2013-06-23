@@ -14,7 +14,6 @@ import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageEconomy;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
 public class ChangeTownTaxRates extends StringPrompt {
