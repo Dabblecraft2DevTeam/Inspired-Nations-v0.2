@@ -30,6 +30,7 @@ public class ManageBusiness2 extends StringPrompt {
 	ServiceBusiness service;
 	GoodBusiness good;
 	boolean isGoodBusiness = true;
+	String names = "";
 	
 	Vector<String> inputs = new Vector<String>();
 	int error;
@@ -57,6 +58,31 @@ public class ManageBusiness2 extends StringPrompt {
 		}
 	}
 	
+	// Constructor
+	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business, Vector<String> namestemp) {
+		plugin = instance;
+		player = playertemp;
+		tools = new Tools(plugin);
+		PDI = plugin.playerdata.get(player.getName());
+		PM = plugin.playermodes.get(player.getName());
+		error = errortemp;
+		town = PDI.getTownResides();
+		businessname = business;
+		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
+			if (i.getName().equals(business)) {
+				good = i;
+			}
+		}
+		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
+			if (i.getName().equals(business)) {
+				service = i;
+				isGoodBusiness = false;
+			}
+		}
+		
+		names = tools.format(namestemp);
+	}
+	
 
 	@Override
 	public String getPromptText(ConversationContext arg0) {
@@ -64,7 +90,7 @@ public class ManageBusiness2 extends StringPrompt {
 		String main = tools.header("Manage Business. Type an option number.");
 		String options = "";
 		String end = tools.footer(false);
-		String errmsg = ChatColor.RED + tools.errors.get(error);
+		String errmsg = ChatColor.RED + tools.errors.get(error) + names;
 		
 		// make inputs vector
 		
@@ -81,8 +107,8 @@ public class ManageBusiness2 extends StringPrompt {
 		// Make options text
 		options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + good.getName() + ChatColor.RESET + "\n");
 		if (good.getBuilders().size() != 0) {
-			options = options.concat(ChatColor.YELLOW + "Builders:/n");
-			options = options.concat(ChatColor.GOLD + tools.format(good.getBuilders()));
+			options = options.concat(ChatColor.YELLOW + "Builders:\n");
+			options = options.concat(ChatColor.GOLD + tools.format(good.getBuilders()) + "\n");
 		}
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
@@ -117,6 +143,33 @@ public class ManageBusiness2 extends StringPrompt {
 		
 		if (answer > inputs.size()-1) {
 			return new ManageBusiness2(plugin, player, 2, businessname);
+		}
+		
+		// Add Builder <player>
+		if (inputs.get(answer).equals("Add Builder <player> " + ChatColor.GRAY + "Adds person that can interact")) {
+			if (args.length !=2) {
+				return new ManageBusiness2(plugin, player, 3, businessname);
+			}
+			else {
+				Vector<String> names = tools.findPersonExcept(args[1], player.getName());
+				if(names.size() == 0) {
+					return new ManageBusiness2(plugin, player, 5, businessname);
+				}
+				else if(names.size() > 1) {
+					return new ManageBusiness2(plugin ,player, 4, businessname, names);
+				}
+				else {
+					if (isGoodBusiness) {
+						good.addBuilder(names.get(0));
+					}
+					else {
+						service.addBuilder(names.get(0));
+					}
+					return new ManageBusiness2(plugin, player, 0, businessname);
+				}
+				
+			}
+			
 		}
 		
 		if (inputs.get(answer).equals("Rename <name>")) {
@@ -169,6 +222,6 @@ public class ManageBusiness2 extends StringPrompt {
 			return new BusinessProtectionLevels(plugin, player, 0, businessname);
 		}
 		
-		return null;
+		return new ManageBusiness2(plugin , player, 2, businessname);
 	}
 }

@@ -1,6 +1,5 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageBusiness;
 
-import java.math.BigDecimal;
 import java.util.Vector;
 
 import org.bukkit.conversations.ConversationContext;
@@ -10,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.region;
@@ -26,6 +26,7 @@ public class BusinessProtectionLevels extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	Town town;
 	String businessname;
 	ServiceBusiness service;
@@ -44,6 +45,7 @@ public class BusinessProtectionLevels extends StringPrompt {
 		PM = plugin.playermodes.get(player.getName());
 		error = errortemp;
 		town = PDI.getTownResides();
+		PMeth = new PlayerMethods(plugin, player);
 		businessname = business;
 		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
 			if (i.getName().equals(business)) {
@@ -65,10 +67,10 @@ public class BusinessProtectionLevels extends StringPrompt {
 		inputs.add("Set <level>");
 		
 		if (isGoodBusiness) {
-			return tools.protLevels("Business", error, good.getProtectionLevel(),BigDecimal.ONE, region.GOODBUSINESS, inputs);
+			return tools.protLevels("Business", error, good.getProtectionLevel(),PMeth.goodBusinessTax(good), region.GOODBUSINESS, inputs);
 		}
 		else {
-			return tools.protLevels("Business", error, service.getProtectionLevel(), BigDecimal.ONE, region.SERVICEBUSINESS, inputs);
+			return tools.protLevels("Business", error, service.getProtectionLevel(), PMeth.serviceBusinessTax(service), region.SERVICEBUSINESS, inputs);
 		}
 	}
 	

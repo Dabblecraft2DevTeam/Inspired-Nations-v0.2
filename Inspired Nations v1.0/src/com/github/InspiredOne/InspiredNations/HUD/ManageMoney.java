@@ -33,11 +33,8 @@ public class ManageMoney extends StringPrompt {
 		plugin = instance;
 		tools = new Tools(plugin);
 		player = playertemp;
-		plugin.logger.info("1");
 		PDI = plugin.playerdata.get(player.getName());
-		plugin.logger.info("1");
 		PMI = new PlayerMethods(plugin, player);
-		plugin.logger.info("1");
 		error = errortemp;
 		//board = new Board(plugin, player);
 
@@ -93,24 +90,19 @@ public class ManageMoney extends StringPrompt {
 		options = options.concat(ChatColor.GOLD + "" + PDI.getMoneyInBank() + ChatColor.YELLOW + " " + PDI.getPluralMoney() + " in the bank.\n");
 		if (PDI.isHouseOwner() || PDI.isGoodBusinessOwner() || PDI.isServiceBusinessOwner()) {
 			options = options.concat(ChatColor.RED + "");
-			plugin.logger.info("1.0");
-			options = options.concat(ChatColor.BOLD + "Yearly Taxes:" + ChatColor.RESET + "\n" + ChatColor.RED);
-			options = options.concat("Total: " + ChatColor.GOLD + PMI.taxAmount().toString() + ChatColor.RED + " " + PDI.getPluralMoney() + " per year.\n" );
+			options = options.concat(ChatColor.BOLD + "Taxes:" + ChatColor.RESET + "\n" + ChatColor.RED);
+			options = options.concat("Total: " + ChatColor.GOLD + tools.cut(PMI.taxAmount()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
 		}
 		if (PDI.isHouseOwner()) {
-			plugin.logger.info("2");
-			options = options.concat("Residential: " + ChatColor.GOLD + PMI.houseTax() + ChatColor.RED + " " + PDI.getPluralMoney() + " per year.\n");
+			options = options.concat("Residential: " + ChatColor.GOLD + tools.cut(PMI.houseTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isGoodBusinessOwner()) {
-			plugin.logger.info("3");
-			options = options.concat("Commercial Goods: " + ChatColor.GOLD + PMI.goodBusinessTax() + ChatColor.RED + " " + PDI.getPluralMoney() + " per year.\n");
+			options = options.concat("Commercial Goods: " + ChatColor.GOLD + tools.cut(PMI.goodBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isServiceBusinessOwner()) {
-			plugin.logger.info("4");
-			options = options.concat("Commercial Services: "  + ChatColor.GOLD + PMI.serviceBusinessTax() + ChatColor.RED + " " + PDI.getPluralMoney() + " per year.\n");
+			options = options.concat("Commercial Services: "  + ChatColor.GOLD + tools.cut(PMI.serviceBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.getLoanAmount().compareTo(new BigDecimal(0)) != 0) {
-			plugin.logger.info("5");
 			options = options.concat(ChatColor.LIGHT_PURPLE + "");
 			options = options.concat(ChatColor.BOLD + "Loans due:" + ChatColor.RESET + "\n");
 			options = options.concat(ChatColor.GOLD + "" + PDI.getLoanAmount() + " / " + PDI.getMaxLoan() + " " + ChatColor.LIGHT_PURPLE + PDI.getPluralMoney()+"\n");

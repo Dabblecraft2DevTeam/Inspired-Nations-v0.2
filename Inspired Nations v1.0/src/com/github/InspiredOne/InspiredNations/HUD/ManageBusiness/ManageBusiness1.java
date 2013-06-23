@@ -52,8 +52,7 @@ public class ManageBusiness1 implements Prompt {
 			return true;
 		}
 		else {
-			plugin.logger.info("I'm there");
-			return false;
+			return true;
 		}
 	}
 	
@@ -64,11 +63,10 @@ public class ManageBusiness1 implements Prompt {
 		String options = "";
 		String end = tools.footer(false);
 		String errmsg = ChatColor.RED + tools.errors.get(error);
-		plugin.logger.info(inputs.size() + "");
 		options = options.concat(tools.options(inputs));
 		return space + main + options + end + errmsg;
 	}
-	
+
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
 		int answer = 0;

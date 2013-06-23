@@ -263,6 +263,31 @@ public class Tools {
 		return list;
 	}
 	
+	// A method to find any person given an incomplete string;
+	public Vector<String> findPersonExcept(String name, String except) {
+		Set<String> players = plugin.playerdata.keySet();
+		OfflinePlayer[] playernames = plugin.getServer().getOfflinePlayers();
+		Vector<String> list = new Vector<String>();
+		for (Iterator<String> i = players.iterator(); i.hasNext();) {
+
+			String nametest = i.next();
+			for (OfflinePlayer person: playernames) {
+				if (nametest.equalsIgnoreCase(person.getName())) {
+					nametest = person.getName();
+				}
+			}
+			if (nametest.toLowerCase().contains(name.toLowerCase()) && !nametest.equalsIgnoreCase(except)) {
+				list.add(nametest);
+				if (nametest.equalsIgnoreCase(name)) {
+					list.clear();
+					list.add(nametest);
+					return list;
+				}
+			}
+		}
+		return list;
+	}
+	
 	// A method to find any country given an incomplete string;
 	public Vector<String> findCountry(String name) {
 		Set<String> countries = plugin.countrydata.keySet();

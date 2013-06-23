@@ -83,10 +83,10 @@ public class PlayerMethods {
 		Country country = PDI.getCountryResides();
 		BigDecimal amount = BigDecimal.ZERO;
 		if (house.isCubeSpace()) {
-			amount = houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwnerOffers().size()));
+			amount = houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwners().size()));
 		}
 		else {
-			amount = houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwnerOffers().size()));
+			amount = houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwners().size()));
 		}
 		return amount;
 	}
@@ -94,10 +94,10 @@ public class PlayerMethods {
 		Country country = PDI.getCountryResides();
 		BigDecimal amount = BigDecimal.ZERO;
 		if (house.isCubeSpace()) {
-			amount = houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), level).divide(new BigDecimal(house.getOwnerOffers().size()));
+			amount = houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), level).divide(new BigDecimal(house.getOwners().size()));
 		}
 		else {
-			amount = houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), level).divide(new BigDecimal(house.getOwnerOffers().size()));
+			amount = houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), level).divide(new BigDecimal(house.getOwners().size()));
 		}
 		return amount;
 	}
@@ -109,17 +109,17 @@ public class PlayerMethods {
 			House house = Houses.get(i);
 			if (PDI.getCountryResides().getTowns().get(house.getTown()).getName().equalsIgnoreCase(town)){
 				if (house.isCubeSpace()) {
-					amount = amount.add(houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwnerOffers().size())));
+					amount = amount.add(houseTax(house.getCubeSpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwners().size())));
 				}
 				else {
-					amount = amount.add(houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwnerOffers().size())));
+					amount = amount.add(houseTax(house.getPolySpace(), country.getTowns().get(house.getTown()), house.getProtectionLevel()).divide(new BigDecimal(house.getOwners().size())));
 				}
 			}
 		}
 		return amount;
 	}
 	
-	// Returns the total houseTax to be paid to the given town at the begining of each tax cycle. Answer given in player's units
+	// Returns the total GoodBusinessTax to be paid to the given town at the begining of each tax cycle. Answer given in player's units
 	public BigDecimal goodBusinessTax(Object obj, Town town, int level) {
 		BigDecimal amount = BigDecimal.ZERO;
 		
@@ -142,10 +142,10 @@ public class PlayerMethods {
 		for (int i=0; i<businesses.size(); i++) {
 			GoodBusiness business = businesses.get(i);
 			if (business.isCubeSpace()) {
-				amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+				amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 			}
 			else {
-				amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+				amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 			}
 		}
 		return amount;
@@ -155,10 +155,10 @@ public class PlayerMethods {
 		BigDecimal amount = BigDecimal.ZERO;
 		
 		if (business.isCubeSpace()) {
-			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 		}
 		else {
-			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 		}
 		return amount;
 	}
@@ -166,10 +166,10 @@ public class PlayerMethods {
 		Country country = PDI.getCountryResides();
 		BigDecimal amount = BigDecimal.ZERO;
 		if (business.isCubeSpace()) {
-			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwnerOffers().size())));
+			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwners().size())));
 		}
 		else {
-			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwnerOffers().size())));
+			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwners().size())));
 		}
 		return amount;
 	}
@@ -181,14 +181,30 @@ public class PlayerMethods {
 			GoodBusiness business = businesses.get(i);
 			if (PDI.getCountryResides().getTowns().get(business.getTown()).getName().equalsIgnoreCase(town)){
 				if (business.isCubeSpace()) {
-					amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+					amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 				}
 				else {
-					amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwnerOffers().size())));
+					amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
 				}
 			}
 		}
 		return amount;
+	}
+	
+	// Returns the total ServiceBusinessTax to be paid to the given town at the beginning of each tax cycle. Answer given in player's units
+	public BigDecimal serviceBusinessTax(Object obj, Town town, int level) {
+		BigDecimal amount = BigDecimal.ZERO;
+		
+		if (obj instanceof Cuboid) {
+			obj = (Cuboid) obj;
+			amount = new BigDecimal(((Cuboid) obj).Volume()*town.getServiceBusinessTax() * level/100.0);
+			
+		}
+		else if (obj instanceof polygonPrism) {
+			obj = (polygonPrism) obj;
+			amount = new BigDecimal((((polygonPrism) obj).Volume()*town.getServiceBusinessTax()*level/100.0));
+		}
+		return amount.multiply(PDI.getMoneyMultiplyer());
 	}
 	
 	public BigDecimal serviceBusinessTax() {
@@ -197,20 +213,35 @@ public class PlayerMethods {
 		BigDecimal amount = BigDecimal.ZERO;
 		for (int i=0; i<businesses.size(); i++) {
 			ServiceBusiness business = businesses.get(i);
-			amount =  amount.add(new BigDecimal(country.getTowns().get(business.getTown()).getServiceBusinessTax()).multiply(new BigDecimal(business.Volume()*business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size()*100.0))));
+			if (business.isCubeSpace()) {
+				amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+			}
+			else {
+				amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+			}
 		}
 		return amount;
 	}
 	public BigDecimal serviceBusinessTax(ServiceBusiness business) {
 		Country country = PDI.getCountryResides();
 		BigDecimal amount = BigDecimal.ZERO;
-		amount =  new BigDecimal(country.getTowns().get(business.getTown()).getGoodBusinessTax()).multiply(new BigDecimal(business.Volume()*business.getProtectionLevel()).divide(new BigDecimal((business.getOwners().size()*100.0))));
+		if (business.isCubeSpace()) {
+			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+		}
+		else {
+			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+		}
 		return amount;
 	}
 	public BigDecimal serviceBusinessTax(ServiceBusiness business, int level) {
 		Country country = PDI.getCountryResides();
 		BigDecimal amount = BigDecimal.ZERO;
-		amount = new BigDecimal(country.getTowns().get(business.getTown()).getGoodBusinessTax()).multiply(new BigDecimal(business.Volume()*level).divide(new BigDecimal((business.getOwners().size()*100.0))));
+		if (business.isCubeSpace()) {
+			amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwners().size())));
+		}
+		else {
+			amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), level).divide(new BigDecimal(business.getOwners().size())));
+		}
 		return amount;
 	}
 	public BigDecimal serviceBusinessTax(String town) {
@@ -220,7 +251,12 @@ public class PlayerMethods {
 		for (int i=0; i<businesses.size(); i++) {
 			ServiceBusiness business = businesses.get(i);
 			if (PDI.getCountryResides().getTowns().get(business.getTown()).getName().equalsIgnoreCase(town)){
-				amount = amount.add(new BigDecimal(country.getTowns().get(business.getTown()).getServiceBusinessTax()).multiply(new BigDecimal(business.Volume()*business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size()*100.0))));
+				if (business.isCubeSpace()) {
+					amount = amount.add(goodBusinessTax(business.getCubeSpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+				}
+				else {
+					amount = amount.add(goodBusinessTax(business.getPolySpace(), country.getTowns().get(business.getTown()), business.getProtectionLevel()).divide(new BigDecimal(business.getOwners().size())));
+				}
 			}
 		}
 		return amount;
