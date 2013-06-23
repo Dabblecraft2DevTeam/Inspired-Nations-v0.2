@@ -1,0 +1,93 @@
+package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
+
+import java.util.Vector;
+
+import org.bukkit.ChatColor;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
+import org.bukkit.entity.Player;
+
+import com.github.InspiredOne.InspiredNations.CountryMethods;
+import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerModes;
+import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.Regions.Country;
+import com.github.InspiredOne.InspiredNations.Tools.mapSize;
+import com.github.InspiredOne.InspiredNations.Tools.optionType;
+
+public class UnclaimCountryLand extends StringPrompt {
+
+	InspiredNations plugin;
+	Tools tools;
+	Player player;
+	PlayerData PDI;
+	PlayerModes PM;
+	String playername;
+	int error;
+	Country country;
+	CountryMethods CM;
+	String names = "";
+	
+	Vector<String> inputs = new Vector<String>();
+	
+	// Constructor
+	public UnclaimCountryLand(InspiredNations instance, Player playertemp, int errortemp) {
+		plugin = instance;
+		tools = new Tools(plugin);
+		player = playertemp;
+		PDI = plugin.playerdata.get(player.getName());
+		country = PDI.getCountryRuled();
+		playername = player.getName();
+		PM = plugin.playermodes.get(playername);
+		error = errortemp;
+		CM = new CountryMethods(plugin, country);
+	}
+	
+	@Override
+	public String getPromptText(ConversationContext arg0) {
+		String space = tools.space();
+		String main = tools.header("Unclaim Country Land. Type what you would like to do.");
+		String options = "";
+		String end = tools.footer(false);
+		String errmsg = ChatColor.RED + tools.errors.get(error);
+		
+		// Make input vector
+		
+		// Make options text
+		if(!PM.countryDeselect()) {
+			options = tools.addLine(options, "Type 'begin' to begin unclaiming land", optionType.INSTRUCTION);
+		}
+		else{
+			options = tools.addLine(options, "Type 'stop' to stop unclaiming land", optionType.INSTRUCTION);
+		}
+			
+		options = tools.addDivider(options);
+		options = options.concat(tools.drawCountryMap(player, mapSize.LARGE));
+		options = tools.addLine(options, "Cost per tax cycle: " + CM.getTaxAmount() + " " + country.getPluralMoney(), optionType.INSTRUCTION);
+		return space + main + options + end + errmsg;
+	}
+	
+	@Override
+	public Prompt acceptInput(ConversationContext arg0, String arg) {
+		int answer = 0;
+		if (arg.startsWith("/")) {
+			arg = arg.substring(1);
+		}
+		if (arg.equalsIgnoreCase("back")) {
+			PM.predecountry(false);
+			PM.decountry(false);
+			return new ManageCountry(plugin, player, 0);
+		}
+		else if(arg.equalsIgnoreCase("begin")) {
+			PM.decountry(true);
+			return new UnclaimCountryLand(plugin, player, 0);
+		}
+		else if(arg.equals("stop")) {
+			PM.decountry(false);
+			return new UnclaimCountryLand(plugin, player, 0);
+		}
+		return new UnclaimCountryLand(plugin, player, 2);
+	}
+}
