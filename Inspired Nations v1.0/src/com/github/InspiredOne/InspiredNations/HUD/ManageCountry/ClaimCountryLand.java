@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
@@ -25,6 +26,7 @@ public class ClaimCountryLand extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	String playername;
 	int error;
 	Country country;
@@ -44,6 +46,7 @@ public class ClaimCountryLand extends StringPrompt {
 		PM = plugin.playermodes.get(playername);
 		error = errortemp;
 		CM = new CountryMethods(plugin, country);
+		PMeth = new PlayerMethods(plugin, player);
 		if (country.getMoney().compareTo(CM.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			error = 25;
 		}
@@ -78,16 +81,23 @@ public class ClaimCountryLand extends StringPrompt {
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}
+		String[] args = arg.split(" ");
 		if (arg.equalsIgnoreCase("back")) {
 			PM.preCountry(false);
 			PM.country(false);
 			return new ManageCountry(plugin, player, 0);
 		}
+		else if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ClaimCountryLand(plugin, player, 0);
+		}
 		else if(arg.equalsIgnoreCase("begin")) {
 			PM.country(true);
 			return new ClaimCountryLand(plugin, player, 0);
 		}
-		else if(arg.equals("stop")) {
+		else if(arg.equalsIgnoreCase("stop")) {
 			PM.country(false);
 			return new ClaimCountryLand(plugin, player, 0);
 		}

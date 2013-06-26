@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
@@ -21,6 +22,7 @@ public class SelectBusiness2 extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	Town town;
 	
 	Vector<String> inputs = new Vector<String>();
@@ -33,6 +35,7 @@ public class SelectBusiness2 extends StringPrompt {
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		town = PDI.getTownResides();
 	}
@@ -64,6 +67,12 @@ public class SelectBusiness2 extends StringPrompt {
 			return new SelectBusiness1(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new SelectBusiness2(plugin, player, 0);
+		}
 		
 		try {
 			answer = Integer.decode(args[0])-1;

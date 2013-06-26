@@ -53,6 +53,12 @@ public class PlayerMethods {
 		return (houseTax(town).add(goodBusinessTax(town)).add(serviceBusinessTax(town)));
 	}
 	
+	public void SendChat(String msg) {
+		for(Player player_target: plugin.getServer().getOnlinePlayers()) {
+			player_target.sendRawMessage(player.getDisplayName() + ": " + msg);
+		}
+	}
+	
 	public BigDecimal houseTax() {
 		Vector<House> Houses = PDI.getHouseOwned();
 		Country country = PDI.getCountryResides();

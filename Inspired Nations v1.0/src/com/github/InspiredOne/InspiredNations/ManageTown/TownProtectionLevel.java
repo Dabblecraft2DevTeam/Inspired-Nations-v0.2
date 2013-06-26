@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
@@ -23,6 +24,7 @@ public class TownProtectionLevel extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	Town town;
 	TownMethods TM;
 	
@@ -36,6 +38,7 @@ public class TownProtectionLevel extends StringPrompt {
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
@@ -79,6 +82,12 @@ public class TownProtectionLevel extends StringPrompt {
 			return new ManageTown(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new TownProtectionLevel(plugin, player, 0);
+		}
 		
 		try {
 			answer = Integer.decode(args[0])-1;

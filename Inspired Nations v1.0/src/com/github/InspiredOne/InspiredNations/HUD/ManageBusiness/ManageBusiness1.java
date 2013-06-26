@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
@@ -23,6 +24,7 @@ public class ManageBusiness1 implements Prompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	Town town;
 	
 	Vector<String> inputs = new Vector<String>();
@@ -35,6 +37,7 @@ public class ManageBusiness1 implements Prompt {
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		town = PDI.getTownResides();
 		for(GoodBusiness business: PDI.getGoodBusinessOwned()) {
@@ -74,6 +77,12 @@ public class ManageBusiness1 implements Prompt {
 			arg = arg.substring(1);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ManageBusiness1(plugin, player, 0);
+		}
 		if (arg.equalsIgnoreCase("back")) {
 			return new HudConversationMain(plugin, player, 0);
 		}

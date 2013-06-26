@@ -81,6 +81,12 @@ public class BusinessProtectionLevels extends StringPrompt {
 			arg = arg.substring(1);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new BusinessProtectionLevels(plugin, player, 0, businessname);
+		}
 		if (arg.equalsIgnoreCase("back")) {
 			return new HudConversationMain(plugin, player, 0);
 		}

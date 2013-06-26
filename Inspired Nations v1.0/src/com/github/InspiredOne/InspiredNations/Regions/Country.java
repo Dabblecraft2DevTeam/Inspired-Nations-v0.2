@@ -43,6 +43,7 @@ public class Country {
 	private int protectionLevel = 1;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
+	private int militaryLevel = 0;
 	
 	CountryMethods CM;
 	
@@ -291,7 +292,7 @@ public class Country {
 	}
 	
 	public void addChunk(ChunkData tile) {
-		if(plugin.chunks.containsKey(tile) && !plugin.countrydata.get(plugin.chunks.get(tile)).equals(this)) {
+		if(plugin.chunks.containsKey(tile) && !plugin.chunks.get(tile).equals(this.getName())) {
 			plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
 		}
 		this.getChunks().addChunk(tile);
@@ -737,5 +738,13 @@ public class Country {
 				town.removeCutOutRegions();
 			}
 		}
+	}
+
+	public int getMilitaryLevel() {
+		return militaryLevel;
+	}
+
+	public void setMilitaryLevel(int militaryLevel) {
+		this.militaryLevel = militaryLevel;
 	}
 }

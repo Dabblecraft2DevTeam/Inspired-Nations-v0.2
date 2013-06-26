@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.ManageTown.InvalidSelection;
@@ -25,6 +26,7 @@ public class SelectHouse2 extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	Town town;
 	
 	Vector<String> inputs = new Vector<String>();
@@ -37,6 +39,7 @@ public class SelectHouse2 extends StringPrompt {
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		town = PDI.getTownResides();
 	}
@@ -51,6 +54,14 @@ public class SelectHouse2 extends StringPrompt {
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}
+		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new SelectHouse2(plugin, player, 0);
+		}
+		
 		if (arg.equalsIgnoreCase("back")) {
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);

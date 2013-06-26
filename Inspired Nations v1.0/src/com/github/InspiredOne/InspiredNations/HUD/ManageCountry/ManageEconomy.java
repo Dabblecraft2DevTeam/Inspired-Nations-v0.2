@@ -12,8 +12,10 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 
 public class ManageEconomy extends StringPrompt {
@@ -23,6 +25,7 @@ public class ManageEconomy extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	String playername;
 	int error;
 	Country country;
@@ -40,6 +43,7 @@ public class ManageEconomy extends StringPrompt {
 		country = PDI.getCountryRuled();
 		playername = player.getName();
 		PM = plugin.playermodes.get(playername);
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		CM = new CountryMethods(plugin, country);
 	}
@@ -124,6 +128,12 @@ public class ManageEconomy extends StringPrompt {
 			return new ManageCountry(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ManageEconomy(plugin, player, 0);
+		}
 		
 		try {
 			answer = Integer.decode(args[0])-1;

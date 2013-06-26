@@ -191,7 +191,6 @@ public class SaveFiles {
 			}
 			countrytemp.setRequest(deserializeVector(key + ".residentrequest"));
 			countrytemp.setOffer(deserializeVector(key + "residentoffer"));
-			countrytemp.setChunks(area);
 			countrytemp.setProtectionLevel(dataFileConfig.getInt(key + ".protectionLevel"));
 			countrytemp.setPluralMoney(dataFileConfig.getString(key + ".money.plural"));
 			countrytemp.setSingularMoney(dataFileConfig.getString(key + ".money.singular"));

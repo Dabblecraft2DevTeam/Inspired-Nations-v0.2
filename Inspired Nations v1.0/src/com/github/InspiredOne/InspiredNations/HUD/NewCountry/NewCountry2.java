@@ -8,8 +8,10 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
@@ -20,6 +22,7 @@ public class NewCountry2 extends StringPrompt {
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	String playername;
 	boolean permission = true;
 	int error;
@@ -34,6 +37,7 @@ public class NewCountry2 extends StringPrompt {
 		country = PDI.getCountryRuled();
 		playername = player.getName();
 		PM = plugin.playermodes.get(playername);
+		PMeth = new PlayerMethods(plugin ,player);
 		error = errortemp;
 	}
 	
@@ -62,6 +66,12 @@ public class NewCountry2 extends StringPrompt {
 			return new NewCountry1(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new NewCountry2(plugin, player, 0);
+		}
 		if(args.length != 2) {
 			return new NewCountry2(plugin, player, 15);
 		}

@@ -10,9 +10,11 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness1;
+import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageCountry;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry1;
 import com.github.InspiredOne.InspiredNations.ManageTown.ManageTown;
@@ -24,6 +26,7 @@ public class HudConversationMain extends StringPrompt{
 	Player player;
 	PlayerData PDI;
 	PlayerModes PM;
+	PlayerMethods PMeth;
 	
 	Vector<String> inputs = new Vector<String>();
 	int error;
@@ -35,6 +38,7 @@ public class HudConversationMain extends StringPrompt{
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		PM.reSelectHouse = false;
 	}
@@ -87,6 +91,13 @@ public class HudConversationMain extends StringPrompt{
 		int answer = 0;
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
+		}
+		String[] args = arg.split(" ");
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new HudConversationMain(plugin, player, 0);
 		}
 		try {
 			answer = Integer.decode(arg)-1;

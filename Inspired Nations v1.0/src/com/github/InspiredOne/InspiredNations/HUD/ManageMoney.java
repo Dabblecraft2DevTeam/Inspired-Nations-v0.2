@@ -124,7 +124,12 @@ public class ManageMoney extends StringPrompt {
 			return new HudConversationMain(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
-		
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMI.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ManageMoney(plugin, player, 0);
+		}
 		try {
 			answer = Integer.decode(args[0])-1;
 		}
