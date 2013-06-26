@@ -1,6 +1,5 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
-import java.awt.Point;
 import java.math.BigDecimal;
 import java.util.Vector;
 
@@ -140,6 +139,11 @@ public class ManageCountry extends StringPrompt{
 			else {
 				return new NewCountry3(plugin, player, 0);
 			}
+		}
+		
+		// Country Government Regions
+		else if (inputs.get(answer).equals("Government Regions")) {
+			return new CountryGovernmentRegions(plugin, player, 0);
 		}
 		
 		// Rename

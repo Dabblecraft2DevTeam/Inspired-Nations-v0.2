@@ -14,7 +14,7 @@ import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
-public class ManagePark extends StringPrompt {
+public class ManagePark1 extends StringPrompt {
 
 	InspiredNations plugin;
 	Tools tools;
@@ -27,7 +27,7 @@ public class ManagePark extends StringPrompt {
 	int error;
 	
 	// Constructor
-	public ManagePark(InspiredNations instance, Player playertemp, int errortemp) {
+	public ManagePark1(InspiredNations instance, Player playertemp, int errortemp) {
 		plugin = instance;
 		player = playertemp;
 		tools = new Tools(plugin);
@@ -63,12 +63,12 @@ public class ManagePark extends StringPrompt {
 			answer = Integer.decode(args[0])-1;
 		}
 		catch (Exception ex) {
-			return new ManagePark(plugin, player,1);
+			return new ManagePark1(plugin, player,1);
 		}
 		
 		if (answer > inputs.size()-1) {
-			return new ManagePark(plugin, player, 2);
+			return new ManagePark1(plugin, player, 2);
 		}
-		return new ManagePark(plugin, player, 2);
+		return new ManagePark1(plugin, player, 2);
 	}
 }

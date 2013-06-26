@@ -73,7 +73,9 @@ public class Tools {
 		errors.add("\nThe selection you made contained part of the bank.");//34
 		errors.add("\nThe selection you made contained part of the prison.");//35
 		errors.add("\nThat business name is already taken.");//36
-		
+		errors.add("\nThat town does not exist in this country.");//37
+		errors.add("\nThe selection you made went outside of the country.");//38
+		errors.add("\nThe selection you made contained part of a federal park.");//39
 
 
 	}
@@ -128,10 +130,10 @@ public class Tools {
 	// A method to build the hud footer.
 	public String footer(boolean isMainHud) {
 		if (isMainHud) {
-			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave.";
+			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave or 'say' to chat.";
 		}
 		else {
-			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave or 'back' to go back.";
+			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave, 'say' to chat, or 'back' to go back.";
 		}
 	}
 	
@@ -444,6 +446,116 @@ public class Tools {
 		options = this.addDivider(options);
 		options = options.concat(this.options(inputs));
 		return space + main + options + end + errmsg;
+	}
+	
+	// A method that determines if Federal Park Selection is valid
+	public boolean selectionFederalValid(Player player) {
+		PlayerData PDI = plugin.playerdata.get(player.getName());
+		PlayerModes PM = plugin.playermodes.get(player.getName());
+		ConversationContext context = PDI.getConversation().getContext();
+		Country country = PDI.getCountryRuled();
+		if (PM.isSelectingPolygon()) {
+			Rectangle rect = PM.getPolygon().getPolygon().getBounds();
+			if (!isSimple(PM.getPolygon().getPolygon())) {
+				context.setSessionData("error", 27);
+				return false;
+			}
+
+			if (PM.getPolygon().Area() == 0){
+				context.setSessionData("error", 28);
+				return false;
+			}
+				
+			for (int i = (int) rect.getMinX(); i < (int) rect.getMaxX(); i++) {
+				
+				// Makes the Progress Bar
+				int done = (int) Math.ceil(((i - rect.getMinX() + 1)/(rect.getMaxX() - rect.getMinX() + 2)) * 30);
+				player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+				player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#",done) +
+						ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
+				
+				for (int j = (int) rect.getMinY(); j < (int)rect.getMaxY(); j++) {
+					for (int l = PM.getPolygon().getYMin(); l <= PM.getPolygon().getYMax(); l++) {
+						Location test = null;
+						test = new Location(plugin.getServer().getWorld(PM.getPolygon().getWorld()), i, l, j);
+						
+						if ((!country.isIn(test)) && PM.getPolygon().isIn(test)) {
+							context.setSessionData("error", 38);
+							return false;
+						}
+						for (Park park : country.getParks()) {
+							if ((PM.getPolygon().isIn(test) && park.isIn(test))) {
+								context.setSessionData("error", 39);
+								return false;
+							}
+						}
+					}
+				}
+			}
+			PM.setBlocksBack();
+			PM.federalPark(false);
+			
+			String ParkName = "";
+			int test = country.getParks().size();
+			while(ParkName.isEmpty()) {
+				if(country.getParks().contains("Park " + test)) {
+					test +=1;
+				}
+				else {
+					ParkName = "Park " + test;
+				}
+			}
+			
+			country.addPark(new Park(plugin, PM.getPolygon(), country.getName(), -1, true, ParkName));
+		}
+		else {
+			if (PM.getCuboid().Volume() == 0) {
+				context.setSessionData("error", 28);
+				return false;
+			}
+			for (int i = PM.getCuboid().getXmin(); i <= PM.getCuboid().getXmax(); i++) {
+				
+				// Makes the Progress Bar
+				int done = (int) Math.ceil(((i - PM.getCuboid().getXmin() + 1) * 30)/(PM.getCuboid().getXmax() - PM.getCuboid().getXmin() + 1));
+				player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+				player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#", done) +
+						ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
+				
+				for (int j = PM.getCuboid().getYmin(); j <= PM.getCuboid().getYmax(); j++) {
+					for (int l = PM.getCuboid().getZmin(); l <= PM.getCuboid().getZmax(); l++) {
+						Location test = null;
+						test = new Location(plugin.getServer().getWorld(PM.getCuboid().getWorld()), i, j, l);
+
+						if ((!country.isIn(test))) {
+							context.setSessionData("error", 38);
+							return false;
+						}
+						for (Park park : country.getParks()) {
+							if ((PM.getCuboid().isIn(test) && park.isIn(test))) {
+								context.setSessionData("error", 39);
+								return false;
+							}
+						}
+					}
+				}
+			}
+			PM.setBlocksBack();
+			PM.federalPark(false);
+			
+			String ParkName = "";
+			int test = country.getParks().size();
+			while(ParkName.isEmpty()) {
+				if(country.getParks().contains("Park " + test)) {
+					test +=1;
+				}
+				else {
+					ParkName = "Park " + test;
+				}
+			}
+			
+			country.addPark(new Park(plugin, PM.getCuboid(), country.getName(), -1, true, ParkName));
+		}
+		return true;
 	}
 	
 	// A method that determines if a selection is valid

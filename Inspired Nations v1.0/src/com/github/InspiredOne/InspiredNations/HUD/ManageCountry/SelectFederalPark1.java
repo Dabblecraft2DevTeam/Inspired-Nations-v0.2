@@ -1,4 +1,4 @@
-package com.github.InspiredOne.InspiredNations.ManageTown;
+package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
 import java.util.Vector;
 
@@ -12,13 +12,12 @@ import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
+import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark1;
+import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark2;
+import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
-import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
-import com.github.InspiredOne.InspiredNations.Tools.region;
 
-public class SelectPark2 extends StringPrompt {
-
+public class SelectFederalPark1 extends StringPrompt {
 
 	InspiredNations plugin;
 	Tools tools;
@@ -32,65 +31,71 @@ public class SelectPark2 extends StringPrompt {
 	int error;
 	
 	// Constructor
-	public SelectPark2(InspiredNations instance, Player playertemp, int errortemp) {
+	public SelectFederalPark1(InspiredNations instance, Player playertemp, int errortemp) {
 		plugin = instance;
 		player = playertemp;
 		tools = new Tools(plugin);
 		PDI = plugin.playerdata.get(player.getName());
 		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin , player);
+		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		town = PDI.getTownMayored();
 	}
 	
 	@Override
 	public String getPromptText(ConversationContext arg0) {
-		return tools.writeRegionSelection2("park", error, PM);
+		inputs.setSize(2);
+		inputs.set(0,"Cuboid");
+		inputs.set(1,"Polygon Prism");
+		return tools.writeRegionSelection1("federal park", inputs, error);
 	}
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
+		int answer = 0;
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}
 		if (arg.equalsIgnoreCase("back")) {
+			PM.federalPark(false);
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);
-			PM.setBlocksBack();
-			return new SelectPark1(plugin, player, 0);
+			return new CountryGovernmentRegions(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
 		if (args[0].equalsIgnoreCase("say"))  {
 			if(args.length > 1) {
 				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
-			return new SelectPark2(plugin, player, 0);
+			return new SelectFederalPark1(plugin, player, 0);
 		}
-		else if(arg.equalsIgnoreCase("cancel")) {
-			PM.setBlocksBack();
-			PM.selectCuboid(false);
+		
+		try {
+			answer = Integer.decode(args[0])-1;
+		}
+		catch (Exception ex) {
+			return new SelectFederalPark1(plugin, player,1);
+		}
+		
+		if (answer > inputs.size()-1) {
+			return new SelectFederalPark1(plugin, player, 2);
+		}
+		
+		if (inputs.get(answer).equals("Cuboid")) {
+			PM.selectCuboid(true);
 			PM.selectPolygon(false);
-			PM.park(false);
-			PM.setPolygon(new polygonPrism(player.getWorld().getName()));
-			PM.setCuboid(new Cuboid(player.getWorld().getName()));
-			return new TownGovernmentRegions(plugin, player, 0);
+			return new SelectFederalPark2(plugin, player, 0);
 		}
-		else if(arg.equalsIgnoreCase("finish")) {
-			if(tools.selectionValid(player, region.PARK)) {
-				PM.selectCuboid(false);
-				PM.selectPolygon(false);
-				PM.setBlocksBack();
-				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
-				PM.setCuboid(new Cuboid(player.getWorld().getName()));
-				return new ManagePark1(plugin, player, 0);
-				
-			}
-			else {
-				PM.park(false);
-				PM.setBlocksBack();
-				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.PARK);
-			}
+		
+		else if(inputs.get(answer).equals("Polygon Prism")) {
+			PM.selectPolygon(true);
+			PM.selectCuboid(false);
+			return new SelectFederalPark2(plugin, player, 0);
 		}
-		return new SelectPark2(plugin, player, 2);
+		
+		return new SelectFederalPark1(plugin, player, 2);
 	}
+
+
+
 }
