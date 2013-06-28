@@ -110,21 +110,62 @@ public class ManageBusiness2 extends Menu {
 				}
 				else {
 					if (isGoodBusiness) {
-						good.addBuilder(names.get(0));
+						if (good.getBuilders().contains(names.get(0))) {
+							return new ManageBusiness2(plugin, player, 42, businessname);
+						}
+						else {
+							good.addBuilder(names.get(0));
+						}
 					}
 					else {
-						service.addBuilder(names.get(0));
+						if (good.getBuilders().contains(names.get(0))) {
+							return new ManageBusiness2(plugin, player, 42, businessname);
+						}
+						else {
+							service.addBuilder(names.get(0));
+						}
+					}
+					return new ManageBusiness2(plugin, player, 0, businessname);
+				}
+			}
+		}
+		
+		//Remove Builder <player>
+		if (inputs.get(answer).equals("Remove Builder <player>")) {
+			if (args.length !=2) {
+				return new ManageBusiness2(plugin, player, 3, businessname);
+			}
+			else {
+				Vector<String> names;
+				if (this.isGoodBusiness) {
+					names = tools.find(args[1], good.getBuilders());
+				}
+				else {
+					names = tools.find(args[1], service.getBuilders());
+				}
+				
+				if(names.size() == 0) {
+					return new ManageBusiness2(plugin, player, 43, businessname);
+				}
+				else if(names.size() > 1) {
+					return new ManageBusiness2(plugin ,player, 4, businessname, names);
+				}
+				else {
+					if (isGoodBusiness) {
+						good.removeBuilder(names.get(0));
+					}
+					else {
+						service.removeBuilder(names.get(0));
 					}
 					return new ManageBusiness2(plugin, player, 0, businessname);
 				}
 				
 			}
-			
 		}
 		
 		// Manage Workers
 		if (inputs.get(answer).equals("Manage Workers")) {
-			return new ManageWorkers(plugin, player, 0, businessname);
+			return new ManageWorkers1(plugin, player, 0, businessname);
 		}
 		
 		// Rename <name>

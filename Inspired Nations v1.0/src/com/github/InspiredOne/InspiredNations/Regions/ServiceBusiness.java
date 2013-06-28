@@ -76,8 +76,16 @@ public class ServiceBusiness extends InspiredRegion{
 		owners.add(owner.getName());
 	}
 	
+	public void addOwner(String owner) {
+		owners.add(owner);
+	}
+	
 	public void removeOwner(Player owner) {
 		owners.remove(owner.getName());
+	}
+	
+	public void removeOwner(String owner) {
+		owners.remove(owner);
 	}
 	
 	public void setEmployOffers(Vector<String> employoffers) {

@@ -76,8 +76,16 @@ public class Tools {
 		errors.add("\nThat town does not exist in this country.");//37
 		errors.add("\nThe selection you made went outside of the country.");//38
 		errors.add("\nThe selection you made contained part of a federal park.");//39
-
-
+		errors.add("\nThat player already has been offered ownership.");//40
+		errors.add("\nThat player has not been offered ownership.");//41
+		errors.add("\nThat player is already a builder.");//42
+		errors.add("\nThat player is not a builder.");//43
+		errors.add("\nThat player is already a worker.");//44
+		errors.add("\nThat player has not been offered a job.");//45
+		errors.add("\nThat player is not a resident of your country.");//46
+		errors.add("\nThat player does not work in this business.");//47
+		errors.add("\nThat player has not requested ownership.");//48
+		errors.add("\nThat player has not requested a job.");//49
 	}
 	
 	// The enum for option types
@@ -274,6 +282,29 @@ public class Tools {
 		for (Iterator<String> i = players.iterator(); i.hasNext();) {
 
 			String nametest = i.next();
+			for (OfflinePlayer person: playernames) {
+				if (nametest.equalsIgnoreCase(person.getName())) {
+					nametest = person.getName();
+				}
+			}
+			if (nametest.toLowerCase().contains(name.toLowerCase()) && !nametest.equalsIgnoreCase(except)) {
+				list.add(nametest);
+				if (nametest.equalsIgnoreCase(name)) {
+					list.clear();
+					list.add(nametest);
+					return list;
+				}
+			}
+		}
+		return list;
+	}
+	// A method to find any person given an incomplete string and a vector;
+	public Vector<String> findPersonExcept(String name, String except, Vector<String> names) {
+		
+		OfflinePlayer[] playernames = plugin.getServer().getOfflinePlayers();
+		Vector<String> list = new Vector<String>();
+		for (String nametest: names) {
+
 			for (OfflinePlayer person: playernames) {
 				if (nametest.equalsIgnoreCase(person.getName())) {
 					nametest = person.getName();
