@@ -6,54 +6,25 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class ManageTownFinances extends StringPrompt{
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	TownMethods TM;
-	String names = "";
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class ManageTownFinances extends Menu {
 	
 	// Constructor
 	public ManageTownFinances(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin , player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
 	}
 	
 	public ManageTownFinances(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		error = errortemp;
+		super(instance, playertemp, errortemp, namestemp);
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
-		names = tools.format(namestemp);
 	}
 	
 	@Override

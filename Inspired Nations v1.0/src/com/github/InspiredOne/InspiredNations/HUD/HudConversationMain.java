@@ -1,45 +1,22 @@
 package com.github.InspiredOne.InspiredNations.HUD;
 
-import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness1;
-import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageCountry;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry1;
 import com.github.InspiredOne.InspiredNations.ManageTown.ManageTown;
 
-public class HudConversationMain extends StringPrompt{
-	
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class HudConversationMain extends Menu{
 	
 	// Constructor
 	public HudConversationMain(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		PM.reSelectHouse = false;
 	}
 

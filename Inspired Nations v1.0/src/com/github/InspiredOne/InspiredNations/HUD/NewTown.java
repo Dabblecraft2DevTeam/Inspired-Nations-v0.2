@@ -1,42 +1,20 @@
 package com.github.InspiredOne.InspiredNations.HUD;
 
-import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
-public class NewTown extends StringPrompt {
-
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class NewTown extends Menu {
 	
 	// Constructor
 	public NewTown(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		error = errortemp;
-		PMeth = new PlayerMethods(plugin, player);
+		super(instance, playertemp, errortemp);
 	}
 	
 	@Override

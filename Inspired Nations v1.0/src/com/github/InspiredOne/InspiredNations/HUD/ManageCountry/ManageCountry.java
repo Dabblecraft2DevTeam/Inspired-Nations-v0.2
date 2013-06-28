@@ -1,51 +1,26 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
 import java.math.BigDecimal;
-import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry2;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry3;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
-import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
-public class ManageCountry extends StringPrompt{
+public class ManageCountry extends Menu{
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	String playername;
-	int error;
-	Country country;
-	
-	Vector<String> inputs = new Vector<String>();
-	
 	// Constructor
 	public ManageCountry(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
+		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		PMeth = new PlayerMethods(plugin ,player);
-		error = errortemp;
 	}
 
 	@Override
@@ -174,13 +149,13 @@ public class ManageCountry extends StringPrompt{
 		
 		// Claim Land
 		else if (inputs.get(answer).equals("Claim Land")) {
-			plugin.playermodes.get(player.getName()).preCountry(true);
+			PM.preCountry(true);
 			return new ClaimCountryLand(plugin, player, 0);
 		}
 		
 		// Unclaim Land
 		else if (inputs.get(answer).equals("Unclaim Land")) {
-			plugin.playermodes.get(playername).predecountry(true);
+			PM.predecountry(true);
 			return new UnclaimCountryLand(plugin, player, 0);
 		}
 		else if (inputs.get(answer).equals("Manage People")) {

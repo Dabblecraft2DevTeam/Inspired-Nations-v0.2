@@ -436,6 +436,14 @@ public class PlayerMethods {
 		Location spot = player.getLocation();
 		this.setLocationBooleansFalse();
 		// Country
+		PDI.setCountryIn(null);
+		PDI.setHouseIn(null);
+		PDI.setGoodBusinessIn(null);
+		PDI.setServiceBusinessIn(null);
+		PDI.setLocalBankIn(null);
+		PDI.setLocalParkIn(null);
+		PDI.setLocalPrisonIn(null);
+		PDI.setFederalParkIn(null);
 		for (String name: plugin.countrydata.keySet()) {
 			Country country = plugin.countrydata.get(name);
 			if (country.isIn(spot)) {

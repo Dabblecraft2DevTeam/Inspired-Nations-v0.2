@@ -1,63 +1,21 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageBusiness;
 
-import java.util.Vector;
-
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.region;
-import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
-import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
-import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class BusinessProtectionLevels extends StringPrompt {
+public class BusinessProtectionLevels extends Menu {
 
-	
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	String businessname;
-	ServiceBusiness service;
-	GoodBusiness good;
-	boolean isGoodBusiness = true;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+
 	
 	// Constructor
 	public BusinessProtectionLevels(InspiredNations instance, Player playertemp, int errortemp, String business) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		error = errortemp;
+		super(instance, playertemp, errortemp, business);
 		town = PDI.getTownResides();
-		PMeth = new PlayerMethods(plugin, player);
-		businessname = business;
-		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
-			if (i.getName().equals(business)) {
-				good = i;
-			}
-		}
-		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
-			if (i.getName().equals(business)) {
-				service = i;
-				isGoodBusiness = false;
-			}
-		}
 	}
 	
 	@Override
@@ -67,10 +25,10 @@ public class BusinessProtectionLevels extends StringPrompt {
 		inputs.add("Set <level>");
 		
 		if (isGoodBusiness) {
-			return tools.protLevels("Business", error, good.getProtectionLevel(),PMeth.goodBusinessTax(good), region.GOODBUSINESS, inputs);
+			return tools.protLevels("Business", error,good.getProtectionLevel(),tools.cut(PMeth.goodBusinessTax(good)), region.GOODBUSINESS, inputs);
 		}
 		else {
-			return tools.protLevels("Business", error, service.getProtectionLevel(), PMeth.serviceBusinessTax(service), region.SERVICEBUSINESS, inputs);
+			return tools.protLevels("Business", error, service.getProtectionLevel(), tools.cut(PMeth.serviceBusinessTax(service)), region.SERVICEBUSINESS, inputs);
 		}
 	}
 	
@@ -88,17 +46,17 @@ public class BusinessProtectionLevels extends StringPrompt {
 			return new BusinessProtectionLevels(plugin, player, 0, businessname);
 		}
 		if (arg.equalsIgnoreCase("back")) {
-			return new HudConversationMain(plugin, player, 0);
+			return new ManageBusiness2(plugin, player, 0, businessname);
 		}
 		try {
 			answer = Integer.decode(args[0])-1;
 		}
 		catch (Exception ex) {
-			return new ManageBusiness1(plugin, player,1);
+			return new BusinessProtectionLevels(plugin, player,1, businessname);
 		}
 		
 		if (answer > inputs.size()-1) {
-			return new ManageBusiness1(plugin, player, 2);
+			return new BusinessProtectionLevels(plugin, player,2, businessname);
 		}
 		
 		if (inputs.get(answer).equals("Set <level>")) {

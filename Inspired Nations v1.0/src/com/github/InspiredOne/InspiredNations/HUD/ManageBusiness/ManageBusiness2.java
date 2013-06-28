@@ -5,85 +5,26 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
 
-public class ManageBusiness2 extends StringPrompt {
-
-	
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	String businessname;
-	ServiceBusiness service;
-	GoodBusiness good;
-	boolean isGoodBusiness = true;
-	String names = "";
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class ManageBusiness2 extends Menu {
 	
 	// Constructor
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
+		super(instance, playertemp, errortemp, business);
 		town = PDI.getTownResides();
-		businessname = business;
-		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
-			if (i.getName().equals(business)) {
-				good = i;
-			}
-		}
-		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
-			if (i.getName().equals(business)) {
-				service = i;
-				isGoodBusiness = false;
-			}
-		}
 	}
 	
 	// Constructor
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business, Vector<String> namestemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		error = errortemp;
+		super(instance, playertemp, errortemp, business, namestemp);
 		town = PDI.getTownResides();
-		businessname = business;
-		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
-			if (i.getName().equals(business)) {
-				good = i;
-			}
-		}
-		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
-			if (i.getName().equals(business)) {
-				service = i;
-				isGoodBusiness = false;
-			}
-		}
-		
-		names = tools.format(namestemp);
 	}
 	
 
@@ -102,7 +43,7 @@ public class ManageBusiness2 extends StringPrompt {
 			inputs.add("Remove Builder <player>");
 		}
 		inputs.add("Manage Budget");
-		inputs.add("Manage Employment");
+		inputs.add("Manage Workers");
 		inputs.add("Protection Levels");
 		inputs.add("Reclaim Land");
 		inputs.add("Rename <name>");
@@ -181,6 +122,12 @@ public class ManageBusiness2 extends StringPrompt {
 			
 		}
 		
+		// Manage Workers
+		if (inputs.get(answer).equals("Manage Workers")) {
+			return new ManageWorkers(plugin, player, 0, businessname);
+		}
+		
+		// Rename <name>
 		if (inputs.get(answer).equals("Rename <name>")) {
 			if(args.length < 2) {
 				return new ManageBusiness2(plugin, player, 3, businessname);

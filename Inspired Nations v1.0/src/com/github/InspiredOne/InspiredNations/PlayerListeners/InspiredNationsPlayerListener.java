@@ -39,10 +39,11 @@ public class InspiredNationsPlayerListener implements Listener {
 		plugin = instance;
 	}
 	
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		String playername = player.getName();
+ 		String playername = player.getName();
 		if (!plugin.playerdata.containsKey(playername)) {
 			plugin.playerdata.put(playername, new PlayerData(plugin, playername));
 		}

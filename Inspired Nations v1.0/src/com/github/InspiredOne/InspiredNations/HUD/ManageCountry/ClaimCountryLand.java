@@ -1,52 +1,25 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
 import java.math.BigDecimal;
-import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.Regions.Country;
-import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 
-public class ClaimCountryLand extends StringPrompt {
+public class ClaimCountryLand extends Menu {
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	String playername;
-	int error;
-	Country country;
-	CountryMethods CM;
-	String names = "";
-	
-	Vector<String> inputs = new Vector<String>();
-	
 	// Constructor
 	public ClaimCountryLand(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
+		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		error = errortemp;
 		CM = new CountryMethods(plugin, country);
-		PMeth = new PlayerMethods(plugin, player);
 		if (country.getMoney().compareTo(CM.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			error = 25;
 		}

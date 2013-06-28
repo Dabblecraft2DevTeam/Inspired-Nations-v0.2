@@ -168,7 +168,6 @@ public class SaveFiles {
 		String name;
 		String ruler;
 		for (int index = 0; index < dataFileConfig.getInt("size"); index++) {
-			Chunks area = new Chunks();
 			String key = index + "";
 			name = dataFileConfig.getString(key + ".name");
 			ruler = dataFileConfig.getString(key + ".ruler");

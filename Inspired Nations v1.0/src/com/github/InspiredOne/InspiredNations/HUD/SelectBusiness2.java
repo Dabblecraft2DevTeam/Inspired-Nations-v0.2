@@ -1,42 +1,18 @@
 package com.github.InspiredOne.InspiredNations.HUD;
 
-import java.util.Vector;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
 
-public class SelectBusiness2 extends StringPrompt {
-
-	
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class SelectBusiness2 extends Menu {
 	
 	// Constructor
 	public SelectBusiness2(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
+
 		town = PDI.getTownResides();
 	}
 	@Override

@@ -1,38 +1,18 @@
 package com.github.InspiredOne.InspiredNations.ManageTown;
 
-import java.util.Vector;
-
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class ManagePrison extends StringPrompt{
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	Town town;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
+public class ManagePrison extends Menu {
 	
 	// Constructor
 	public ManagePrison(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 	}
 	

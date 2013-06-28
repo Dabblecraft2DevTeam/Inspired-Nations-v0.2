@@ -5,61 +5,24 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.Regions.Country;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class CountryGovernmentRegions extends StringPrompt {
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	String playername;
-	int error;
-	Country country;
-	String names = "";
-	
-	Vector<String> inputs = new Vector<String>();
+public class CountryGovernmentRegions extends Menu {
 	Vector<String>  nameslist = new Vector<String>();
 	
 	// Constructor
 	public CountryGovernmentRegions(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
+		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		PMeth = new PlayerMethods(plugin ,player);
-		error = errortemp;
 	}
 	
 	// Constructor
-	public CountryGovernmentRegions(InspiredNations instance, Player playertemp, int errortemp, Vector<Town> namestemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
+	public CountryGovernmentRegions(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
+		super(instance, playertemp, errortemp, namestemp);
 		country = PDI.getCountryRuled();
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		PMeth = new PlayerMethods(plugin ,player);
-		error = errortemp;
-		for(Town town: namestemp) {
-			nameslist.add(town.getName());
-		}
-		names = tools.format(nameslist);
-		
 	}
 	
 	@Override
@@ -112,10 +75,10 @@ public class CountryGovernmentRegions extends StringPrompt {
 				return new CountryGovernmentRegions(plugin, player, 3);
 			}
 			else {
-				Vector<Town> towns = tools.findTown(country, tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+				Vector<String> towns = tools.findTown(country.getName(), tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 				if (towns.size() == 1) {
 					country.getCapital().setIsCapital(false);
-					towns.get(0).setIsCapital(true);
+					tools.findTown(country, towns.get(0)).get(0).setIsCapital(true);
 				}
 				else if (towns.size() == 0) {
 					return new CountryGovernmentRegions(plugin, player, 37);

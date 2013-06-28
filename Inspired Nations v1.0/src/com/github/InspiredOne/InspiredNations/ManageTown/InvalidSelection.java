@@ -1,51 +1,29 @@
 package com.github.InspiredOne.InspiredNations.ManageTown;
 
-import java.util.Vector;
-
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 import com.github.InspiredOne.InspiredNations.Tools.region;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
 import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.SelectFederalPark2;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 
-public class InvalidSelection extends StringPrompt{
+public class InvalidSelection extends Menu {
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
 	region Region;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
 	int selectionError;
 	
 	// Constructor
 	public InvalidSelection(InspiredNations instance, Player playertemp, int errortemp, Object object, region type) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin ,player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 		Region = type;
 		selectionError = (Integer) object;
@@ -60,8 +38,9 @@ public class InvalidSelection extends StringPrompt{
 		String errmsg = ChatColor.RED + tools.errors.get(error);
 		
 		// Make inputs vector
-		inputs.add("Reclaim");
-		inputs.add("Cancel");
+		inputs.setSize(2);
+		inputs.set(0,"Reclaim");
+		inputs.set(1,"Cancel");
 		
 		// Make options text
 		options = tools.addLine(options, tools.errors.get(selectionError).substring(1), optionType.ALERT);
@@ -107,6 +86,9 @@ public class InvalidSelection extends StringPrompt{
 			case BANK:
 				PM.localBank(true);
 				return new SelectBank2(plugin, player, 0);
+			case FEDERALPARK:
+				PM.federalPark(true);
+				return new SelectFederalPark2(plugin, player, 0);
 			default:
 				break;
 			}
@@ -148,7 +130,8 @@ public class InvalidSelection extends StringPrompt{
 			case COUNTRY:
 				break;
 			case FEDERALPARK:
-				break;
+				PM.federalPark(true);
+				return new SelectFederalPark2(plugin, player, 0);
 			case TOWN:
 				break;
 			default:

@@ -6,49 +6,20 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
-import com.github.InspiredOne.InspiredNations.Board;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageEconomy;
 
-public class ManageMoney extends StringPrompt {
+public class ManageMoney extends Menu {
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerMethods PMI;
-	int error;
-	String names = "";
-	Vector<String> inputs = new Vector<String>();
-	Board board;
-	
 	// Constructor
 	public ManageMoney(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
-		PMI = new PlayerMethods(plugin, player);
-		error = errortemp;
-		//board = new Board(plugin, player);
-
+		super(instance, playertemp, errortemp);
 	}
 	
 	public ManageMoney(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
-		PMI = new PlayerMethods(plugin, player);
-		error = errortemp;
-		names = tools.format(namestemp);
-		//board = new Board(plugin, player);
+		super(instance, playertemp, errortemp, namestemp);
 
 	}
 	
@@ -91,16 +62,16 @@ public class ManageMoney extends StringPrompt {
 		if (PDI.isHouseOwner() || PDI.isGoodBusinessOwner() || PDI.isServiceBusinessOwner()) {
 			options = options.concat(ChatColor.RED + "");
 			options = options.concat(ChatColor.BOLD + "Taxes:" + ChatColor.RESET + "\n" + ChatColor.RED);
-			options = options.concat("Total: " + ChatColor.GOLD + tools.cut(PMI.taxAmount()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
+			options = options.concat("Total: " + ChatColor.GOLD + tools.cut(PMeth.taxAmount()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
 		}
 		if (PDI.isHouseOwner()) {
-			options = options.concat("Residential: " + ChatColor.GOLD + tools.cut(PMI.houseTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat("Residential: " + ChatColor.GOLD + tools.cut(PMeth.houseTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isGoodBusinessOwner()) {
-			options = options.concat("Commercial Goods: " + ChatColor.GOLD + tools.cut(PMI.goodBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat("Commercial Goods: " + ChatColor.GOLD + tools.cut(PMeth.goodBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isServiceBusinessOwner()) {
-			options = options.concat("Commercial Services: "  + ChatColor.GOLD + tools.cut(PMI.serviceBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat("Commercial Services: "  + ChatColor.GOLD + tools.cut(PMeth.serviceBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.getLoanAmount().compareTo(new BigDecimal(0)) != 0) {
 			options = options.concat(ChatColor.LIGHT_PURPLE + "");
@@ -126,7 +97,7 @@ public class ManageMoney extends StringPrompt {
 		String[] args = arg.split(" ");
 		if (args[0].equalsIgnoreCase("say"))  {
 			if(args.length > 1) {
-				PMI.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
 			return new ManageMoney(plugin, player, 0);
 		}

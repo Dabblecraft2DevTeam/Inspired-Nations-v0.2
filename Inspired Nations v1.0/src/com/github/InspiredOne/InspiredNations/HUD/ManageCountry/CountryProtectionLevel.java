@@ -1,50 +1,23 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
 import java.math.BigDecimal;
-import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
-import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
-import com.github.InspiredOne.InspiredNations.Regions.Country;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class CountryProtectionLevel extends StringPrompt{
+public class CountryProtectionLevel extends Menu{
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	String playername;
-	int error;
-	Country country;
-	CountryMethods CM;
-	
-	Vector<String> inputs = new Vector<String>();
-	
 	// Constructor
 	public CountryProtectionLevel(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
+		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
 		CM = new CountryMethods(plugin, country);
 	}
 	

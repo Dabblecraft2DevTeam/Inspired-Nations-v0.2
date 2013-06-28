@@ -3,40 +3,22 @@ package com.github.InspiredOne.InspiredNations.HUD.NewCountry;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
-public class NewCountry1 extends StringPrompt {
+public class NewCountry1 extends Menu {
 	
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	String playername;
+	//TODO need to make this so that it considers if you own a country
 	boolean permission = true;
-	int error;
 	
 	// Constructor
 	public NewCountry1(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		tools = new Tools(plugin);
-		player = playertemp;
-		PDI = plugin.playerdata.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		playername = player.getName();
-		PM = plugin.playermodes.get(playername);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 	}
 
 	@Override
@@ -78,7 +60,7 @@ public class NewCountry1 extends StringPrompt {
 		}
 		else {
 			PMeth.leaveCountry();
-			new Country(plugin, arg.trim(), playername);
+			new Country(plugin, arg.trim(), player.getName());
 			return new NewCountry2(plugin, player, 0);
 		}
 	}

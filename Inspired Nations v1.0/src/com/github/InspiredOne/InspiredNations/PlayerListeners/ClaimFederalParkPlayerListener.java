@@ -43,7 +43,7 @@ public class ClaimFederalParkPlayerListener {
 	public ClaimFederalParkPlayerListener(InspiredNations instance, PlayerMoveEvent event) {
 		plugin = instance;
 		player = event.getPlayer();
-		playername = player.getName().toLowerCase();
+		playername = player.getName();
 		PDI = plugin.playerdata.get(playername);
 		PM = plugin.playermodes.get(playername);
 		eventmove = event;
@@ -53,7 +53,7 @@ public class ClaimFederalParkPlayerListener {
 	public ClaimFederalParkPlayerListener(InspiredNations instance, PlayerInteractEvent event) {
 		plugin = instance;
 		player = event.getPlayer();
-		playername = player.getName().toLowerCase();
+		playername = player.getName();
 		PDI = plugin.playerdata.get(playername);
 		PM = plugin.playermodes.get(playername);
 		eventinteract = event;

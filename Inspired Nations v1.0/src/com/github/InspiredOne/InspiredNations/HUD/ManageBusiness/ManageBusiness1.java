@@ -1,44 +1,21 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageBusiness;
 
-import java.util.Vector;
-
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
 
-public class ManageBusiness1 implements Prompt {
+public class ManageBusiness1 extends Menu implements Prompt {
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
-	
 	// Constructor
 	public ManageBusiness1(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownResides();
 		for(GoodBusiness business: PDI.getGoodBusinessOwned()) {
 			inputs.add(business.getName());

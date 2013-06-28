@@ -1,48 +1,23 @@
 package com.github.InspiredOne.InspiredNations.ManageTown;
 
 import java.math.BigDecimal;
-import java.util.Vector;
-
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 
-public class ClaimTownLand extends StringPrompt {
+public class ClaimTownLand extends Menu {
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	TownMethods TM;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
-	
 	// Constructor
 	public ClaimTownLand(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin ,player);
-		error = errortemp;
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
 		if (town.getMoney().compareTo(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {

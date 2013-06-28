@@ -1,45 +1,19 @@
 package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
-import java.util.Vector;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.PlayerData;
-import com.github.InspiredOne.InspiredNations.PlayerMethods;
-import com.github.InspiredOne.InspiredNations.PlayerModes;
-import com.github.InspiredOne.InspiredNations.Tools;
-import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark1;
-import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark2;
-import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
-import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
-public class SelectFederalPark1 extends StringPrompt {
+public class SelectFederalPark1 extends Menu{
 
-	InspiredNations plugin;
-	Tools tools;
-	Player player;
-	PlayerData PDI;
-	PlayerModes PM;
-	PlayerMethods PMeth;
-	Town town;
-	
-	Vector<String> inputs = new Vector<String>();
-	int error;
-	
 	// Constructor
 	public SelectFederalPark1(InspiredNations instance, Player playertemp, int errortemp) {
-		plugin = instance;
-		player = playertemp;
-		tools = new Tools(plugin);
-		PDI = plugin.playerdata.get(player.getName());
-		PM = plugin.playermodes.get(player.getName());
-		PMeth = new PlayerMethods(plugin, player);
-		error = errortemp;
-		town = PDI.getTownMayored();
+		super(instance, playertemp, errortemp);
+		country = PDI.getCountryRuled();
 	}
 	
 	@Override
