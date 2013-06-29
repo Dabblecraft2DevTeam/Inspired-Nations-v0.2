@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Regions.Park;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class TownProtectionLevel extends Menu {
 	//TODO Change chat colors to menuType
@@ -31,16 +33,18 @@ public class TownProtectionLevel extends Menu {
 		inputs.add("Set Level <level>");
 		
 		// Make Options Text
-		options = options.concat(ChatColor.YELLOW + "Current Protection Level: " + ChatColor.GOLD + town.getProtectionLevel() + "\n");
-		options = options.concat(ChatColor.YELLOW + "Current Military Funding: " + ChatColor.GOLD + (TM.getTaxAmount()).toString()) +
-				ChatColor.YELLOW + " " + town.getPluralMoney() + "\n";
+		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + town.getProtectionLevel() + "\n");
+		options = options.concat(menuType.LABEL + "Current Protection Funding: " + menuType.VALUE + (TM.getTaxAmount()).toString()) +
+				menuType.UNIT + " " + town.getPluralMoney() + "\n";
+		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getTaxAmount(town.getProtectionLevel() + 1)) +
+				menuType.UNIT + " " + town.getPluralMoney() + "\n";
 		options = tools.addDivider(options);
-		options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody can build in your town. Town Land can be" +
+		options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody can build in your town. Town Land can be" +
 				" claimed by other towns.\n");
-		options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Claim Protection) Town land cannot be claimed by other towns.\n");
-		options = options.concat(ChatColor.GOLD + "Level 2: " + ChatColor.YELLOW + "(Immigration Control) Players need permission to join.\n");
-		options = options.concat(ChatColor.GOLD + "Level 3: " + ChatColor.YELLOW + "(Block and Interactable Protection) Only town residents can build and interact in your town\n");
-		options = options.concat(ChatColor.GOLD + "Level 4: " + ChatColor.YELLOW + "(Player Protection) Players are protected from attacks while within the town boundary.\n");
+		options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Claim Protection) Town land cannot be claimed by other towns.\n");
+		options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Immigration Control) Players need permission to join.\n");
+		options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Block and Interactable Protection) Only town residents can build and interact in your town\n");
+		options = options.concat(menuType.VALUE + "Level 4: " + menuType.VALUEDESCRI + "(Player Protection) Players are protected from attacks while within the town boundary.\n");
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
 		

@@ -29,21 +29,16 @@ public class CountryMethods {
 	}
 	
 	public BigDecimal getTaxAmount() {
-		BigDecimal temp = new BigDecimal(0);
-		temp = new BigDecimal(country.size()*(plugin.getConfig().getDouble("base_cost_per_chunk"))).multiply(country.getMoneyMultiplyer());
-		for (Park park : country.getParks()) {
-			temp = temp.add(country.getMoneyMultiplyer().multiply(new BigDecimal(park.Volume() * park.getProtectionLevel() * plugin.getConfig().getDouble("federal_park_base_cost")).multiply(country.getMoneyMultiplyer())));
-		}
-		return tools.cut(temp.multiply(new BigDecimal(country.getProtectionLevel())));
+		return getTaxAmount(country.getProtectionLevel());
 	}
 	
 	public BigDecimal getTaxAmount(int level) {
 		BigDecimal temp = new BigDecimal(0);
 		temp = new BigDecimal(country.size()*(plugin.getConfig().getDouble("base_cost_per_chunk"))).multiply(country.getMoneyMultiplyer());
 		for (Park park : country.getParks()) {
-			temp = temp.add(country.getMoneyMultiplyer().multiply(new BigDecimal(park.Volume() * park.getProtectionLevel() * plugin.getConfig().getDouble("federal_park_base_cost")).multiply(country.getMoneyMultiplyer())));
+			temp = temp.add(getFederalParkTax(park, park.getProtectionLevel(), level));
 		}
-		return tools.cut(temp.multiply(new BigDecimal(level)));
+		return tools.cut(temp);
 	}
 	
 	public int getMaxClaimableChunks() {
@@ -64,5 +59,14 @@ public class CountryMethods {
 		}
 		BigDecimal taxRevenue = taxRevenuetemp;
 		return tools.cut(taxRevenue);
+	}
+	
+	public BigDecimal getFederalParkTax(Park park) {
+		return getFederalParkTax(park, park.getProtectionLevel(), country.getProtectionLevel());
+	}
+	
+	public BigDecimal getFederalParkTax(Park park, int parklevel, int countrylevel) {
+		return country.getMoneyMultiplyer().multiply(new BigDecimal(park.Volume() * parklevel * countrylevel *
+				plugin.getConfig().getDouble("federal_park_base_cost")));
 	}
 }

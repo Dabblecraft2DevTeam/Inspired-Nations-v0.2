@@ -25,10 +25,10 @@ public class BusinessProtectionLevels extends Menu {
 		inputs.add("Set <level>");
 		
 		if (isGoodBusiness) {
-			return tools.protLevels("Business", error,good.getProtectionLevel(),tools.cut(PMeth.goodBusinessTax(good)), region.GOODBUSINESS, inputs);
+			return tools.protLevels(good, player,"Business", error,good.getProtectionLevel(), region.GOODBUSINESS, inputs);
 		}
 		else {
-			return tools.protLevels("Business", error, service.getProtectionLevel(), tools.cut(PMeth.serviceBusinessTax(service)), region.SERVICEBUSINESS, inputs);
+			return tools.protLevels(service, player, "Business", error, service.getProtectionLevel(), region.SERVICEBUSINESS, inputs);
 		}
 	}
 	

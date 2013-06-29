@@ -23,6 +23,7 @@ import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.House;
+import com.github.InspiredOne.InspiredNations.Regions.InspiredRegion;
 import com.github.InspiredOne.InspiredNations.Regions.LocalBank;
 import com.github.InspiredOne.InspiredNations.Regions.LocalPrison;
 import com.github.InspiredOne.InspiredNations.Regions.Park;
@@ -198,20 +199,28 @@ public class Tools {
 	}
 	
 	// A Method that builds the Protection Level Text
-	public String protLevels(String regionName, int error, int current, BigDecimal cost, region Region, Vector<String> inputs) {
+	public String protLevels(InspiredRegion building, Player player, String regionName, int error, int Level, region Region, Vector<String> inputs) {
 		String space = this.space();
 		String main = this.header(regionName + " Protection Levels. Type an option number.");
 		String options = "";
 		String end = this.footer(false);
 		String errmsg = this.errormsg(error);
+		PlayerMethods PMeth = new PlayerMethods(plugin, player);
 		
-		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + current + menuType.UNIT + "\n");
-		options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + cost + "\n");
+		Country country = plugin.countrydata.get(building.getCountry());
+		CountryMethods CM = new CountryMethods(plugin, country);
+		Town town = country.getTowns().get(building.getTown());
+		TownMethods TM = new TownMethods(plugin, town);
+		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + Level + menuType.UNIT + "\n");
+		
 
 		
 		switch(Region) {
 		case GOODBUSINESS:
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE);
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building, Level + 1) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
@@ -219,6 +228,11 @@ public class Tools {
 			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
 			break;
 		case SERVICEBUSINESS:
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building, Level + 1) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
 			options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Interact protection) Only country rulers, town rulers, employees, and business owners can interact in the business.\n");
@@ -227,16 +241,31 @@ public class Tools {
 		case BANK:
 			break;
 		case FEDERALPARK:
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + CM.getFederalParkTax((Park) building)  +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getFederalParkTax((Park) building, Level + 1, country.getProtectionLevel()) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your country can build in your park.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers and designated builders can build in the park.\n");
 			break;
 		case HOUSE:
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.houseTax((House) building)  +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.houseTax((House) building, Level + 1) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your house.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, designated builders, and house owners can build in the house.\n");
 			options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Interact protection) Only country rulers, town rulers, designated builders, and house owners can interact in the house.\n");
 			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) You gain damage protection from non-house residents.\n");
 			break;
 		case PARK:
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + TM.getLocalParkTax((Park) building)  +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getLocalParkTax((Park) building, Level + 1, town.getProtectionLevel()) +
+					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your town can build in your park.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers, town rulers and designated builders can build in the park.\n");
 			break;

@@ -12,6 +12,7 @@ package com.github.InspiredOne.InspiredNations;
 
 import java.math.BigDecimal;
 
+import com.github.InspiredOne.InspiredNations.Regions.Park;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
 
@@ -32,17 +33,14 @@ public class TownMethods {
 	}
 	
 	public BigDecimal getTaxAmount() {
-		BigDecimal amount = new BigDecimal(town.getArea()*town.getProtectionLevel()*town.getNationTax()/100).multiply(town.getMoneyMultiplyer());
-		for (int i = 0; i < town.getParks().size(); i++) {
-			amount = amount.add(town.getMoneyMultiplyer().multiply((new BigDecimal(town.getParks().get(i).Volume() * town.getParks().get(i).getProtectionLevel() * town.getProtectionLevel() * town.getNationTax()/10000 * plugin.getConfig().getDouble("park_tax_multiplyer")))));
-		}
-		return tools.cut(amount);
+
+		return getTaxAmount(town.getProtectionLevel());
 	}
 	
 	public BigDecimal getTaxAmount(int level) {
 		BigDecimal amount = new BigDecimal(town.getArea()*level*town.getNationTax()/100).multiply(town.getMoneyMultiplyer());
-		for (int i = 0; i < town.getParks().size(); i++) {
-			amount = amount.add(town.getMoneyMultiplyer().multiply((new BigDecimal(town.getParks().get(i).Volume() * town.getParks().get(i).getProtectionLevel() * town.getNationTax()/10000 * plugin.getConfig().getDouble("park_tax_multiplyer")*level))));
+		for (Park park:town.getParks()) {
+			amount = amount.add(getLocalParkTax(park));
 		}
 		return tools.cut(amount);
 	}
@@ -57,6 +55,14 @@ public class TownMethods {
 				output = tools.cut(town.getMoneyMultiplyer().multiply(new BigDecimal(town.getNationTax()/100)).multiply(new BigDecimal(town.getProtectionLevel())));
 		}
 		return output;
-		
+	}
+	
+	public BigDecimal getLocalParkTax(Park park, int parklevel, int townlevel) {
+		return town.getMoneyMultiplyer().multiply((new BigDecimal(park.Volume() * parklevel *
+				townlevel * town.getNationTax()/10000 * plugin.getConfig().getDouble("park_tax_multiplyer"))));
+	}
+	
+	public BigDecimal getLocalParkTax(Park park) {
+		return getLocalParkTax(park, park.getProtectionLevel(), town.getProtectionLevel());
 	}
 }
