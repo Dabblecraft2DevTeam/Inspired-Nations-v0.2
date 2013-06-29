@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageEconomy;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class ManageMoney extends Menu {
 
@@ -34,12 +35,12 @@ public class ManageMoney extends Menu {
 		// Make the inputs vector
 		inputs.add("Pay <player> <amount>");
 		inputs.add("Pay Country <country> <amount>");
-		inputs.add("Pay Town <town's country> <town> <amount>");
+		inputs.add("Pay Town <town's country> / <town> <amount>");
 		
 		if ((!PDI.getIsInLocalBank()) /* && PDI.getCountryIn().getName().equals(PDI.getCountryResides().getName())*/) {
 			inputs.add("Deposit <amount>");
 			inputs.add("Withdraw <amount>");
-			inputs.add("Take Out Loan <amount> " +ChatColor.GRAY + "Max: " + PDI.getMaxLoan() + " " + PDI.getPluralMoney());
+			inputs.add("Take Out Loan <amount> " + menuType.OPTIONDESCRIP + "Max: " + PDI.getMaxLoan() + " " + PDI.getPluralMoney());
 			if (PDI.getLoanAmount().compareTo(new BigDecimal(0)) != 0) {
 				inputs.add("Repay Loan <amount>");
 			}
@@ -55,28 +56,26 @@ public class ManageMoney extends Menu {
 		}
 		
 		// Make the options text
-		options = options.concat(ChatColor.GOLD + "" +ChatColor.BOLD + "You have:" + ChatColor.RESET + "\n");
-		options = options.concat(ChatColor.GOLD + "" + PDI.getMoney() + ChatColor.YELLOW + " " + PDI.getPluralMoney() + "\n");
-		options = options.concat(ChatColor.GOLD + "" + PDI.getMoneyOnHand() + ChatColor.YELLOW + " " + PDI.getPluralMoney() + " on hand.\n");
-		options = options.concat(ChatColor.GOLD + "" + PDI.getMoneyInBank() + ChatColor.YELLOW + " " + PDI.getPluralMoney() + " in the bank.\n");
+		options = options.concat(menuType.SUBHEADER + "You have:" + ChatColor.RESET + "\n");
+		options = options.concat(menuType.VALUE + "" + PDI.getMoney() + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
+		options = options.concat(menuType.VALUE + "" + PDI.getMoneyOnHand() + menuType.UNIT + " " + PDI.getPluralMoney() + " on hand.\n");
+		options = options.concat(menuType.VALUE + "" + PDI.getMoneyInBank() + menuType.UNIT + " " + PDI.getPluralMoney() + " in the bank.\n");
 		if (PDI.isHouseOwner() || PDI.isGoodBusinessOwner() || PDI.isServiceBusinessOwner()) {
-			options = options.concat(ChatColor.RED + "");
-			options = options.concat(ChatColor.BOLD + "Taxes:" + ChatColor.RESET + "\n" + ChatColor.RED);
-			options = options.concat("Total: " + ChatColor.GOLD + tools.cut(PMeth.taxAmount()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
+			options = options.concat(menuType.SUBHEADER + "Taxes:" + ChatColor.RESET + "\n");
+			options = options.concat(menuType.LABEL +"Total: " + menuType.VALUE + tools.cut(PMeth.taxAmount()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
 		}
 		if (PDI.isHouseOwner()) {
-			options = options.concat("Residential: " + ChatColor.GOLD + tools.cut(PMeth.houseTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Residential: " + menuType.VALUE + tools.cut(PMeth.houseTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isGoodBusinessOwner()) {
-			options = options.concat("Commercial Goods: " + ChatColor.GOLD + tools.cut(PMeth.goodBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Commercial Goods: " + menuType.VALUE + tools.cut(PMeth.goodBusinessTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isServiceBusinessOwner()) {
-			options = options.concat("Commercial Services: "  + ChatColor.GOLD + tools.cut(PMeth.serviceBusinessTax()) + ChatColor.RED + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Commercial Services: "  + menuType.VALUE + tools.cut(PMeth.serviceBusinessTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.getLoanAmount().compareTo(new BigDecimal(0)) != 0) {
-			options = options.concat(ChatColor.LIGHT_PURPLE + "");
-			options = options.concat(ChatColor.BOLD + "Loans due:" + ChatColor.RESET + "\n");
-			options = options.concat(ChatColor.GOLD + "" + PDI.getLoanAmount() + " / " + PDI.getMaxLoan() + " " + ChatColor.LIGHT_PURPLE + PDI.getPluralMoney()+"\n");
+			options = options.concat(menuType.SUBHEADER + "Loans due:" + ChatColor.RESET + "\n");
+			options = options.concat(menuType.VALUE + "" + PDI.getLoanAmount() + " / " + PDI.getMaxLoan() + " " + menuType.UNIT + PDI.getPluralMoney()+"\n");
 		}
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
@@ -171,7 +170,7 @@ public class ManageMoney extends Menu {
 		}
 		
 		// Pay Town <country> <town> <amount>
-		if(inputs.get(answer).equals("Pay Town <town's country> <town> <amount>")) {
+		if(inputs.get(answer).equals("Pay Town <town's country> / <town> <amount>")) {
 			if(args.length != 4) {
 				return new ManageMoney(plugin, player, 3);
 			}

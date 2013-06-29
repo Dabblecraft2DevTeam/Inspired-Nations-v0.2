@@ -8,6 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageWorkers2 extends Menu {
@@ -39,12 +40,12 @@ public class ManageWorkers2 extends Menu {
 		inputs.add("Reject Job Request <player>");
 		
 		if (isGoodBusiness) {
-			options = options.concat(ChatColor.YELLOW + "Owner Requests: " + ChatColor.GOLD + tools.format(good.getOwnerRequest()) + "\n");
-			options = options.concat(ChatColor.YELLOW + "Employment Requests: " + ChatColor.GOLD + tools.format(good.getEmployRequest()) + "\n");
+			options = options.concat(menuType.LABEL + "Owner Requests: " + menuType.VALUE + tools.format(good.getOwnerRequest()) + "\n");
+			options = options.concat(menuType.LABEL + "Employment Requests: " + menuType.VALUE + tools.format(good.getEmployRequest()) + "\n");
 		}
 		else {
-			options = options.concat(ChatColor.YELLOW + "Owner Requests: " + ChatColor.GOLD + tools.format(service.getOwnerRequest()) + "\n");
-			options = options.concat(ChatColor.YELLOW + "Employment Requests: " + ChatColor.GOLD + tools.format(service.getEmployRequest()) + "\n");
+			options = options.concat(menuType.LABEL + "Owner Requests: " + menuType.VALUE + tools.format(service.getOwnerRequest()) + "\n");
+			options = options.concat(menuType.LABEL + "Employment Requests: " + menuType.VALUE + tools.format(service.getEmployRequest()) + "\n");
 		}
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));

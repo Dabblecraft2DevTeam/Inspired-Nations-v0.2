@@ -13,7 +13,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageEconomy extends Menu {
-
+	//TODO Change chat colors to menuType
 	// Constructor
 	public ManageEconomy(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -44,7 +44,7 @@ public class ManageEconomy extends Menu {
 		else {
 			inputs.add("*Pay <player> <amount> " + ChatColor.GRAY + "Must pay back loans");
 			inputs.add("*Pay Country <country> <amount> "+ ChatColor.GRAY + "Must pay back loans");
-			inputs.add("*Pay Town <town's country> <town> <amount> " + ChatColor.GRAY + "Must pay back loans");
+			inputs.add("*Pay Town <town's country> / <town> <amount> " + ChatColor.GRAY + "Must pay back loans");
 		}
 		if(!PDI.getIsInLocalBank() /*&& PDI.getCountryIn().getName().equals(PDI.getCountryResides().getName()*/) {
 			inputs.add("Take Out Loan <amount> " + ChatColor.GRAY + "Max: " + country.getMaxLoan() + " "+ country.getPluralMoney());
@@ -232,7 +232,7 @@ public class ManageEconomy extends Menu {
 		}
 		
 		// Pay Town <town's country> <town> <amount>
-		else if (inputs.get(answer).equals("Pay Town <town's country>/<town> <amount>")){
+		else if (inputs.get(answer).equals("Pay Town <town's country> / <town> <amount>")){
 			if(args.length < 3) {
 				return new ManageEconomy(plugin, player, 3);
 			}

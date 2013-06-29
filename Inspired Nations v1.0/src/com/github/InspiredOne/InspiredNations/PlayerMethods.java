@@ -432,6 +432,97 @@ public class PlayerMethods {
 		PDI.setServiceBusinessIn(null);
 		PDI.setLocalPrisonIn(null);
 	}
+	
+	// Method that returns a vector of businessnames with thier associated town.
+	public Vector<String> getJobOffers() {
+		Vector<String> output = new Vector<String>();
+		for (Town town : PDI.getCountryResides().getTowns()) {
+			for(GoodBusiness business:town.getGoodBusinesses()) {
+				if(business.getEmployOffers().contains(playername)) {
+					output.add(business.getName() + "/" + town.getName());
+				}
+			}
+			for(ServiceBusiness business:town.getServiceBusinesses()) {
+				if(business.getEmployOffers().contains(playername)) {
+					output.add(business.getName() + "/" + town.getName());
+				}
+			}
+		}
+		return output;
+	}
+	
+	// Method that returns a vector of businessnames with thier associated town.
+	public Vector<String> getOwnerOffers() {
+		Vector<String> output = new Vector<String>();
+		for (Town town : PDI.getCountryResides().getTowns()) {
+			for(GoodBusiness business:town.getGoodBusinesses()) {
+				if(business.getOwnerOffers().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+			for(ServiceBusiness business:town.getServiceBusinesses()) {
+				if(business.getOwnerOffers().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+		}
+		return output;
+	}
+	
+	// Method that returns a vector of businessnames with thier associated town.
+	public Vector<String> getOwnerRequests() {
+		Vector<String> output = new Vector<String>();
+		for (Town town : PDI.getCountryResides().getTowns()) {
+			for(GoodBusiness business:town.getGoodBusinesses()) {
+				if(business.getOwnerRequest().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+			for(ServiceBusiness business:town.getServiceBusinesses()) {
+				if(business.getOwnerRequest().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+		}
+		return output;
+	}
+	
+	// Method that returns a vector of businessnames with thier associated town.
+	public Vector<String> getJobRequests() {
+		Vector<String> output = new Vector<String>();
+		for (Town town : PDI.getCountryResides().getTowns()) {
+			for(GoodBusiness business:town.getGoodBusinesses()) {
+				if(business.getEmployRequest().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+			for(ServiceBusiness business:town.getServiceBusinesses()) {
+				if(business.getEmployRequest().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+		}
+		return output;
+	}
+	
+	// Method that returns a vector of businessnames with thier associated town.
+	public Vector<String> getEmployed() {
+		Vector<String> output = new Vector<String>();
+		for (Town town : PDI.getCountryResides().getTowns()) {
+			for(GoodBusiness business:town.getGoodBusinesses()) {
+				if(business.getEmployees().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+			for(ServiceBusiness business:town.getServiceBusinesses()) {
+				if(business.getEmployees().contains(playername)) {
+					output.add(business.getName()+ "/" + town.getName());
+				}
+			}
+		}
+		return output;
+	}
+	
 	public void resetLocationBooleans() {
 		Location spot = player.getLocation();
 		this.setLocationBooleansFalse();

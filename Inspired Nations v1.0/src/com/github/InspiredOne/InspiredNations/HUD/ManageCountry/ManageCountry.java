@@ -16,7 +16,7 @@ import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
 public class ManageCountry extends Menu{
-
+//TODO Change chat colors to menuType
 	// Constructor
 	public ManageCountry(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -51,7 +51,8 @@ public class ManageCountry extends Menu{
 			}
 			
 			inputs.add("Manage Economy");
-			inputs.add("Protection Level");
+			inputs.add("Protection Level (" + ChatColor.GRAY + country.getProtectionLevel() + ChatColor.GREEN + ")");
+			inputs.add("Military Level (" + ChatColor.GRAY + country.getMilitaryLevel() + ChatColor.GREEN + ")");
 			inputs.add("Manage People");
 			inputs.add("Rename <name>");
 		}
@@ -164,7 +165,7 @@ public class ManageCountry extends Menu{
 		else if (inputs.get(answer).equals("Manage Economy")) {
 			return new ManageEconomy(plugin, player, 0);
 		}
-		else if (inputs.get(answer).equals("Protection Level")) {
+		else if (inputs.get(answer).equals("Protection Level (" + ChatColor.GRAY + country.getProtectionLevel() + ChatColor.GREEN + ")")) {
 			return new CountryProtectionLevel(plugin, player, 0);
 		}
 		return new ManageCountry(plugin, player, 2);

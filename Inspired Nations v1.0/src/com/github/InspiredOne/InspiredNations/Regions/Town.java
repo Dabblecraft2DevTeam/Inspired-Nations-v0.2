@@ -45,7 +45,7 @@ public class Town {
 	private BigDecimal loan = new BigDecimal(0);
 	private BigDecimal maxLoan;
 	private boolean isCapital = false;
-	private int protectionLevel = 1;
+	private int protectionLevel = 0;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	TownMethods TM;

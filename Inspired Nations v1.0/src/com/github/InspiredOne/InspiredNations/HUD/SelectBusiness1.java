@@ -7,6 +7,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class SelectBusiness1 extends Menu {
 	
@@ -29,9 +30,9 @@ public class SelectBusiness1 extends Menu {
 		inputs.add("Make Service Business");
 		
 		// Make options text
-		options = options.concat(ChatColor.YELLOW + "What kind of Business would you like to make?\n\n"+ ChatColor.YELLOW + "A " 
-		+ ChatColor.GOLD + "Good Business" + ChatColor.YELLOW + " allows you to sell any item in the game.\n" 
-				+ "A " + ChatColor.GOLD + "Service Business" + ChatColor.YELLOW + " allows you to provide players with services like building a house or harvesting crops.\n");
+		options = options.concat(menuType.INSTRUCTION + "What kind of Business would you like to make?\n\n" + menuType.VALUEDESCRI + "A " 
+		+ menuType.VALUE + "Good Business" + menuType.VALUEDESCRI + " allows you to sell any item in the game.\n" 
+				+ "A " + menuType.VALUE + "Service Business" + menuType.VALUEDESCRI + " allows you to provide players with services like building a house or harvesting crops.\n");
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
 		

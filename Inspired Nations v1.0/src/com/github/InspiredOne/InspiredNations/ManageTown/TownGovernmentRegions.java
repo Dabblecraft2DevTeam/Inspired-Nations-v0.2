@@ -11,7 +11,7 @@ import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 
 public class TownGovernmentRegions extends Menu {
-
+	//TODO Change chat colors to menuType
 	// Constructor
 	public TownGovernmentRegions(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);

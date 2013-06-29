@@ -86,9 +86,40 @@ public class Tools {
 		errors.add("\nThat player does not work in this business.");//47
 		errors.add("\nThat player has not requested ownership.");//48
 		errors.add("\nThat player has not requested a job.");//49
+		errors.add("\nIllegal Character '/'. You cannot create a business name with '/'.)");//50
+		errors.add("\nIllegal Character '/'. You cannot create a town name with '/'.)");//51
 	}
 	
-	// The enum for option types
+	public enum menuType {
+		HEADER(ChatColor.GOLD + "" + ChatColor.BOLD),
+		SUBHEADER(ChatColor.YELLOW + "" + ChatColor.ITALIC + "" + ChatColor.BOLD),
+		LABEL(ChatColor.RED + ""),
+		VALUE(ChatColor.GOLD + ""),
+		VALUEDESCRI(ChatColor.YELLOW + ""),
+		DIVIDER(ChatColor.DARK_AQUA + ""),
+		
+		OPTION(ChatColor.GREEN + ""),
+		OPTIONNUMBER(ChatColor.GOLD + ""),
+		OPTIONDESCRIP(ChatColor.GRAY + ""),
+		UNAVAILABLE(ChatColor.DARK_GRAY + ""),
+		UNAVAILREASON(ChatColor.GRAY + ""),
+		INSTRUCTION(ChatColor.YELLOW + ""),
+		ALERT(ChatColor.RED + ""),
+		UNIT(ChatColor.YELLOW + ""),
+		ENDINSTRU(ChatColor.AQUA + "");
+		
+		private String color;
+		
+        private menuType(String color) {
+                this.color = color;
+        }
+        @Override
+        public String toString() {
+        	return color;
+        }
+	}
+
+	
 	public enum optionType {
 		OPTION, UNAVAILABLE, INSTRUCTION, ALERT
 	}
@@ -105,16 +136,16 @@ public class Tools {
 		
 		switch(Type) {
 			case OPTION:
-				text = text.concat(ChatColor.GREEN + addition + "\n");
+				text = text.concat(menuType.OPTION + addition + "\n");
 				break;
 			case INSTRUCTION:
-				text = text.concat(ChatColor.YELLOW + addition + "\n");
+				text = text.concat(menuType.INSTRUCTION + addition + "\n");
 				break;
 			case ALERT:
-				text = text.concat(ChatColor.RED + addition + "\n");
+				text = text.concat(menuType.ALERT + addition + "\n");
 				break;
 			case UNAVAILABLE:
-				text = text.concat(ChatColor.DARK_GRAY + addition + "\n");
+				text = text.concat(menuType.UNAVAILABLE + addition + "\n");
 				break;
 		}
 		return text;
@@ -122,12 +153,12 @@ public class Tools {
 	
 	// A method to add the divider
 	public String addDivider(String text) {
-		return text.concat(ChatColor.DARK_AQUA + repeat("-", 53) + "\n");
+		return text.concat(menuType.DIVIDER + repeat("-", 53) + "\n");
 	}
 	
 	// A method that builds the hud header
 	public String header(String msg) {
-		return addDivider(ChatColor.GOLD + "" + ChatColor.BOLD + msg + "\n" + ChatColor.RESET);
+		return addDivider(menuType.HEADER + msg + "\n" + ChatColor.RESET);
 	}
 	
 	// A method that builds the pre-hud space
@@ -138,28 +169,28 @@ public class Tools {
 	// A method to build the hud footer.
 	public String footer(boolean isMainHud) {
 		if (isMainHud) {
-			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave or 'say' to chat.";
+			return addDivider("") + menuType.ENDINSTRU + "Type 'exit' to leave or 'say' to chat.";
 		}
 		else {
-			return addDivider("") + ChatColor.AQUA + "Type 'exit' to leave, 'say' to chat, or 'back' to go back.";
+			return addDivider("") + menuType.ENDINSTRU + "Type 'exit' to leave, 'say' to chat, or 'back' to go back.";
 		}
 	}
 	
 	// A method to build the hud error message
 	public String errormsg(int error) {
-		return ChatColor.RED + this.errors.get(error);
+		return menuType.ALERT + this.errors.get(error);
 	}
 	
 	// A method to build Options
 	public String options(Vector<String> inputs) {
-		String output = ChatColor.GREEN + "";
+		String output = menuType.OPTION + "";
 		int n = 1;
 		for (String option:inputs) {
 			if (option.startsWith("*")) {
-				output = addLine(output, "[" + ChatColor.GRAY + n + ChatColor.DARK_GRAY +"] " + option.substring(1), optionType.UNAVAILABLE);
+				output = addLine(output, menuType.UNAVAILABLE + "[" + menuType.UNAVAILREASON + n + menuType.UNAVAILABLE +"] " + option.substring(1), optionType.UNAVAILABLE);
 			}
 			else {
-				output = addLine(output, "["+ ChatColor.BOLD + "" + ChatColor.GOLD + n + ChatColor.RESET + ChatColor.GREEN +"] " + option, optionType.OPTION);
+				output = addLine(output, "["+ menuType.OPTIONNUMBER + n + ChatColor.RESET + menuType.OPTION +"] " + option, optionType.OPTION);
 			}
 			n += 1;
 		}
@@ -174,38 +205,40 @@ public class Tools {
 		String end = this.footer(false);
 		String errmsg = this.errormsg(error);
 		
-		options = options.concat(ChatColor.YELLOW + "Current Protection Level: " + ChatColor.GOLD + current + ChatColor.YELLOW + "\n");
-		options = options.concat(ChatColor.YELLOW + "Current Protection Cost: " + ChatColor.GOLD + cost + "\n");
-		options = this.addDivider(options);
+		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + current + menuType.UNIT + "\n");
+		options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + cost + "\n");
+
 		
 		switch(Region) {
 		case GOODBUSINESS:
-			options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 2: " + ChatColor.YELLOW + "(Interact protection) Only country rulers, town rulers, employees, and business owners can interact in the business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 3: " + ChatColor.YELLOW + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE);
+			options = this.addDivider(options);
+			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
+			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
+			options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Interact protection) Only country rulers, town rulers, employees, and business owners can interact in the business.\n");
+			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
 			break;
 		case SERVICEBUSINESS:
-			options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 2: " + ChatColor.YELLOW + "(Interact protection) Only country rulers, town rulers, employees, and business owners can interact in the business.\n");
-			options = options.concat(ChatColor.GOLD + "Level 3: " + ChatColor.YELLOW + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
+			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
+			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, employees, and business owners can build in the business.\n");
+			options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Interact protection) Only country rulers, town rulers, employees, and business owners can interact in the business.\n");
+			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
 			break;
 		case BANK:
 			break;
 		case FEDERALPARK:
-			options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody that can build in your country can build in your park.\n");
-			options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Complete protection) Only country rulers and designated builders can build in the park.\n");
+			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your country can build in your park.\n");
+			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers and designated builders can build in the park.\n");
 			break;
 		case HOUSE:
-			options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody that can build and interact in your town can build and interact in your house.\n");
-			options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Block protection) Only country rulers, town rulers, designated builders, and house owners can build in the house.\n");
-			options = options.concat(ChatColor.GOLD + "Level 2: " + ChatColor.YELLOW + "(Interact protection) Only country rulers, town rulers, designated builders, and house owners can interact in the house.\n");
-			options = options.concat(ChatColor.GOLD + "Level 3: " + ChatColor.YELLOW + "(Player protection) You gain damage protection from non-house residents.\n");
+			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your house.\n");
+			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Block protection) Only country rulers, town rulers, designated builders, and house owners can build in the house.\n");
+			options = options.concat(menuType.VALUE + "Level 2: " + menuType.VALUEDESCRI + "(Interact protection) Only country rulers, town rulers, designated builders, and house owners can interact in the house.\n");
+			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) You gain damage protection from non-house residents.\n");
 			break;
 		case PARK:
-			options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Anybody that can build in your town can build in your park.\n");
-			options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Complete protection) Only country rulers, town rulers and designated builders can build in the park.\n");
+			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your town can build in your park.\n");
+			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers, town rulers and designated builders can build in the park.\n");
 			break;
 		case PRISON:
 			break;
@@ -471,8 +504,8 @@ public class Tools {
 		String options = "";
 		String end = this.footer(false);
 		String errmsg = this.errormsg(error);
-		options = options.concat(ChatColor.YELLOW + "What kind of selection would you like to make?\n\n" + "A " + ChatColor.GOLD + "cuboid" + ChatColor.YELLOW + " is a perfect rectangular prism requiring you" +
-				" to select two opposite corners of the 'box'.\n" + "A " + ChatColor.GOLD + "polygon" + ChatColor.YELLOW + " is a shape with as many corners as you want. The highest and lowest corners" +
+		options = options.concat(menuType.INSTRUCTION + "What kind of selection would you like to make?\n\n" + "A " + menuType.VALUE + "cuboid" + menuType.INSTRUCTION + " is a perfect rectangular prism requiring you" +
+				" to select two opposite corners of the 'box'.\n" + "A " + menuType.VALUE + "polygon" + menuType.INSTRUCTION + " is a shape with as many corners as you want. The highest and lowest corners" +
 				" dictate where the top and bottom of your selection is.\n");
 		options = this.addDivider(options);
 		options = options.concat(this.options(inputs));
@@ -501,7 +534,7 @@ public class Tools {
 				
 				// Makes the Progress Bar
 				int done = (int) Math.ceil(((i - rect.getMinX() + 1)/(rect.getMaxX() - rect.getMinX() + 2)) * 30);
-				player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+				player.sendRawMessage(menuType.INSTRUCTION + this.space() + "Determining if selection is valid.\n");
 				player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#",done) +
 						ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
 				
@@ -548,7 +581,7 @@ public class Tools {
 				
 				// Makes the Progress Bar
 				int done = (int) Math.ceil(((i - PM.getCuboid().getXmin() + 1) * 30)/(PM.getCuboid().getXmax() - PM.getCuboid().getXmin() + 1));
-				player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+				player.sendRawMessage(menuType.INSTRUCTION + this.space() + "Determining if selection is valid.\n");
 				player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#", done) +
 						ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
 				
@@ -597,7 +630,7 @@ public class Tools {
 		Town town = PDI.getTownMayored();
 		
 		// Finish
-			player.sendRawMessage(ChatColor.YELLOW + "Please wait while the server determines if this is a valid selection.");
+			player.sendRawMessage(menuType.INSTRUCTION + "Please wait while the server determines if this is a valid selection.");
 			if (PM.isSelectingPolygon()) {
 				Rectangle rect = PM.getPolygon().getPolygon().getBounds();
 				if (!this.isSimple(PM.getPolygon().getPolygon())) {
@@ -612,7 +645,7 @@ public class Tools {
 					
 					// Makes the Progress Bar
 					int done = (int) Math.ceil(((i - rect.getMinX() + 1)/(rect.getMaxX() - rect.getMinX() + 2)) * 30);
-					player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+					player.sendRawMessage(menuType.INSTRUCTION + this.space() + "Determining if selection is valid.\n");
 					player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#",done) +
 							ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
 					
@@ -793,7 +826,7 @@ public class Tools {
 					
 					// Makes the Progress Bar
 					int done = (int) Math.ceil(((i - PM.getCuboid().getXmin() + 1) * 30)/(PM.getCuboid().getXmax() - PM.getCuboid().getXmin() + 1));
-					player.sendRawMessage(ChatColor.YELLOW + this.space() + "Determining if selection is valid.\n");
+					player.sendRawMessage(menuType.INSTRUCTION + this.space() + "Determining if selection is valid.\n");
 					player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#", done) +
 							ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
 					// Iterate Through
@@ -1004,10 +1037,10 @@ public class Tools {
 		PlayerMethods PMeth = new PlayerMethods(plugin, plugin.getServer().getPlayer(PM.getPlayername()));
 		PlayerData PDI = plugin.playerdata.get(PM.getPlayername());
 		if(PM.isSelectingCuboid()) {
-			options = options.concat(ChatColor.YELLOW + "Size: " + ChatColor.GOLD + PM.getCuboid().Volume() + ChatColor.YELLOW + " Blocks\n");
+			options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + PM.getCuboid().Volume() + menuType.UNIT + " Blocks\n");
 			if(PM.houseSelect()) {
-				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + ChatColor.GOLD + 
-						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + ChatColor.YELLOW + " " + PDI.getPluralMoney() + "\n");
+				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + menuType.VALUE + 
+						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
 				options = this.addDivider(options);
 			}
 			options = options.concat(this.drawTownMap(plugin.getServer().getPlayer(PM.getPlayername()), mapSize.SMALL));
@@ -1016,10 +1049,10 @@ public class Tools {
 					"and right click for the other. Type 'Finish' when you are done or 'Cancel' to abandon.",optionType.INSTRUCTION);
 		}
 		else if (PM.isSelectingPolygon()) {
-			options = options.concat(ChatColor.YELLOW + "Size: " + ChatColor.GOLD + PM.getPolygon().Volume() + ChatColor.YELLOW + " Blocks\n");
+			options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + PM.getPolygon().Volume() + menuType.UNIT + " Blocks\n");
 			if (PM.houseSelect()) {
-				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + ChatColor.GOLD + 
-						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + ChatColor.YELLOW + " " + PDI.getPluralMoney() + "\n");
+				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + menuType.VALUE + 
+						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
 				options = this.addDivider(options);
 			}
 

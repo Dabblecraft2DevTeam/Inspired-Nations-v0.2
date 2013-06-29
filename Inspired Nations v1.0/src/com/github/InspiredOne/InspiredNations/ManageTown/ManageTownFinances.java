@@ -13,7 +13,7 @@ import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageTownFinances extends Menu {
-	
+	//TODO Change chat colors to menuType
 	// Constructor
 	public ManageTownFinances(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -39,7 +39,7 @@ public class ManageTownFinances extends Menu {
 		if(town.getLoan().compareTo(BigDecimal.ZERO) == 0){
 			inputs.add("Pay <player> <amount>");
 			inputs.add("Pay Country <country> <amount>");
-			inputs.add("Pay Town <town's country> <country> <amount>");
+			inputs.add("Pay Town <town's country> / <country> <amount>");
 		}
 		else {
 			inputs.add("*Pay <player> <amount> " + ChatColor.GRAY + "Must pay back loans");
@@ -211,7 +211,7 @@ public class ManageTownFinances extends Menu {
 				}
 				
 				// Pay Town <town's country> <town> <amount>
-				else if (inputs.get(answer).equals("Pay Town <town's country>/<town> <amount>")){
+				else if (inputs.get(answer).equals("Pay Town <town's country> / <town> <amount>")){
 					if(args.length < 3) {
 						return new ManageTownFinances(plugin, player, 3);
 					}

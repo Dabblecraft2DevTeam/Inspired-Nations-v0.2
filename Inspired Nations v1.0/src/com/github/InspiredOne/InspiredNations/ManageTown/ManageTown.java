@@ -10,7 +10,7 @@ import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageTown extends Menu {
-
+	//TODO Change chat colors to menuType
 	// Constructor
 	public ManageTown(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -109,6 +109,10 @@ public class ManageTown extends Menu {
 				return new ManageTown(plugin, player, 3);
 			}
 			else {
+				String townname = tools.formatSpace(tools.subArray(args, 1, args.length - 1));
+				if(townname.contains("/")) {
+					return new ManageTown(plugin, player, 51);
+				}
 				if(tools.townUnique(tools.formatSpace(tools.subArray(args, 1, args.length - 1)), town.getCountry())) {
 					town.setName(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 					return new ManageTown(plugin, player, 0);

@@ -8,6 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class CountryGovernmentRegions extends Menu {
@@ -35,7 +36,7 @@ public class CountryGovernmentRegions extends Menu {
 		
 		// Make Inputs Vector
 		inputs.add("Make Capital <town>");
-		inputs.add("Select Park " + ChatColor.GRAY + "Protects a given area from citizens");
+		inputs.add("Select Park " + menuType.OPTIONDESCRIP + "Protects a given area from citizens");
 		if(country.getParks().size() != 0) {
 			inputs.add("Manage Park");
 		}
@@ -89,7 +90,7 @@ public class CountryGovernmentRegions extends Menu {
 			}
 		}
 		
-		else if (inputs.get(answer).equals("Select Park " + ChatColor.GRAY + "Protects a given area from citizens")) {
+		else if (inputs.get(answer).equals("Select Park " + menuType.OPTIONDESCRIP + "Protects a given area from citizens")) {
 			PM.federalPark(true);
 			return new SelectFederalPark1(plugin, player, 0);
 		}

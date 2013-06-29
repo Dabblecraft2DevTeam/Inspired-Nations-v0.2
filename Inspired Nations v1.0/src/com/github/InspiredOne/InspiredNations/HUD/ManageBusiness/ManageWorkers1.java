@@ -8,7 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageWorkers1 extends Menu {
@@ -40,19 +40,19 @@ public class ManageWorkers1 extends Menu {
 		inputs.add("Offer Job <player>");
 		inputs.add("Remove Owner Offer <player>");
 		inputs.add("Remove Job Offer <player>");
-		inputs.add("Job Requests (" + ChatColor.GRAY + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + ChatColor.GREEN + ")");
+		inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");
 		if (isGoodBusiness) {
-			options = options.concat(ChatColor.YELLOW + "Owners: " + ChatColor.GOLD + tools.format(good.getOwners()) + "\n" );
-			options = options.concat(ChatColor.YELLOW + "Workers: " + ChatColor.GOLD + tools.format(good.getEmployees()) + "\n" );
-			options = options.concat(ChatColor.YELLOW + "Owner Offers: " + ChatColor.GOLD + tools.format(good.getOwnerOffers()) + "\n" );
-			options = options.concat(ChatColor.YELLOW + "Job Offers: " + ChatColor.GOLD + tools.format(good.getEmployOffers()) + "\n" );
+			options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(good.getOwners()) + "\n" );
+			options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(good.getEmployees()) + "\n" );
+			options = options.concat(menuType.LABEL + "Owner Offers: " + menuType.VALUE + tools.format(good.getOwnerOffers()) + "\n" );
+			options = options.concat(menuType.LABEL + "Job Offers: " + menuType.VALUE + tools.format(good.getEmployOffers()) + "\n" );
 			options = tools.addDivider(options);
 		}
 		else {
-			options = options.concat(ChatColor.YELLOW + "Owners: " + ChatColor.GOLD + tools.format(service.getOwners()) + "\n");
-			options = options.concat(ChatColor.YELLOW + "Workers: " + ChatColor.GOLD + tools.format(service.getEmployees()) + "\n" );
-			options = options.concat(ChatColor.YELLOW + "Owner Offers: " + ChatColor.GOLD + tools.format(service.getOwnerOffers()) + "\n" );
-			options = options.concat(ChatColor.YELLOW + "Job Offers: " + ChatColor.GOLD + tools.format(service.getEmployOffers()) + "\n" );
+			options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(service.getOwners()) + "\n");
+			options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(service.getEmployees()) + "\n" );
+			options = options.concat(menuType.LABEL + "Owner Offers: " + menuType.VALUE + tools.format(service.getOwnerOffers()) + "\n" );
+			options = options.concat(menuType.LABEL + "Job Offers: " + menuType.VALUE + tools.format(service.getEmployOffers()) + "\n" );
 			options = tools.addDivider(options);
 		}
 		
@@ -277,7 +277,7 @@ public class ManageWorkers1 extends Menu {
 				}
 			}
 		}
-		
+
 		// Fire Owner <player>
 		if (inputs.get(answer).equals("Fire Owner <player>")) {
 			if (args.length !=2) {
@@ -310,7 +310,7 @@ public class ManageWorkers1 extends Menu {
 			}
 		}
 		
-		if(inputs.get(answer).equals("Job Requests (" + ChatColor.GRAY + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + ChatColor.GREEN + ")")) {
+		if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
 			return new ManageWorkers2(plugin, player, 0, businessname);
 		}
 		

@@ -37,6 +37,8 @@ public class CountryProtectionLevel extends Menu{
 		options = tools.addLine(options, "Current Protection Level: " + ChatColor.GOLD + country.getProtectionLevel(), optionType.INSTRUCTION);
 		options = tools.addLine(options, "Current Military Funding: " + ChatColor.GOLD + CM.getTaxAmount() + " " +
 				ChatColor.YELLOW + country.getPluralMoney(), optionType.INSTRUCTION);
+		options = tools.addLine(options, "Cost For Next Level: " + ChatColor.GOLD + CM.getTaxAmount(country.getProtectionLevel() + 1) + ChatColor.YELLOW
+				+ " " + country.getPluralMoney(), optionType.INSTRUCTION);
 		options = tools.addDivider(options);
 		options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Any entity can claim or build on your country's land.\n" );
 		options = options.concat(ChatColor.GOLD + "Level 1: " + ChatColor.YELLOW + "(Claim Protection) Country land is protected from being claimed.\n");

@@ -175,6 +175,9 @@ public class ManageBusiness2 extends Menu {
 			}
 			else {
 				String BusinessName = tools.formatSpace(tools.subArray(args, 1, args.length - 1));
+				if(BusinessName.contains("/")) {
+					return new ManageBusiness2(plugin, player, 50, businessname);
+				}
 				boolean works = true;
 				if (isGoodBusiness) {
 					for(GoodBusiness testG: PDI.getTownResides().getGoodBusinesses()) {

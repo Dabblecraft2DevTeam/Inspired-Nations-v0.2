@@ -11,7 +11,7 @@ import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ChangeTownTaxRates extends Menu {
-	
+	//TODO Change chat colors to menuType
 	// Constructor
 	public ChangeTownTaxRates(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);

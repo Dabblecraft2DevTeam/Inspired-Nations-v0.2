@@ -91,7 +91,7 @@ public class HudConversationMain extends Menu{
 			return new ManageMoney(plugin, player, 0);
 		}
 		else if(inputs.get(answer).equals("Manage Citizenship")) {
-			
+			return new ManageCitizenship(plugin, player, 0);
 		}
 		else if(inputs.get(answer).equals("Notifications")) {
 			
@@ -124,6 +124,9 @@ public class HudConversationMain extends Menu{
 		else if(inputs.get(answer).equals("Map")) {
 			PM.setMap(true);
 			return new ShowMap(plugin, player, 0);
+		}
+		else if(inputs.get(answer).equals("Jobs")) {
+			return new Jobs(plugin, player, 0);
 		}
 		
 		return new HudConversationMain(plugin, player, 2);

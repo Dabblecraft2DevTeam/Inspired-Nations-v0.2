@@ -40,7 +40,7 @@ public class Country {
 	private BigDecimal money;
 	private BigDecimal loan;
 	private BigDecimal maxLoan;
-	private int protectionLevel = 1;
+	private int protectionLevel = 0;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	private int militaryLevel = 0;
