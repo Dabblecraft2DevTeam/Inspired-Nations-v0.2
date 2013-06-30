@@ -9,11 +9,10 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
-import com.github.InspiredOne.InspiredNations.Regions.Park;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class TownProtectionLevel extends Menu {
-	//TODO Change chat colors to menuType
+	
 	// Constructor
 	public TownProtectionLevel(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);

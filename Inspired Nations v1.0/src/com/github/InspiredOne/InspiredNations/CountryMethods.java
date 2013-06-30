@@ -34,7 +34,7 @@ public class CountryMethods {
 	
 	public BigDecimal getTaxAmount(int level) {
 		BigDecimal temp = new BigDecimal(0);
-		temp = new BigDecimal(country.size()*(plugin.getConfig().getDouble("base_cost_per_chunk"))).multiply(country.getMoneyMultiplyer());
+		temp = new BigDecimal(country.size()*level*(plugin.getConfig().getDouble("base_cost_per_chunk"))).multiply(country.getMoneyMultiplyer());
 		for (Park park : country.getParks()) {
 			temp = temp.add(getFederalParkTax(park, park.getProtectionLevel(), level));
 		}

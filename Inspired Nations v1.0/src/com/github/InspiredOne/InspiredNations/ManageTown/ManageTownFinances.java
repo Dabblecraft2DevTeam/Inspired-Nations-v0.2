@@ -9,11 +9,11 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageTownFinances extends Menu {
-	//TODO Change chat colors to menuType
 	// Constructor
 	public ManageTownFinances(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -42,38 +42,38 @@ public class ManageTownFinances extends Menu {
 			inputs.add("Pay Town <town's country> / <country> <amount>");
 		}
 		else {
-			inputs.add("*Pay <player> <amount> " + ChatColor.GRAY + "Must pay back loans");
-			inputs.add("*Pay Country <country> <amount> "+ ChatColor.GRAY + "Must pay back loans");
-			inputs.add("*Pay Town <town's country> <country> <amount> " + ChatColor.GRAY + "Must pay back loans");
+			inputs.add("*Pay <player> <amount> " + menuType.OPTIONDESCRIP + "Must pay back loans");
+			inputs.add("*Pay Country <country> <amount> "+ menuType.OPTIONDESCRIP + "Must pay back loans");
+			inputs.add("*Pay Town <town's country> <country> <amount> " + menuType.OPTIONDESCRIP + "Must pay back loans");
 		}
 		if(!PDI.getIsInLocalBank() /*&& PDI.getCountryIn().getName().equals(PDI.getCountryResides().getName()*/) {
-			inputs.add("Take Out Loan <amount> " + ChatColor.GRAY + "Max: " + town.getMaxLoan() + " "+ town.getPluralMoney());
+			inputs.add("Take Out Loan <amount> " + menuType.OPTIONDESCRIP + "Max: " + town.getMaxLoan() + " "+ town.getPluralMoney());
 			if(town.getLoan().compareTo(BigDecimal.ZERO) != 0) {
 				inputs.add("Repay Loan <amount>");
 			}
 			else {
-				inputs.add("*Repay Loan <amount> " + ChatColor.GRAY + "No loans to pay back");
+				inputs.add("*Repay Loan <amount> " + menuType.OPTIONDESCRIP + "No loans to pay back");
 			}
 		}
 		else {
-			inputs.add("*Take Out Loan <amount> " + ChatColor.GRAY + "Must be within a bank. Max: " + town.getMaxLoan() + " "+ town.getPluralMoney());
-			inputs.add("*Repay Loan <amount> " + ChatColor.GRAY + "Must be within a bank");
+			inputs.add("*Take Out Loan <amount> " + menuType.OPTIONDESCRIP + "Must be within a bank. Max: " + town.getMaxLoan() + " "+ town.getPluralMoney());
+			inputs.add("*Repay Loan <amount> " + menuType.OPTIONDESCRIP + "Must be within a bank");
 		}
 
 		inputs.add("Change Tax Rates");
 		
 		// make options text
-		options = options.concat(ChatColor.GOLD + "" + ChatColor.BOLD + "The Town Has:\n" + ChatColor.RESET);
-		options = options.concat(ChatColor.GOLD + "" + town.getMoney() + ChatColor.YELLOW + " " + town.getPluralMoney() + " in total\n");
-		options = options.concat(ChatColor.AQUA + "" + ChatColor.BOLD + "Taxes:\n" + ChatColor.RESET);
-		options = options.concat(ChatColor.RED + "Expenditures: " + ChatColor.GOLD + TM.getTaxAmount() + ChatColor.YELLOW + " " + town.getPluralMoney() + "\n");
-		options = options.concat(ChatColor.RED + "Revenue: " + ChatColor.GOLD + town.getRevenue() + " " + ChatColor.YELLOW + town.getPluralMoney() + "\n");
-		options = options.concat(ChatColor.RED + "Difference: " + ChatColor.GOLD + town.getRevenue().subtract(TM.getTaxAmount()).toString() + ChatColor.YELLOW + " "
+		options = options.concat(menuType.SUBHEADER + "The Town Has:\n" + ChatColor.RESET);
+		options = options.concat(menuType.VALUE+ "" + town.getMoney() + menuType.UNIT + " " + town.getPluralMoney() + " in total\n");
+		options = options.concat(menuType.SUBHEADER + "Taxes:\n" + ChatColor.RESET);
+		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + tools.cut(TM.getTaxAmount()) + menuType.UNIT + " " + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + tools.cut(town.getRevenue()) + " " + menuType.UNIT + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + tools.cut(town.getRevenue().subtract(TM.getTaxAmount())).toString() + menuType.UNIT + " "
 		+ town.getPluralMoney() + "\n");
 		if(town.getLoan().compareTo(BigDecimal.ZERO) != 0) {
-			options = options.concat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Loans Due:\n" + ChatColor.RESET);
-			options = options.concat(ChatColor.GOLD + town.getLoan().toString() + " / " + town.getMaxLoan() 
-					+ " " + ChatColor.YELLOW + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.SUBHEADER + "Loans Due:\n" + ChatColor.RESET);
+			options = options.concat(menuType.VALUE + town.getLoan().toString() + " / " + town.getMaxLoan() 
+					+ " " + menuType.UNIT + town.getPluralMoney() + "\n");
 		}
 
 		options = tools.addDivider(options);
@@ -110,7 +110,7 @@ public class ManageTownFinances extends Menu {
 		}
 		
 		// Take Out Loan <amount>
-				else if(inputs.get(answer).equals("Take Out Loan <amount> " + ChatColor.GRAY + "Max: " + town.getMaxLoan() + " "+ town.getPluralMoney())) {
+				else if(inputs.get(answer).equals("Take Out Loan <amount> " + menuType.OPTIONDESCRIP + "Max: " + town.getMaxLoan() + " "+ town.getPluralMoney())) {
 					if (args.length != 2) {
 						return new ManageTownFinances(plugin, player, 3);
 					}
@@ -221,7 +221,7 @@ public class ManageTownFinances extends Menu {
 						if (inaddress.length!=2) {
 							return new ManageTownFinances(plugin, player, 23);
 						}
-						Vector<String> towns = tools.findTown(inaddress[0], inaddress[1]);
+						Vector<String> towns = tools.findTown(inaddress[0], inaddress[1], true);
 						if (towns.size() == 1) {
 							try {
 								BigDecimal payment = (new BigDecimal(args[args.length - 1])).abs();

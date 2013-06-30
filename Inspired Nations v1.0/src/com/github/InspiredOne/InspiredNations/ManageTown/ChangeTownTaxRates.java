@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class ChangeTownTaxRates extends Menu {
-	//TODO Change chat colors to menuType
+	
 	// Constructor
 	public ChangeTownTaxRates(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -33,21 +34,21 @@ public class ChangeTownTaxRates extends Menu {
 		inputs.add("Set Service Business Tax <tax>");
 		
 		// make options text
-		options = options.concat(ChatColor.GOLD + "" + ChatColor.BOLD + "The Town Has:\n" + ChatColor.RESET);
-		options = options.concat(ChatColor.GOLD + "" + town.getMoney() + ChatColor.YELLOW + " " + town.getPluralMoney() + " in total\n");
-		options = options.concat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Taxes:\n" + ChatColor.RESET);
-		options = options.concat(ChatColor.RED + "House Tax Rate: " + ChatColor.GOLD + town.getHouseTax() + ChatColor.YELLOW + "%\n");
-		options = options.concat(ChatColor.RED + "Good Business Tax Rate: " + ChatColor.GOLD + town.getGoodBusinessTax() + ChatColor.YELLOW + "%\n");
-		options = options.concat(ChatColor.RED + "Service Business Tax Rate: " + ChatColor.GOLD + town.getServiceBusinessTax() + ChatColor.YELLOW + "%\n");
+		options = options.concat(menuType.SUBHEADER +  "The Town Has:\n" + ChatColor.RESET);
+		options = options.concat(menuType.VALUE + "" + town.getMoney() + menuType.UNIT + " " + town.getPluralMoney() + " in total\n");
+		options = options.concat(menuType.SUBHEADER + "Taxes:\n" + ChatColor.RESET);
+		options = options.concat(menuType.LABEL + "House Tax Rate: " + menuType.VALUE+ town.getHouseTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
+		options = options.concat(menuType.LABEL + "Good Business Tax Rate: " + menuType.VALUE + town.getGoodBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
+		options = options.concat(menuType.LABEL + "Service Business Tax Rate: " + menuType.VALUE + town.getServiceBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
 		options = tools.addDivider(options);
-		options = options.concat(ChatColor.RED + "Expenditures: " + ChatColor.GOLD + TM.getTaxAmount() + ChatColor.YELLOW + " " + town.getPluralMoney() + "\n");
-		options = options.concat(ChatColor.RED + "Revenue: " + ChatColor.GOLD + town.getRevenue() + " " + ChatColor.YELLOW + town.getPluralMoney() + "\n");
-		options = options.concat(ChatColor.RED + "Difference: " + ChatColor.GOLD + town.getRevenue().subtract(TM.getTaxAmount()).toString() + ChatColor.YELLOW + " "
+		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + TM.getTaxAmount() + menuType.UNIT + " " + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + town.getRevenue() + " " + menuType.UNIT + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + town.getRevenue().subtract(TM.getTaxAmount()).toString() + menuType.UNIT + " "
 		+ town.getPluralMoney() + "\n");
 		if(town.getLoan().compareTo(BigDecimal.ZERO) != 0) {
-			options = options.concat(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Loans Due:\n" + ChatColor.RESET);
-			options = options.concat(ChatColor.GOLD + town.getLoan().toString() + " / " + town.getMaxLoan() 
-					+ " " + ChatColor.YELLOW + town.getPluralMoney() + "\n");
+			options = options.concat(menuType.SUBHEADER + "Loans Due:\n" + ChatColor.RESET);
+			options = options.concat(menuType.VALUE+ town.getLoan().toString() + " / " + town.getMaxLoan() 
+					+ " " + menuType.UNIT + town.getPluralMoney() + "\n");
 		}
 		
 		options = tools.addDivider(options);

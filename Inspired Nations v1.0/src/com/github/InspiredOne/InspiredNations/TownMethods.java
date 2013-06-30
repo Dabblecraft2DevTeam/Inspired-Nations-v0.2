@@ -33,7 +33,6 @@ public class TownMethods {
 	}
 	
 	public BigDecimal getTaxAmount() {
-
 		return getTaxAmount(town.getProtectionLevel());
 	}
 	

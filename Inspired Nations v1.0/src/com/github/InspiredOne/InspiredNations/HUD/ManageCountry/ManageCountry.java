@@ -8,6 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry2;
@@ -16,7 +17,6 @@ import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
 public class ManageCountry extends Menu{
-//TODO Change chat colors to menuType
 	// Constructor
 	public ManageCountry(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -37,10 +37,10 @@ public class ManageCountry extends Menu{
 		}
 		else {
 			if(country.getCoRulers().size() < plugin.getConfig().getInt("min_corulers")) {
-				inputs.add("*Claim Land " + ChatColor.GRAY + "Must have " + plugin.getConfig().getInt("min_corulers") + " Co-Rulers");
+				inputs.add("*Claim Land " + menuType.OPTIONDESCRIP + "Must have " + plugin.getConfig().getInt("min_corulers") + " Co-Rulers");
 			}
 			else if(country.getPopulation() < plugin.getConfig().getInt("min_country_population")) {
-				inputs.add("*Claim Land " + ChatColor.GRAY + "Must have " + plugin.getConfig().getInt("min_country_population") + " Population");
+				inputs.add("*Claim Land " + menuType.OPTIONDESCRIP + "Must have " + plugin.getConfig().getInt("min_country_population") + " Population");
 			}
 			else {
 				inputs.add("Claim Land");
@@ -51,19 +51,19 @@ public class ManageCountry extends Menu{
 			}
 			
 			inputs.add("Manage Economy");
-			inputs.add("Protection Level (" + ChatColor.GRAY + country.getProtectionLevel() + ChatColor.GREEN + ")");
-			inputs.add("Military Level (" + ChatColor.GRAY + country.getMilitaryLevel() + ChatColor.GREEN + ")");
+			inputs.add("Protection Level (" + menuType.OPTIONDESCRIP + country.getProtectionLevel() + menuType.OPTION + ")");
+			inputs.add("Military Level (" + menuType.OPTIONDESCRIP + country.getMilitaryLevel() + menuType.OPTION + ")");
 			inputs.add("Manage People");
 			inputs.add("Rename <name>");
 		}
 		
 		// Make options
-		options = options.concat(ChatColor.YELLOW + "" + ChatColor.BOLD + country.getName() +ChatColor.RESET+ "\n" );
-		options = options.concat(ChatColor.YELLOW + "Population: " + ChatColor.GOLD + country.getPopulation() + "\n");
-		options = options.concat(ChatColor.YELLOW + "Size: " + ChatColor.GOLD + country.size() + ChatColor.YELLOW + " Chunks\n");
+		options = options.concat(menuType.HEADER + country.getName() +ChatColor.RESET+ "\n" );
+		options = options.concat(menuType.LABEL + "Population: " + menuType.VALUE + country.getPopulation() + "\n");
+		options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + country.size() + menuType.UNIT + " Chunks\n");
 		if(country.getPluralMoney().equals("") || country.getMoneyMultiplyer().equals(Math.PI)) {
 			options = tools.addLine(options, "You need to finish setting up your economy before you can do\nanything with your country", optionType.ALERT);
-		}
+		} 
 		else {
 			if(country.getCoRulers().size() < plugin.getConfig().getInt("min_corulers")) {
 				options = tools.addLine(options, "You must have " + plugin.getConfig().getInt("min_corulers") + " Co-Rulers to claim land." +
@@ -87,7 +87,7 @@ public class ManageCountry extends Menu{
 			arg = arg.substring(1);
 		}
 		if (arg.equalsIgnoreCase("back")) {
-			return new ManageCountry(plugin, player, 0);
+			return new HudConversationMain(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
 		if (args[0].equalsIgnoreCase("say"))  {

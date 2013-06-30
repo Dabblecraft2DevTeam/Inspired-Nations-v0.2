@@ -76,7 +76,7 @@ public class CountryGovernmentRegions extends Menu {
 				return new CountryGovernmentRegions(plugin, player, 3);
 			}
 			else {
-				Vector<String> towns = tools.findTown(country.getName(), tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+				Vector<String> towns = tools.findTown(country.getName(), tools.formatSpace(tools.subArray(args, 1, args.length - 1)), false);
 				if (towns.size() == 1) {
 					country.getCapital().setIsCapital(false);
 					tools.findTown(country, towns.get(0)).get(0).setIsCapital(true);

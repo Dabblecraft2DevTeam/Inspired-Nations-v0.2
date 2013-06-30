@@ -89,6 +89,17 @@ public class Tools {
 		errors.add("\nThat player has not requested a job.");//49
 		errors.add("\nIllegal Character '/'. You cannot create a business name with '/'.)");//50
 		errors.add("\nIllegal Character '/'. You cannot create a town name with '/'.)");//51
+		errors.add("\nThat town does not exist in this country.");//52
+		errors.add("\nThat business does not exist in that town.");//53
+		errors.add("\nYou have already requested ownership of that business.");//54
+		errors.add("\nYou have already requestion a job at that business.");//55
+		errors.add("\nYou are already an owner of that business.");//56
+		errors.add("\nYou already have a job there.");//57
+		errors.add("\nYou need to put a '/' in between the job's town and the job");//58
+		errors.add("\nYou are not an owner in that town.");//59
+		errors.add("\nYou are not an owner of that business.");//60
+		errors.add("\nYou are not employed in that town.");//61
+		errors.add("\nYou are not an employee of that business.");//62
 	}
 	
 	public enum menuType {
@@ -404,7 +415,7 @@ public class Tools {
 	}
 	
 	// A method to find any town given two incomplete strings
-	public Vector<String> findTown(String country, String town) {
+	public Vector<String> findTown(String country, String town, boolean fulladdress) {
 		Vector<String> countries = findCountry(country);
 		Vector<String> towns = new Vector<String>();
 		Vector<String> results = new Vector<String>();
@@ -417,9 +428,11 @@ public class Tools {
 				towns.add(townconvert.getName());
 			}
 			temp.addAll(find(town,towns));
-			for(String entry:temp) {
-				temp.set(n, entry + "/" + countryname);
-				n +=1;
+			if (fulladdress) {
+				for(String entry:temp) {
+					temp.set(n, entry + "/" + countryname);
+					n +=1;
+				}
 			}
 			results.addAll(temp);
 			temp.clear();
@@ -442,9 +455,40 @@ public class Tools {
 				if(townconvert.getName().equals(townname)) {
 					results.add(townconvert);
 				}
+				else if(townconvert.getName().equalsIgnoreCase(town)) {
+					results.clear();
+					results.add(townconvert);
+					return results;
+				}
 			}
 		}
 		return results;
+	}
+	
+	public Vector<InspiredRegion> findBusiness(Town town, String businessname) {
+		Vector<InspiredRegion> businesses = new Vector<InspiredRegion>();
+		
+		for(InspiredRegion business:town.getGoodBusinesses()) {
+			if(business.getName().toLowerCase().contains(businessname.toLowerCase())) {
+				businesses.add(business);
+			}
+			if(business.getName().equalsIgnoreCase(businessname)) {
+				businesses.clear();
+				businesses.add(business);
+				return businesses;
+			}
+		}
+		for(InspiredRegion business:town.getServiceBusinesses()) {
+			if(business.getName().toLowerCase().contains(businessname.toLowerCase())) {
+				businesses.add(business);
+			}
+			if(business.getName().equalsIgnoreCase(businessname)) {
+				businesses.clear();
+				businesses.add(business);
+				return businesses;
+			}
+		}
+		return businesses;
 	}
 	
 	// A method to find any money name given an incomplete string;
@@ -656,11 +700,14 @@ public class Tools {
 		PlayerData PDI = plugin.playerdata.get(player.getName());
 		PlayerModes PM = plugin.playermodes.get(player.getName());
 		ConversationContext context = PDI.getConversation().getContext();
-		Town town = PDI.getTownMayored();
+		Town town = PDI.getTownResides();
+		
+		plugin.logger.info("1");
 		
 		// Finish
 			player.sendRawMessage(menuType.INSTRUCTION + "Please wait while the server determines if this is a valid selection.");
 			if (PM.isSelectingPolygon()) {
+				plugin.logger.info("2");
 				Rectangle rect = PM.getPolygon().getPolygon().getBounds();
 				if (!this.isSimple(PM.getPolygon().getPolygon())) {
 					context.setSessionData("error", 27);
@@ -671,13 +718,13 @@ public class Tools {
 					return false;
 				}
 				for (int i = (int) rect.getMinX() - 1; i <= (int) rect.getMaxX() + 1; i++) {
-					
+					plugin.logger.info("3");
 					// Makes the Progress Bar
 					int done = (int) Math.ceil(((i - rect.getMinX() + 1)/(rect.getMaxX() - rect.getMinX() + 2)) * 30);
 					player.sendRawMessage(menuType.INSTRUCTION + this.space() + "Determining if selection is valid.\n");
 					player.sendRawMessage(ChatColor.GRAY + " [" + ChatColor.GREEN + repeat("#",done) +
 							ChatColor.GRAY + repeat("#", (int) (30 - done)) + "]");
-					
+					plugin.logger.info("4");
 					// Iterates Through
 					for (int j = (int) rect.getMinY() - 1; j <= (int)rect.getMaxY() + 1; j++) {
 						for (int l = PM.getPolygon().getYMin() - 1; l <= PM.getPolygon().getYMax() + 1; l++) {
@@ -686,6 +733,7 @@ public class Tools {
 								context.setSessionData("error",29);
 								return false;
 							}
+							plugin.logger.info("4a");
 							for (Iterator<House> k = town.getHouses().iterator(); k.hasNext();) {
 								House housetemp = k.next();
 								if (housetemp.isIn(test) && PM.getPolygon().isIn(test)){
@@ -693,6 +741,7 @@ public class Tools {
 									return false;
 								}
 							}
+							plugin.logger.info("4b");
 							for (Iterator<GoodBusiness> k = town.getGoodBusinesses().iterator(); k.hasNext();) {
 								GoodBusiness businesstemp = k.next();
 								if (businesstemp.isIn(test) && PM.getPolygon().isIn(test)){
@@ -700,6 +749,7 @@ public class Tools {
 									return false;
 								}
 							}
+							plugin.logger.info("4c");
 							for (Iterator<ServiceBusiness> k = town.getServiceBusinesses().iterator(); k.hasNext();) {
 								ServiceBusiness businesstemp = k.next();
 								if (businesstemp.isIn(test) && PM.getPolygon().isIn(test)){
@@ -707,6 +757,7 @@ public class Tools {
 									return false;
 								}
 							}
+							plugin.logger.info("4d");
 							for (Iterator<Park> k = town.getParks().iterator(); k.hasNext();) {
 								Park parktemp = k.next();
 								if (parktemp.isIn(test) && PM.getPolygon().isIn(test)){
@@ -714,12 +765,14 @@ public class Tools {
 									return false;
 								}
 							}
+							plugin.logger.info("4e");
 							if (town.hasBank()) {
 								if (town.getBank().isIn(test) && PM.getPolygon().isIn(test) && !PM.localBankSelect()) {
 									context.setSessionData("error",34);
 									return false;
 								}
 							}
+							plugin.logger.info("4f");
 							if (town.hasPrison()) {
 								if(town.getPrison().isIn(test) && PM.getPolygon().isIn(test) && !PM.localPrisonSelect()) {
 									context.setSessionData("error", 35);
@@ -731,6 +784,7 @@ public class Tools {
 				}
 				
 				// put the region in the town
+				plugin.logger.info("5");
 				switch(type) {
 					case PRISON:
 						town.setPrison(new LocalPrison(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
@@ -748,8 +802,14 @@ public class Tools {
 						}
 						while(BusinessName.isEmpty()) {
 							works2 = true;
-							for(Town towntest:country.getTowns()) {
-								if(towntest.getGoodBusinesses().contains("Good Business " + test2)) {
+							for(GoodBusiness businesstest: town.getGoodBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Good Business " + test2)) {
+									works2 = false;
+									break;
+								}
+							}
+							for(ServiceBusiness businesstest: town.getServiceBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Good Business " + test2)) {
 									works2 = false;
 									break;
 								}
@@ -768,17 +828,27 @@ public class Tools {
 						break;
 						
 					case SERVICEBUSINESS:
+						plugin.logger.info("6");
 						String BusinessName1 = "";
 						int test21 = 0;
 						boolean works21 = true;
 						Country country1 = PDI.getCountryResides();
+						plugin.logger.info("7");
 						for (Town towntest: country1.getTowns()) {
 							test21+=towntest.getServiceBusinesses().size();
 						}
+						plugin.logger.info(BusinessName1.isEmpty() + "");
 						while(BusinessName1.isEmpty()) {
+							plugin.logger.info("here");
 							works21 = true;
-							for(Town towntest:country1.getTowns()) {
-								if(towntest.getServiceBusinesses().contains("Service Business " + test21)) {
+							for(GoodBusiness businesstest: town.getGoodBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Service Business " + test21)) {
+									works21 = false;
+									break;
+								}
+							}
+							for(ServiceBusiness businesstest: town.getServiceBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Service Business " + test21)) {
 									works21 = false;
 									break;
 								}
@@ -787,30 +857,33 @@ public class Tools {
 								test21 +=1;
 							}
 							else {
+								plugin.logger.info("here2");
 								BusinessName1 = "Service Business " + test21;
+								plugin.logger.info(BusinessName1);
 							}
 						}
-						
+						plugin.logger.info("8");
+						plugin.logger.info(BusinessName1 + "2");
 						ServiceBusiness businesstemp1 = new ServiceBusiness(plugin, PM.getPolygon(), player, country1.getName(), country1.getTowns().indexOf(town), BusinessName1);
+						plugin.logger.info(businesstemp1.getName());
 						PDI.addServiceBusinessOwned(businesstemp1);
-						PDI.getTownResides().addServiceBusiness(businesstemp1);
+						town.addServiceBusiness(businesstemp1);
 						break;
 						
 					case HOUSE:
 						String HouseName = "";
 						int test1 = 0;
 						boolean works = true;
-						for (Town towntest: PDI.getCountryResides().getTowns()) {
-							test1+=towntest.getHouses().size();
-						}
+
 						while(HouseName.isEmpty()) {
 							works = true;
-							for(Town towntest:PDI.getCountryResides().getTowns()) {
-								if(towntest.getHouses().contains("House " + test1)) {
-									works = false;
+							for(House housetest:town.getHouses()) {
+								if(housetest.getName().equalsIgnoreCase("House " + test1)) {
+									works21 = false;
 									break;
 								}
 							}
+
 							if (!works) {
 								test1 +=1;
 							}
@@ -826,13 +899,22 @@ public class Tools {
 					case PARK:
 						String ParkName = "";
 						int test = town.getParks().size();
+						boolean works3 = true;
 						while(ParkName.isEmpty()) {
-							if(town.getParks().contains("Park " + test)) {
-								test +=1;
+							works3 = true;
+							for(Park parktest: town.getParks()) {
+								if(parktest.getName().equalsIgnoreCase("Park " + test)) {
+									works3 = false;
+									break;
+								}
+							}
+							if(!works3) {
+								test += 1;
 							}
 							else {
 								ParkName = "Park " + test;
 							}
+
 						}
 						town.addPark(new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						break;
@@ -927,8 +1009,14 @@ public class Tools {
 						}
 						while(BusinessName.isEmpty()) {
 							works2 = true;
-							for(Town towntest:country.getTowns()) {
-								if(towntest.getGoodBusinesses().contains("Good Business " + test2)) {
+							for(GoodBusiness businesstest: town.getGoodBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Good Business " + test2)) {
+									works2 = false;
+									break;
+								}
+							}
+							for(ServiceBusiness businesstest: town.getServiceBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Good Business " + test2)) {
 									works2 = false;
 									break;
 								}
@@ -956,8 +1044,14 @@ public class Tools {
 						}
 						while(BusinessName1.isEmpty()) {
 							works21 = true;
-							for(Town towntest:country1.getTowns()) {
-								if(towntest.getServiceBusinesses().contains("Service Business " + test21)) {
+							for(GoodBusiness businesstest: town.getGoodBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Service Business " + test21)) {
+									works21 = false;
+									break;
+								}
+							}
+							for(ServiceBusiness businesstest: town.getServiceBusinesses()) {
+								if(businesstest.getName().equalsIgnoreCase("Service Business " + test21)) {
 									works21 = false;
 									break;
 								}
@@ -983,8 +1077,8 @@ public class Tools {
 						}
 						while(HouseName.isEmpty()) {
 							works = true;
-							for(Town towntest:PDI.getCountryResides().getTowns()) {
-								if(towntest.getHouses().contains("House " + test1)) {
+							for(House housetest : town.getHouses()) {
+								if(housetest.getName().equalsIgnoreCase("House " + test1)) {
 									works = false;
 									break;
 								}
@@ -1003,10 +1097,18 @@ public class Tools {
 						break;
 					case PARK:
 						String ParkName = "";
+
 						int test = town.getParks().size();
 						while(ParkName.isEmpty()) {
-							if(town.getParks().contains("Park " + test)) {
-								test +=1;
+							boolean works3 = true;
+							for(Park park: town.getParks()) {
+								if(park.getName().equalsIgnoreCase("Park " + test)) {
+									works3 = false;
+									break;
+								}
+							}
+							if(!works3) {
+								test += 1;
 							}
 							else {
 								ParkName = "Park " + test;
@@ -1372,7 +1474,6 @@ public class Tools {
 		}
 		return output;
 	}
-	
 	
 	// A method to cut off decimals greater than the hundredth place;
 	public double cut(double x) {

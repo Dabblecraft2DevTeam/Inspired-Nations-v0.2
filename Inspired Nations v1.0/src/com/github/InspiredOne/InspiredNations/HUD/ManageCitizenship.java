@@ -1,5 +1,7 @@
 package com.github.InspiredOne.InspiredNations.HUD;
 
+import java.util.Vector;
+
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -13,6 +15,9 @@ public class ManageCitizenship extends Menu {
 	// Constructor
 	public ManageCitizenship(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
+	}
+	public ManageCitizenship(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
+		super(instance, playertemp, errortemp, namestemp);
 	}
 	
 	@Override
@@ -64,7 +69,7 @@ public class ManageCitizenship extends Menu {
 			return new HudConversationMain(plugin, player, 0);
 		}
 		try {
-			answer = Integer.decode(arg)-1;
+			answer = Integer.decode(args[0])-1;
 		}
 		catch (Exception ex) {
 			return new ManageCitizenship(plugin, player,1);
@@ -72,6 +77,51 @@ public class ManageCitizenship extends Menu {
 		
 		if (answer > inputs.size()-1) {
 			return new ManageCitizenship(plugin, player, 2);
+		}
+		
+		// Join Country
+		if(inputs.get(answer).equals("Join Country <country>") || inputs.get(answer).equals("Join Country <country> " + menuType.OPTIONDESCRIP + "You will lose your regions!")) {
+			if(args.length < 2) {
+				return new ManageCitizenship(plugin, player, 3);
+			}
+			else {
+				
+				Vector<String> countryto = tools.findCountry(tools.formatSpace(tools.subArray(args, 1, args.length-1)));
+				if(countryto.size() == 0) {
+					return new ManageCitizenship(plugin, player, 20);
+				}
+				else if(countryto.size() > 1) {
+					return new ManageCitizenship(plugin, player, 4, countryto);
+				}
+				else {
+					// TODO figure out how to deal with rulers leaving the country
+					if (PDI.getIsCountryResident()) {
+						PMeth.leaveCountry();
+					}
+					PMeth.joinCountry(plugin.countrydata.get(countryto.get(0)));
+					return new ManageCitizenship(plugin, player, 0);
+				}
+			}
+		}
+		
+		// Join Town
+		if (inputs.get(answer).equals("Join Town <town>")) {
+			if(args.length < 2) {
+				return new ManageCitizenship(plugin, player, 3);
+			}
+			else {
+				Vector<String> townto = tools.findTown(PDI.getCountryResides().getName(), tools.formatSpace(tools.subArray(args, 1, args.length-1)), false);
+				if(townto.size() == 0) {
+					return new ManageCitizenship(plugin, player, 52);
+				}
+				else if(townto.size() > 1) {
+					return new ManageCitizenship(plugin, player, 4, townto);
+				}
+				else {
+					//TODO figure out how to account for town mayors leaving
+					PMeth.joinTown(tools.findTown(PDI.getCountryResides(), townto.get(0)).get(0));
+				}
+			}
 		}
 		return new ManageCitizenship(plugin, player, 2);
 	}

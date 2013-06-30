@@ -726,11 +726,7 @@ public class PlayerData {
 	
 	// Town Resides, put in Null if not resident of a Town
 	public void setTownResides(Town theTownResides) {
-		try {
-			townResides.removeResident(playername);
-		} catch (Exception e) {
 
-		}
 		townResides = theTownResides;
 	}
 	

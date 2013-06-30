@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class ManageTown extends Menu {
-	//TODO Change chat colors to menuType
 	// Constructor
 	public ManageTown(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -27,10 +27,10 @@ public class ManageTown extends Menu {
 		
 		// make inputs vector
 		if(town.getCoMayors().size() < plugin.getConfig().getInt("min_comayors")) {
-			inputs.add("*Claim Land " + ChatColor.GRAY + "Must have " + plugin.getConfig().getInt("min_corulers") + " Co-Mayors");
+			inputs.add("*Claim Land " + menuType.OPTIONDESCRIP + "Must have " + plugin.getConfig().getInt("min_corulers") + " Co-Mayors");
 		}
 		else if(town.population() < plugin.getConfig().getInt("min_town_population")) {
-			inputs.add("*Claim Land " + ChatColor.GRAY + "Must have " + plugin.getConfig().getInt("min_town_population") + " Population");
+			inputs.add("*Claim Land " + menuType.OPTIONDESCRIP + "Must have " + plugin.getConfig().getInt("min_town_population") + " Population");
 		}
 		else {
 			inputs.add("Claim Land");
@@ -46,9 +46,9 @@ public class ManageTown extends Menu {
 		inputs.add("Rename <name>");
 		
 		// make options text
-		options = options.concat(ChatColor.YELLOW + "" + ChatColor.BOLD + town.getName() + "\n" + ChatColor.RESET);
-		options = options.concat(ChatColor.YELLOW + "Population: " + ChatColor.GOLD + town.population() + "\n");
-		options = options.concat(ChatColor.YELLOW + "Size: " + ChatColor.GOLD + town.getChunks().Chunks.size() + ChatColor.YELLOW + " Chunks\n");
+		options = options.concat(menuType.HEADER + town.getName() + "\n" + ChatColor.RESET);
+		options = options.concat(menuType.LABEL + "Population: " + menuType.VALUE + town.population() + "\n");
+		options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + town.getChunks().Chunks.size() + menuType.UNIT + " Chunks\n");
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
 		

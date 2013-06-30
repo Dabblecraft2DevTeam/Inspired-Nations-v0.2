@@ -17,13 +17,16 @@ public class ManageBusiness2 extends Menu {
 	
 	// Constructor
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business) {
+
 		super(instance, playertemp, errortemp, business);
+		plugin.logger.info("2");
 		town = PDI.getTownResides();
 	}
 	
 	// Constructor
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business, Vector<String> namestemp) {
 		super(instance, playertemp, errortemp, business, namestemp);
+		plugin.logger.info("1");
 		town = PDI.getTownResides();
 	}
 	
@@ -37,11 +40,19 @@ public class ManageBusiness2 extends Menu {
 		String errmsg = ChatColor.RED + tools.errors.get(error) + names;
 		
 		// make inputs vector
-		
+		plugin.logger.info("2");
 		inputs.add("Add Builder <player> " + ChatColor.GRAY + "Adds person that can interact");
-		if (good.getBuilders().size() !=0) {
-			inputs.add("Remove Builder <player>");
+		if(isGoodBusiness) {
+			if (good.getBuilders().size() !=0) {
+				inputs.add("Remove Builder <player>");
+			}
 		}
+		else {
+			if (service.getBuilders().size() !=0) {
+				inputs.add("Remove Builder <player>");
+			}
+		}
+		plugin.logger.info("3");
 		inputs.add("Manage Budget");
 		inputs.add("Manage Workers");
 		inputs.add("Protection Levels");
@@ -49,10 +60,19 @@ public class ManageBusiness2 extends Menu {
 		inputs.add("Rename <name>");
 		
 		// Make options text
-		options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + good.getName() + ChatColor.RESET + "\n");
-		if (good.getBuilders().size() != 0) {
-			options = options.concat(ChatColor.YELLOW + "Builders:\n");
-			options = options.concat(ChatColor.GOLD + tools.format(good.getBuilders()) + "\n");
+		if(isGoodBusiness) {
+			options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + good.getName() + ChatColor.RESET + "\n");
+			if (good.getBuilders().size() != 0) {
+				options = options.concat(ChatColor.YELLOW + "Builders:\n");
+				options = options.concat(ChatColor.GOLD + tools.format(good.getBuilders()) + "\n");
+			}
+		}
+		else {
+			options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + service.getName() + ChatColor.RESET + "\n");
+			if (service.getBuilders().size() != 0) {
+				options = options.concat(ChatColor.YELLOW + "Builders:\n");
+				options = options.concat(ChatColor.GOLD + tools.format(service.getBuilders()) + "\n");
+			}
 		}
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));

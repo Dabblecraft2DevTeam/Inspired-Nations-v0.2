@@ -9,9 +9,9 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class TownGovernmentRegions extends Menu {
-	//TODO Change chat colors to menuType
 	// Constructor
 	public TownGovernmentRegions(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
@@ -27,15 +27,15 @@ public class TownGovernmentRegions extends Menu {
 		String errmsg = ChatColor.RED + tools.errors.get(error);
 
 		// Make inputs vector
-		inputs.add("Select Prison " + ChatColor.GRAY + "Allows imprisonment of town citizens");
+		inputs.add("Select Prison " + menuType.OPTIONDESCRIP + "Allows imprisonment of town citizens");
 		if(town.hasPrison()){
 			inputs.add("Manage Prison");
 		}
-		inputs.add("Select Bank " + ChatColor.GRAY + "Allows loans and savings account");
+		inputs.add("Select Bank " + menuType.OPTIONDESCRIP + "Allows loans and savings account");
 		if(town.hasBank()) {
 			inputs.add("Manage Bank");
 		}
-		inputs.add("Select Park " + ChatColor.GRAY + "Protects a given area from citizens");
+		inputs.add("Select Park " + menuType.OPTIONDESCRIP + "Protects a given area from citizens");
 		if(!town.getParks().isEmpty()) {
 			inputs.add("Manage Park");
 		}
@@ -77,21 +77,21 @@ public class TownGovernmentRegions extends Menu {
 		PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 		PM.setCuboid(new Cuboid(player.getWorld().getName()));
 		
-		if (inputs.get(answer).equals("Select Prison " + ChatColor.GRAY + "Allows imprisonment of town citizens")) {
+		if (inputs.get(answer).equals("Select Prison " + menuType.OPTIONDESCRIP + "Allows imprisonment of town citizens")) {
 			PM.localPrison(true);
 			return new SelectPrison1(plugin, player, 0);
 		}
 		else if (inputs.get(answer).equals("Manage Prison")) {
 			return new ManagePrison(plugin, player, 0);
 		}
-		else if(inputs.get(answer).equals("Select Bank " + ChatColor.GRAY + "Allows loans and savings account")) {
+		else if(inputs.get(answer).equals("Select Bank " + menuType.OPTIONDESCRIP + "Allows loans and savings account")) {
 			PM.localBank(true);
 			return new SelectBank1(plugin, player, 0);
 		}
 		else if (inputs.get(answer).equals("Manage Bank")) {
 			return new ManageBank(plugin, player, 0);
 		}
-		else if (inputs.get(answer).equals("Select Park " + ChatColor.GRAY + "Protects a given area from citizens")) {
+		else if (inputs.get(answer).equals("Select Park " + menuType.OPTIONDESCRIP + "Protects a given area from citizens")) {
 			PM.park(true);
 			return new SelectPark1(plugin, player, 0);
 		}

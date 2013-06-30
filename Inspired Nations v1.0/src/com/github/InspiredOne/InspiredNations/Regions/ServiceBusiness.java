@@ -23,7 +23,6 @@ public class ServiceBusiness extends InspiredRegion{
 	private InspiredNations plugin;
 	private Tools tools;
 	private Vector<String> owners = new Vector<String>();
-	private String name = "";
 	private Vector<String> employmentrequest = new Vector<String>();
 	private Vector<String> employmentoffers = new Vector<String>();
 	private Vector<String> ownerrequest = new Vector<String>();
@@ -187,7 +186,4 @@ public class ServiceBusiness extends InspiredRegion{
 		return owners;
 	}
 	
-	public String getName() {
-		return name;
-	}
 }

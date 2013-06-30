@@ -332,15 +332,19 @@ public class PlayerMethods {
 	
 	// Citizenship methods
 	public boolean leaveCountry() {
-		if (PDI.getIsCountryRuler() || PDI.getIsTownMayor() || !PDI.getIsCountryResident()) return false;
-		Country countryFrom = PDI.getCountryResides();
+	//	if (PDI.getIsCountryRuler() || PDI.getIsTownMayor() || !PDI.getIsCountryResident()) return false;
+
+
+		if(PDI.getIsCountryResident()) {
+			Country countryFrom = PDI.getCountryResides();
+			countryFrom.removeResident(playername);
+			if (countryFrom.getCoRulers().contains(playername)) {
+				countryFrom.removeCoRuler(playername);
+			}
+		}
 		PDI.setCountryResides(null);
 		if (PDI.getIsTownResident()) {
 			leaveTown();
-		}
-		countryFrom.removeResident(playername);
-		if (countryFrom.getCoRulers().contains(playername)) {
-			countryFrom.removeCoRuler(playername);
 		}
 		PDI.setPluralMoney(plugin.getConfig().getString("plural_money_default"));
 		PDI.setSingularMoney(plugin.getConfig().getString("singular_money_default"));
@@ -348,6 +352,7 @@ public class PlayerMethods {
 		return true;
 	}
 	
+	//TODO fix up leaveTown so that it takes into account businesses in other towns
 	public boolean leaveTown() {
 		if (PDI.getIsTownMayor() || !PDI.getIsTownResident()) return false;
 		Town townFrom = PDI.getTownResides();

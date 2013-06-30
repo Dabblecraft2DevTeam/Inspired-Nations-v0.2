@@ -171,7 +171,7 @@ public class ManageMoney extends Menu {
 		
 		// Pay Town <country> <town> <amount>
 		if(inputs.get(answer).equals("Pay Town <town's country> / <town> <amount>")) {
-			if(args.length != 4) {
+			if(args.length < 4) {
 				return new ManageMoney(plugin, player, 3);
 			}
 			else {
@@ -180,7 +180,7 @@ public class ManageMoney extends Menu {
 				if (inaddress.length!=2) {
 					return new ManageEconomy(plugin, player, 23);
 				}
-				Vector<String> towns = tools.findTown(inaddress[0], inaddress[1]);
+				Vector<String> towns = tools.findTown(inaddress[0].trim(), inaddress[1].trim(), true);
 				if (towns.size() == 1) {
 					try {
 						BigDecimal payment = (new BigDecimal(args[args.length - 1])).abs();
@@ -188,8 +188,8 @@ public class ManageMoney extends Menu {
 							return new ManageMoney(plugin, player, 13);
 						}
 						else {
-							String[] address = towns.get(0).split(" ");
-							PDI.transferMoneyToTown(payment, address[0], address[1]);
+							String[] address = towns.get(0).split("/");
+							PDI.transferMoneyToTown(payment, address[0].trim(), address[1].trim());
 							return new ManageMoney(plugin, player, 0);
 						}
 					}
