@@ -8,6 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.InspiredRegion;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
@@ -149,40 +150,25 @@ public class Jobs extends Menu {
 					return new Jobs(plugin, player, 4, business);
 				}
 				else {
-					plugin.logger.info("6");
-					Vector<InspiredRegion> businesslist = tools.findBusiness(townobj, business.get(0));
-					if(businesslist.get(0) instanceof GoodBusiness) {
-						plugin.logger.info("7");
-						if(((GoodBusiness) businesslist.get(0)).getOwnerRequest().contains(player.getName())) {
-							return new Jobs(plugin, player, 54);
-						}
-						else if(((GoodBusiness) businesslist.get(0)).getOwnerOffers().contains(player.getName())) {
-							PDI.addGoodBusinessOwned((GoodBusiness) businesslist.get(0));
-							return new Jobs(plugin, player, 0);
-						}
-						else if(((GoodBusiness) businesslist.get(0)).getOwners().contains(player.getName())) {
-							return new Jobs(plugin, player, 56);
-						}
-						else {
-							((GoodBusiness) businesslist.get(0)).addOwnerRequest(player.getName());
-							return new Jobs(plugin, player, 0);
-						}
+					Vector<Business> businesslist = tools.findBusiness(townobj, business.get(0));
+					if(( businesslist.get(0)).getOwnerRequest().contains(player.getName())) {
+						return new Jobs(plugin, player, 54);
 					}
-					if(businesslist.get(0) instanceof ServiceBusiness) {
-						if(((ServiceBusiness) businesslist.get(0)).getOwnerRequest().contains(player.getName())) {
-							return new Jobs(plugin, player, 54);
-						}
-						else if(((ServiceBusiness) businesslist.get(0)).getOwnerOffers().contains(player.getName())) {
-							PDI.addServiceBusinessOwned((ServiceBusiness) businesslist.get(0));
-							return new Jobs(plugin, player, 0);
-						}
-						else if(((ServiceBusiness) businesslist.get(0)).getOwners().contains(player.getName())) {
-							return new Jobs(plugin, player, 56);
+					else if(( businesslist.get(0)).getOwnerOffers().contains(player.getName())) {
+						if(businesslist.get(0) instanceof GoodBusiness) {
+							PDI.addGoodBusinessOwned((GoodBusiness) businesslist.get(0));
 						}
 						else {
-							((ServiceBusiness) businesslist.get(0)).addOwnerRequest(player.getName());
-							return new Jobs(plugin, player, 0);
+							PDI.addServiceBusinessOwned((ServiceBusiness) businesslist.get(0));
 						}
+						return new Jobs(plugin, player, 0);
+					}
+					else if((businesslist.get(0)).getOwners().contains(player.getName())) {
+						return new Jobs(plugin, player, 56);
+					}
+					else {
+						(businesslist.get(0)).addOwnerRequest(player.getName());
+						return new Jobs(plugin, player, 0);
 					}
 				}
 			}
@@ -220,38 +206,25 @@ public class Jobs extends Menu {
 					return new Jobs(plugin, player, 4, business);
 				}
 				else {
-					Vector<InspiredRegion> businesslist = tools.findBusiness(townobj, business.get(0));
-					if(businesslist.get(0) instanceof GoodBusiness) {
-						if(((GoodBusiness) businesslist.get(0)).getEmployRequest().contains(player.getName())) {
-							return new Jobs(plugin, player, 55);
-						}
-						else if(((GoodBusiness) businesslist.get(0)).getEmployOffers().contains(player.getName())) {
-							((GoodBusiness) businesslist.get(0)).addEmployee(player.getName());
-							return new Jobs(plugin, player, 0);
-						}
-						else if(((GoodBusiness) businesslist.get(0)).getEmployees().contains(player.getName())) {
-							return new Jobs(plugin, player, 57);
-						}
-						else {
-							((GoodBusiness) businesslist.get(0)).addEmployRequest(player.getName());
-							return new Jobs(plugin, player, 0);
-						}
+					Vector<Business> businesslist = tools.findBusiness(townobj, business.get(0));
+					if(( businesslist.get(0)).getEmployRequest().contains(player.getName())) {
+						return new Jobs(plugin, player, 55);
 					}
-					if(businesslist.get(0) instanceof ServiceBusiness) {
-						if(((ServiceBusiness) businesslist.get(0)).getEmployRequest().contains(player.getName())) {
-							return new Jobs(plugin, player, 55);
-						}
-						else if(((ServiceBusiness) businesslist.get(0)).getEmployOffers().contains(player.getName())) {
-							((ServiceBusiness) businesslist.get(0)).addEmployee(player.getName());
-							return new Jobs(plugin, player, 0);
-						}
-						else if(((ServiceBusiness) businesslist.get(0)).getEmployOffers().contains(player.getName())) {
-							return new Jobs(plugin, player, 57);
+					else if(( businesslist.get(0)).getEmployOffers().contains(player.getName())) {
+						if(businesslist.get(0) instanceof GoodBusiness) {
+							((GoodBusiness) businesslist.get(0)).addEmployee(player.getName());
 						}
 						else {
-							((ServiceBusiness) businesslist.get(0)).addEmployRequest(player.getName());
-							return new Jobs(plugin, player, 0);
+							((ServiceBusiness) businesslist.get(0)).addEmployee(player.getName());
 						}
+						return new Jobs(plugin, player, 0);
+					}
+					else if((businesslist.get(0)).getEmployees().contains(player.getName())) {
+						return new Jobs(plugin, player, 57);
+					}
+					else {
+						(businesslist.get(0)).addEmployRequest(player.getName());
+						return new Jobs(plugin, player, 0);
 					}
 				}
 			}	
@@ -275,15 +248,8 @@ public class Jobs extends Menu {
 				}
 				else {
 					Town towntemp = tools.findTown(PDI.getCountryResides(), address[0].trim()).get(0);
-					for(GoodBusiness businesstemp:towntemp.getGoodBusinesses()) {
-						if(businesstemp.getOwners().contains(player.getName())) {
-							businesses.add(businesstemp.getName());
-						}
-					}
-					for(ServiceBusiness business:towntemp.getServiceBusinesses()) {
-						if(business.getOwners().contains(player.getName())) {
-							businesses.add(business.getName());
-						}
+					for(Business i:towntemp.getBusinesses()) {
+						businesses.add(i.getName());
 					}
 					Vector<String> businessposs = tools.find(address[1].trim(), businesses);
 					if(businessposs.size() == 0) {
@@ -293,26 +259,9 @@ public class Jobs extends Menu {
 						return new Jobs(plugin, player, 4, businessposs);
 					}
 					else {
-						InspiredRegion business = null;
-						for(GoodBusiness businesstemp:towntemp.getGoodBusinesses()) {
-							if(businesstemp.getName().equals(businessposs.get(0))) {
-								business = businesstemp;
-								break;
-							}
-						}
-						for(ServiceBusiness businesstemp:towntemp.getServiceBusinesses()) {
-							if(businesstemp.getName().equals(businessposs.get(0))) {
-								business = businesstemp;
-								break;
-							}
-						}
-						if(business instanceof GoodBusiness) {
+						Business business = tools.findBusiness(towntemp, businessposs.get(0)).get(0);
 							//TODO figure out how to handle if it's the last owner to leave the business
-							((GoodBusiness) business).removeOwner(player);
-						}
-						else {
-							((ServiceBusiness) business).removeOwner(player);
-						}
+						business.removeOwner(player);
 						return new Jobs(plugin, player, 0);
 					}
 				}
@@ -338,14 +287,9 @@ public class Jobs extends Menu {
 				}
 				else {
 					Town towntemp = tools.findTown(PDI.getCountryResides(), address[0].trim()).get(0);
-					for(GoodBusiness businesstemp:towntemp.getGoodBusinesses()) {
+					for(Business businesstemp:towntemp.getBusinesses()) {
 						if(businesstemp.getEmployees().contains(player.getName())) {
 							businesses.add(businesstemp.getName());
-						}
-					}
-					for(ServiceBusiness business:towntemp.getServiceBusinesses()) {
-						if(business.getEmployees().contains(player.getName())) {
-							businesses.add(business.getName());
 						}
 					}
 					Vector<String> businessposs = tools.find(address[1].trim(), businesses);
@@ -356,27 +300,9 @@ public class Jobs extends Menu {
 						return new Jobs(plugin, player, 4, businessposs);
 					}
 					else {
-						InspiredRegion business = null;
-						for(GoodBusiness businesstemp:towntemp.getGoodBusinesses()) {
-							if(businesstemp.getName().equals(businessposs.get(0))) {
-								business = businesstemp;
-								break;
-							}
-						}
-						for(ServiceBusiness businesstemp:towntemp.getServiceBusinesses()) {
-							if(businesstemp.getName().equals(businessposs.get(0))) {
-								business = businesstemp;
-								break;
-							}
-						}
-						if(business instanceof GoodBusiness) {
-							((GoodBusiness) business).removeEmployee(player.getName());
-						}
-						else {
-							((ServiceBusiness) business).removeEmployee(player.getName());
-						}
+						Business business = tools.findBusiness(towntemp, businessposs.get(0)).get(0);
+						business.removeEmployee(player.getName());
 						return new Jobs(plugin, player, 0);
-						
 					}
 				}
 			}

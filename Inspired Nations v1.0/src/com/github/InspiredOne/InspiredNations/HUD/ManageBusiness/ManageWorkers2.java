@@ -39,14 +39,9 @@ public class ManageWorkers2 extends Menu {
 		inputs.add("Reject Owner Request <player>");
 		inputs.add("Reject Job Request <player>");
 		
-		if (isGoodBusiness) {
-			options = options.concat(menuType.LABEL + "Owner Requests: " + menuType.VALUE + tools.format(good.getOwnerRequest()) + "\n");
-			options = options.concat(menuType.LABEL + "Employment Requests: " + menuType.VALUE + tools.format(good.getEmployRequest()) + "\n");
-		}
-		else {
-			options = options.concat(menuType.LABEL + "Owner Requests: " + menuType.VALUE + tools.format(service.getOwnerRequest()) + "\n");
-			options = options.concat(menuType.LABEL + "Employment Requests: " + menuType.VALUE + tools.format(service.getEmployRequest()) + "\n");
-		}
+		options = options.concat(menuType.LABEL + "Owner Requests: " + menuType.VALUE + tools.format(busi.getOwnerRequest()) + "\n");
+		options = options.concat(menuType.LABEL + "Employment Requests: " + menuType.VALUE + tools.format(busi.getEmployRequest()) + "\n");
+
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
 		
@@ -89,12 +84,7 @@ public class ManageWorkers2 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getOwnerRequest());
-				}
-				else {
-					names = tools.find(args[1], service.getOwnerRequest());
-				}
+				names = tools.find(args[1], busi.getOwnerRequest());
 				
 				if(names.size() == 0) {
 					return new ManageWorkers2(plugin, player, 48, businessname);
@@ -103,14 +93,8 @@ public class ManageWorkers2 extends Menu {
 					return new ManageWorkers2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeOwnerRequest(names.get(0));
-						good.addOwner(names.get(0));
-					}
-					else {
-						service.removeOwnerRequest(names.get(0));
-						service.addOwner(names.get(0));
-					}
+					busi.removeOwnerRequest(names.get(0));
+					busi.addOwner(names.get(0));
 					return new ManageWorkers2(plugin, player, 0, businessname);
 				}
 			}
@@ -123,12 +107,7 @@ public class ManageWorkers2 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getEmployRequest());
-				}
-				else {
-					names = tools.find(args[1], service.getEmployRequest());
-				}
+				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
 					return new ManageWorkers2(plugin, player, 49, businessname);
@@ -137,14 +116,9 @@ public class ManageWorkers2 extends Menu {
 					return new ManageWorkers2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeEmployRequest(names.get(0));
-						good.addEmployee(names.get(0));
-					}
-					else {
-						service.removeEmployRequest(names.get(0));
-						service.addEmployee(names.get(0));
-					}
+					busi.removeEmployRequest(names.get(0));
+					busi.addEmployee(names.get(0));
+
 					return new ManageWorkers2(plugin, player, 0, businessname);
 				}
 			}
@@ -157,12 +131,7 @@ public class ManageWorkers2 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getEmployRequest());
-				}
-				else {
-					names = tools.find(args[1], service.getEmployRequest());
-				}
+				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
 					return new ManageWorkers2(plugin, player, 48, businessname);
@@ -171,12 +140,8 @@ public class ManageWorkers2 extends Menu {
 					return new ManageWorkers2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeOwnerRequest(names.get(0));
-					}
-					else {
-						service.removeOwnerRequest(names.get(0));
-					}
+					busi.removeOwnerRequest(names.get(0));
+
 					return new ManageWorkers2(plugin, player, 0, businessname);
 				}
 			}
@@ -189,12 +154,7 @@ public class ManageWorkers2 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getEmployRequest());
-				}
-				else {
-					names = tools.find(args[1], service.getEmployRequest());
-				}
+				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
 					return new ManageWorkers2(plugin, player, 49, businessname);
@@ -203,12 +163,7 @@ public class ManageWorkers2 extends Menu {
 					return new ManageWorkers2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeEmployRequest(names.get(0));
-					}
-					else {
-						service.removeEmployRequest(names.get(0));
-					}
+					busi.removeEmployRequest(names.get(0));
 					return new ManageWorkers2(plugin, player, 0, businessname);
 				}
 			}

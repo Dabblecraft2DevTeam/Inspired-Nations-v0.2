@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
-import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
-import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class ManageBusiness2 extends Menu {
@@ -40,41 +39,20 @@ public class ManageBusiness2 extends Menu {
 		
 		// make inputs vector
 		inputs.add("Add Builder <player> " + ChatColor.GRAY + "Adds person that can interact");
-		if(isGoodBusiness) {
-			if (good.getBuilders().size() !=0) {
+			if (busi.getBuilders().size() !=0) {
 				inputs.add("Remove Builder <player>");
 			}
-		}
-		else {
-			if (service.getBuilders().size() !=0) {
-				inputs.add("Remove Builder <player>");
-			}
-		}
 		inputs.add("Manage Budget");
-		if(isGoodBusiness) {
-			inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");
-		}
-		else {
-			inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")");
-		}
+		inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")");
 		inputs.add("Protection Levels");
 		inputs.add("Reclaim Land");
 		inputs.add("Rename <name>");
 		
 		// Make options text
-		if(isGoodBusiness) {
-			options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + good.getName() + ChatColor.RESET + "\n");
-			if (good.getBuilders().size() != 0) {
-				options = options.concat(ChatColor.YELLOW + "Builders:\n");
-				options = options.concat(ChatColor.GOLD + tools.format(good.getBuilders()) + "\n");
-			}
-		}
-		else {
-			options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + service.getName() + ChatColor.RESET + "\n");
-			if (service.getBuilders().size() != 0) {
-				options = options.concat(ChatColor.YELLOW + "Builders:\n");
-				options = options.concat(ChatColor.GOLD + tools.format(service.getBuilders()) + "\n");
-			}
+		options = options.concat(ChatColor.BOLD + "" + ChatColor.GOLD + busi.getName() + ChatColor.RESET + "\n");
+		if (busi.getBuilders().size() != 0) {
+			options = options.concat(ChatColor.YELLOW + "Builders:\n");
+			options = options.concat(ChatColor.GOLD + tools.format(busi.getBuilders()) + "\n");
 		}
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
@@ -131,21 +109,11 @@ public class ManageBusiness2 extends Menu {
 					return new ManageBusiness2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						if (good.getBuilders().contains(names.get(0))) {
-							return new ManageBusiness2(plugin, player, 42, businessname);
-						}
-						else {
-							good.addBuilder(names.get(0));
-						}
+					if (busi.getBuilders().contains(names.get(0))) {
+						return new ManageBusiness2(plugin, player, 42, businessname);
 					}
 					else {
-						if (good.getBuilders().contains(names.get(0))) {
-							return new ManageBusiness2(plugin, player, 42, businessname);
-						}
-						else {
-							service.addBuilder(names.get(0));
-						}
+						busi.addBuilder(names.get(0));
 					}
 					return new ManageBusiness2(plugin, player, 0, businessname);
 				}
@@ -159,12 +127,7 @@ public class ManageBusiness2 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getBuilders());
-				}
-				else {
-					names = tools.find(args[1], service.getBuilders());
-				}
+				names = tools.find(args[1], busi.getBuilders());
 				
 				if(names.size() == 0) {
 					return new ManageBusiness2(plugin, player, 43, businessname);
@@ -173,12 +136,7 @@ public class ManageBusiness2 extends Menu {
 					return new ManageBusiness2(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeBuilder(names.get(0));
-					}
-					else {
-						service.removeBuilder(names.get(0));
-					}
+					busi.removeBuilder(names.get(0));
 					return new ManageBusiness2(plugin, player, 0, businessname);
 				}
 				
@@ -186,15 +144,8 @@ public class ManageBusiness2 extends Menu {
 		}
 		
 		// Manage Workers
-		if (isGoodBusiness) {
-			if(inputs.get(answer).equals("Manage Workers (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
-				return new ManageWorkers1(plugin, player, 0, businessname);
-			}
-		}
-		else {
-			if(inputs.get(answer).equals("Manage Workers (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")")) {
-				return new ManageWorkers1(plugin, player, 0, businessname);
-			}
+		if(inputs.get(answer).equals("Manage Workers (" + menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+			return new ManageWorkers1(plugin, player, 0, businessname);
 		}
 		
 		// Rename <name>
@@ -208,37 +159,13 @@ public class ManageBusiness2 extends Menu {
 					return new ManageBusiness2(plugin, player, 50, businessname);
 				}
 				boolean works = true;
-				if (isGoodBusiness) {
-					for(GoodBusiness testG: PDI.getTownResides().getGoodBusinesses()) {
-						if (testG.getName().equalsIgnoreCase(BusinessName) && !testG.equals(good)) {
-							works = false;
-						}
-					}
-					for(ServiceBusiness testS: PDI.getTownResides().getServiceBusinesses()) {
-						if (testS.getName().equalsIgnoreCase(BusinessName)) {
-							works = false;
-						}
-					}
-				}
-				else {
-					for(GoodBusiness testG: PDI.getTownResides().getGoodBusinesses()) {
-						if (testG.getName().equalsIgnoreCase(BusinessName)) {
-							works = false;
-						}
-					}
-					for(ServiceBusiness testS: PDI.getTownResides().getServiceBusinesses()) {
-						if (testS.getName().equalsIgnoreCase(BusinessName) && !testS.equals(service)) {
-							works = false;
-						}
+				for(Business test:PDI.getTownResides().getBusinesses()) {
+					if(test.getName().equalsIgnoreCase(BusinessName) && !test.equals(busi)) {
+						works = false;
 					}
 				}
 				if (works) {
-					try   {
-						good.setName(BusinessName);
-					}
-					catch (Exception ex) {
-						service.setName(BusinessName);
-					}
+					busi.setName(BusinessName);
 					return new ManageBusiness2(plugin, player, 0,BusinessName);
 				}
 				else {

@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
@@ -465,20 +466,10 @@ public class Tools {
 		return results;
 	}
 	
-	public Vector<InspiredRegion> findBusiness(Town town, String businessname) {
-		Vector<InspiredRegion> businesses = new Vector<InspiredRegion>();
+	public Vector<Business> findBusiness(Town town, String businessname) {
+		Vector<Business> businesses = new Vector<Business>();
 		
-		for(InspiredRegion business:town.getGoodBusinesses()) {
-			if(business.getName().toLowerCase().contains(businessname.toLowerCase())) {
-				businesses.add(business);
-			}
-			if(business.getName().equalsIgnoreCase(businessname)) {
-				businesses.clear();
-				businesses.add(business);
-				return businesses;
-			}
-		}
-		for(InspiredRegion business:town.getServiceBusinesses()) {
+		for(Business business:town.getBusinesses()) {
 			if(business.getName().toLowerCase().contains(businessname.toLowerCase())) {
 				businesses.add(business);
 			}

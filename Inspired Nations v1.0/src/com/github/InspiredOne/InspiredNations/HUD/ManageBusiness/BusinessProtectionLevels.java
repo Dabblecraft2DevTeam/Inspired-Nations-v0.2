@@ -25,10 +25,10 @@ public class BusinessProtectionLevels extends Menu {
 		inputs.add("Set <level>");
 		
 		if (isGoodBusiness) {
-			return tools.protLevels(good, player,"Business", error,good.getProtectionLevel(), region.GOODBUSINESS, inputs);
+			return tools.protLevels(busi, player,"Business", error,busi.getProtectionLevel(), region.GOODBUSINESS, inputs);
 		}
 		else {
-			return tools.protLevels(service, player, "Business", error, service.getProtectionLevel(), region.SERVICEBUSINESS, inputs);
+			return tools.protLevels(busi, player, "Business", error, busi.getProtectionLevel(), region.SERVICEBUSINESS, inputs);
 		}
 	}
 	
@@ -67,12 +67,7 @@ public class BusinessProtectionLevels extends Menu {
 				try {
 					int level = Integer.decode(args[1]);
 
-					if (isGoodBusiness) {		
-						good.setProtectionLevel(level);
-					}
-					else {
-						service.setProtectionLevel(level);
-					}
+					busi.setProtectionLevel(level);
 				}
 				catch(Exception ex) {
 					return new BusinessProtectionLevels(plugin ,player, 17, businessname);

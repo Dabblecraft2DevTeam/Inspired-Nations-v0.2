@@ -776,4 +776,15 @@ public class Town {
 		this.getChunks().removeChunk(tile);
 		this.removeCutOutRegions();
 	}
+	
+	public Vector<Business> getBusinesses() {
+		Vector<Business> result = new Vector<Business>();
+		for(Business i:this.getGoodBusinesses()) {
+			result.add(i);
+		}
+		for(Business i:this.getServiceBusinesses()) {
+			result.add(i);
+		}
+		return result;
+	}
 }

@@ -12,6 +12,7 @@ import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
@@ -35,8 +36,7 @@ public abstract class Menu extends StringPrompt {
 	public Town town;
 	public TownMethods TM;
 	public String businessname;
-	public ServiceBusiness service;
-	public GoodBusiness good;
+	public Business busi;
 	public boolean isGoodBusiness = true;
 	
 	
@@ -75,15 +75,9 @@ public abstract class Menu extends StringPrompt {
 		error = errortemp;
 		names = tools.format(namestemp);
 		businessname = business;
-		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
+		for(Business i: PDI.getBusinesses()){
 			if (i.getName().equals(business)) {
-				good = i;
-			}
-		}
-		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
-			if (i.getName().equals(business)) {
-				service = i;
-				isGoodBusiness = false;
+				busi = i;
 			}
 		}
 	}
@@ -98,15 +92,9 @@ public abstract class Menu extends StringPrompt {
 		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		businessname = business;
-		for(GoodBusiness i: PDI.getGoodBusinessOwned()){
+		for(Business i: PDI.getBusinesses()){
 			if (i.getName().equals(business)) {
-				good = i;
-			}
-		}
-		for(ServiceBusiness i: PDI.getServiceBusinessOwned()) {
-			if (i.getName().equals(business)) {
-				service = i;
-				isGoodBusiness = false;
+				busi = i;
 			}
 		}
 	}

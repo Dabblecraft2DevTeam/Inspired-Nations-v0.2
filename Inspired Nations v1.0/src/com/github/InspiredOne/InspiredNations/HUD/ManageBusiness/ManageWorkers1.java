@@ -40,27 +40,13 @@ public class ManageWorkers1 extends Menu {
 		inputs.add("Offer Job <player>");
 		inputs.add("Remove Owner Offer <player>");
 		inputs.add("Remove Job Offer <player>");
-		if(isGoodBusiness) {
-			inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");	
-		}
-		else {
-			inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")");
-		}
+		inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")");	
 		
-		if (isGoodBusiness) {
-			options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(good.getOwners()) + "\n" );
-			options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(good.getEmployees()) + "\n" );
-			options = options.concat(menuType.LABEL + "Owner Offers: " + menuType.VALUE + tools.format(good.getOwnerOffers()) + "\n" );
-			options = options.concat(menuType.LABEL + "Job Offers: " + menuType.VALUE + tools.format(good.getEmployOffers()) + "\n" );
-			options = tools.addDivider(options);
-		}
-		else {
-			options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(service.getOwners()) + "\n");
-			options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(service.getEmployees()) + "\n" );
-			options = options.concat(menuType.LABEL + "Owner Offers: " + menuType.VALUE + tools.format(service.getOwnerOffers()) + "\n" );
-			options = options.concat(menuType.LABEL + "Job Offers: " + menuType.VALUE + tools.format(service.getEmployOffers()) + "\n" );
-			options = tools.addDivider(options);
-		}
+		options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(busi.getOwners()) + "\n" );
+		options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(busi.getEmployees()) + "\n" );
+		options = options.concat(menuType.LABEL + "Owner Offers: " + menuType.VALUE + tools.format(busi.getOwnerOffers()) + "\n" );
+		options = options.concat(menuType.LABEL + "Job Offers: " + menuType.VALUE + tools.format(busi.getEmployOffers()) + "\n" );
+		options = tools.addDivider(options);
 		
 		
 		
@@ -112,30 +98,17 @@ public class ManageWorkers1 extends Menu {
 				}
 				else {
 					
-					if (isGoodBusiness) {
-						if (good.getOwnerOffers().contains(names.get(0))) {
+						if (busi.getOwnerOffers().contains(names.get(0))) {
 							return new ManageWorkers1(plugin, player, 40, businessname);
 						}
-						else if(good.getOwnerRequest().contains(names.get(0))) {
-							good.addOwner(names.get(0));
+						else if(busi.getOwnerRequest().contains(names.get(0))) {
+							busi.addOwner(names.get(0));
 							return new ManageWorkers1(plugin, player, 0, businessname);
 						}
 						else {
-							good.addOwnerOffer(names.get(0));
+							busi.addOwnerOffer(names.get(0));
 						}
-					}
-					else {
-						if (service.getOwnerOffers().contains(names.get(0))) {
-							return new ManageWorkers1(plugin, player, 40, businessname);
-						}
-						else if(service.getOwnerRequest().contains(names.get(0))) {
-							service.addOwner(names.get(0));
-							return new ManageWorkers1(plugin, player, 0, businessname);
-						}
-						else {
-							service.addOwnerOffer(names.get(0));
-						}
-					}
+
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
 				
@@ -149,12 +122,8 @@ public class ManageWorkers1 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getOwnerOffers());
-				}
-				else {
-					names = tools.find(args[1], service.getOwnerOffers());
-				}
+				names = tools.find(args[1], busi.getOwnerOffers());
+
 				
 				if(names.size() == 0) {
 					return new ManageWorkers1(plugin, player, 41, businessname);
@@ -163,12 +132,8 @@ public class ManageWorkers1 extends Menu {
 					return new ManageWorkers1(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeOwnerOffer(names.get(0));
-					}
-					else {
-						service.removeOwnerOffer(names.get(0));
-					}
+					busi.removeOwnerOffer(names.get(0));
+
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
 				
@@ -188,29 +153,15 @@ public class ManageWorkers1 extends Menu {
 					return new ManageWorkers1(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						if (good.getEmployOffers().contains(names.get(0))) {
-							return new ManageWorkers1(plugin, player, 44, businessname);
-						}
-						else if(good.getEmployRequest().contains(names.get(0))) {
-							good.addEmployee(names.get(0));
-							return new ManageWorkers1(plugin, player, 0, businessname);
-						}
-						else {
-							good.addEmployOffer(names.get(0));
-						}
+					if (busi.getEmployOffers().contains(names.get(0))) {
+						return new ManageWorkers1(plugin, player, 44, businessname);
+					}
+					else if(busi.getEmployRequest().contains(names.get(0))) {
+						busi.addEmployee(names.get(0));
+						return new ManageWorkers1(plugin, player, 0, businessname);
 					}
 					else {
-						if (service.getEmployOffers().contains(names.get(0))) {
-							return new ManageWorkers1(plugin, player, 44, businessname);
-						}
-						else if(service.getEmployRequest().contains(names.get(0))) {
-							service.addEmployee(names.get(0));
-							return new ManageWorkers1(plugin, player, 0, businessname);
-						}
-						else {
-							service.addEmployOffer(names.get(0));
-						}
+						busi.addEmployOffer(names.get(0));
 					}
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
@@ -226,12 +177,8 @@ public class ManageWorkers1 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getEmployOffers());
-				}
-				else {
-					names = tools.find(args[1], service.getEmployOffers());
-				}
+				names = tools.find(args[1], busi.getEmployOffers());
+
 				
 				if(names.size() == 0) {
 					return new ManageWorkers1(plugin, player, 45, businessname);
@@ -240,12 +187,8 @@ public class ManageWorkers1 extends Menu {
 					return new ManageWorkers1(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeEmployOffer(names.get(0));
-					}
-					else {
-						service.removeEmployOffer(names.get(0));
-					}
+					busi.removeEmployOffer(names.get(0));
+
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
 				
@@ -259,12 +202,7 @@ public class ManageWorkers1 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getEmployees());
-				}
-				else {
-					names = tools.find(args[1], service.getEmployees());
-				}
+				names = tools.find(args[1], busi.getEmployees());
 				
 				if(names.size() == 0) {
 					return new ManageWorkers1(plugin, player, 47, businessname);
@@ -273,12 +211,8 @@ public class ManageWorkers1 extends Menu {
 					return new ManageWorkers1(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeEmployee(names.get(0));
-					}
-					else {
-						service.removeEmployee(names.get(0));
-					}
+					busi.removeEmployee(names.get(0));
+
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
 			}
@@ -291,12 +225,8 @@ public class ManageWorkers1 extends Menu {
 			}
 			else {
 				Vector<String> names;
-				if (this.isGoodBusiness) {
-					names = tools.find(args[1], good.getOwners());
-				}
-				else {
-					names = tools.find(args[1], service.getOwners());
-				}
+				names = tools.find(args[1], busi.getOwners());
+
 				
 				if(names.size() == 0) {
 					return new ManageWorkers1(plugin, player, 47, businessname);
@@ -305,26 +235,16 @@ public class ManageWorkers1 extends Menu {
 					return new ManageWorkers1(plugin ,player, 4, businessname, names);
 				}
 				else {
-					if (isGoodBusiness) {
-						good.removeOwner(names.get(0));
-					}
-					else {
-						service.removeOwner(names.get(0));
-					}
+					busi.removeOwner(names.get(0));
+
 					return new ManageWorkers1(plugin, player, 0, businessname);
 				}
 			}
 		}
-		if (isGoodBusiness) {
-			if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
-				return new ManageWorkers2(plugin, player, 0, businessname);
-			}
+		if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+			return new ManageWorkers2(plugin, player, 0, businessname);
 		}
-		else {
-			if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")")) {
-				return new ManageWorkers2(plugin, player, 0, businessname);
-			}
-		}
+
 		return new ManageWorkers1(plugin, player, 2, businessname);
 	}
 

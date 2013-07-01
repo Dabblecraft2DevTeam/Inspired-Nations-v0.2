@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import org.bukkit.conversations.Conversation;
 
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.House;
@@ -775,5 +776,16 @@ public class PlayerData {
 	public void setConversation(Conversation conversation) {
 		convo = conversation;
 		
+	}
+	
+	public Vector<Business> getBusinesses() {
+		Vector<Business> result = new Vector<Business>();
+		for(Business i : this.getGoodBusinessOwned()) {
+			result.add(i);
+		}
+		for(Business i : this.getServiceBusinessOwned()) {
+			result.add(i);
+		}
+		return result;
 	}
 }
