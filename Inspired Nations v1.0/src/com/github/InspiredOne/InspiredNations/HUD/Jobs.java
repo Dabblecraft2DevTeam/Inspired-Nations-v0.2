@@ -57,6 +57,8 @@ public class Jobs extends Menu {
 		// Make Inputs Vector
 		inputs.add("Request Owner <job's town> / <job's name>");
 		inputs.add("Request Job <job's town> / <job's name>");
+		inputs.add("Remove Owner Request <job's town> / <job's name>");
+		inputs.add("Remove Job Request <job's town> / <job's name>");
 		inputs.add("Quit Owner <job's town> / <job's name>");
 		inputs.add("Quit Job <job's town> / <job's name>");
 		inputs.add("Job Offers " + "(" + menuType.OPTIONDESCRIP + 

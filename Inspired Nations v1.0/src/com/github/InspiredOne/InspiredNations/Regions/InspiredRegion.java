@@ -9,15 +9,15 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools;
 
 public class InspiredRegion {
-	private Tools tools;
-	private String country;
-	private int town;
-	private InspiredNations plugin;
-	private polygonPrism polyspace = null;
-	private Cuboid cubespace = null;
-	private String name = "";
-	private Vector<String> builders = new Vector<String>();
-	private int protectionLevel = 1;
+	Tools tools;
+	String country;
+	int town;
+	InspiredNations plugin;
+	polygonPrism polyspace = null;
+	Cuboid cubespace = null;
+	String name = "";
+	Vector<String> builders = new Vector<String>();
+	int protectionLevel = 1;
 
 	
 	public InspiredRegion(InspiredNations instance, Cuboid space,String countrytemp, int towntemp, String nametemp) {

@@ -117,7 +117,7 @@ public class ManageWorkers2 extends Menu {
 		}
 		
 		// Accept Job Request <player>
-		if (inputs.get(answer).equals("Reject Owner Request <player>")) {
+		if (inputs.get(answer).equals("Accept Job Request <player>")) {
 			if (args.length !=2) {
 				return new ManageWorkers2(plugin, player, 3, businessname);
 			}
@@ -151,7 +151,7 @@ public class ManageWorkers2 extends Menu {
 		}
 		
 		// Reject Owner Request <player>
-		if (inputs.get(answer).equals("Accept Job Request <player>")) {
+		if (inputs.get(answer).equals("Reject Owner Request <player>")) {
 			if (args.length !=2) {
 				return new ManageWorkers2(plugin, player, 3, businessname);
 			}

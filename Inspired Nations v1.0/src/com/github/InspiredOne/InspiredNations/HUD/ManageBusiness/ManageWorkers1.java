@@ -40,7 +40,13 @@ public class ManageWorkers1 extends Menu {
 		inputs.add("Offer Job <player>");
 		inputs.add("Remove Owner Offer <player>");
 		inputs.add("Remove Job Offer <player>");
-		inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");
+		if(isGoodBusiness) {
+			inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");	
+		}
+		else {
+			inputs.add("Job Requests (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")");
+		}
+		
 		if (isGoodBusiness) {
 			options = options.concat(menuType.LABEL + "Owners: " + menuType.VALUE + tools.format(good.getOwners()) + "\n" );
 			options = options.concat(menuType.LABEL + "Workers: " + menuType.VALUE + tools.format(good.getEmployees()) + "\n" );
@@ -309,11 +315,16 @@ public class ManageWorkers1 extends Menu {
 				}
 			}
 		}
-		
-		if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
-			return new ManageWorkers2(plugin, player, 0, businessname);
+		if (isGoodBusiness) {
+			if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+				return new ManageWorkers2(plugin, player, 0, businessname);
+			}
 		}
-		
+		else {
+			if(inputs.get(answer).equals("Job Requests (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+				return new ManageWorkers2(plugin, player, 0, businessname);
+			}
+		}
 		return new ManageWorkers1(plugin, player, 2, businessname);
 	}
 

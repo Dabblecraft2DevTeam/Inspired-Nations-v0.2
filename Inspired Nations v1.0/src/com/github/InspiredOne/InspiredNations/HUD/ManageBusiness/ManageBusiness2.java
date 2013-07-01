@@ -12,6 +12,7 @@ import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class ManageBusiness2 extends Menu {
 	
@@ -19,14 +20,12 @@ public class ManageBusiness2 extends Menu {
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business) {
 
 		super(instance, playertemp, errortemp, business);
-		plugin.logger.info("2");
 		town = PDI.getTownResides();
 	}
 	
 	// Constructor
 	public ManageBusiness2(InspiredNations instance, Player playertemp, int errortemp, String business, Vector<String> namestemp) {
 		super(instance, playertemp, errortemp, business, namestemp);
-		plugin.logger.info("1");
 		town = PDI.getTownResides();
 	}
 	
@@ -40,7 +39,6 @@ public class ManageBusiness2 extends Menu {
 		String errmsg = ChatColor.RED + tools.errors.get(error) + names;
 		
 		// make inputs vector
-		plugin.logger.info("2");
 		inputs.add("Add Builder <player> " + ChatColor.GRAY + "Adds person that can interact");
 		if(isGoodBusiness) {
 			if (good.getBuilders().size() !=0) {
@@ -52,9 +50,13 @@ public class ManageBusiness2 extends Menu {
 				inputs.add("Remove Builder <player>");
 			}
 		}
-		plugin.logger.info("3");
 		inputs.add("Manage Budget");
-		inputs.add("Manage Workers");
+		if(isGoodBusiness) {
+			inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")");
+		}
+		else {
+			inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")");
+		}
 		inputs.add("Protection Levels");
 		inputs.add("Reclaim Land");
 		inputs.add("Rename <name>");
@@ -184,8 +186,15 @@ public class ManageBusiness2 extends Menu {
 		}
 		
 		// Manage Workers
-		if (inputs.get(answer).equals("Manage Workers")) {
-			return new ManageWorkers1(plugin, player, 0, businessname);
+		if (isGoodBusiness) {
+			if(inputs.get(answer).equals("Manage Workers (" + menuType.OPTIONDESCRIP + (good.getEmployRequest().size() + good.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+				return new ManageWorkers1(plugin, player, 0, businessname);
+			}
+		}
+		else {
+			if(inputs.get(answer).equals("Manage Workers (" + menuType.OPTIONDESCRIP + (service.getEmployRequest().size() + service.getOwnerRequest().size()) + menuType.OPTION + ")")) {
+				return new ManageWorkers1(plugin, player, 0, businessname);
+			}
 		}
 		
 		// Rename <name>
