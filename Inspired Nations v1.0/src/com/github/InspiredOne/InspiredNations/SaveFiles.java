@@ -120,6 +120,7 @@ public class SaveFiles {
 				count++;
 			}
 			dataFileConfig.addDefault(key + ".protectionLevel", country.getProtectionLevel());
+			dataFileConfig.addDefault(key + ".militaryLevel", country.getMilitaryLevel());
 			dataFileConfig.addDefault(key + ".money.plural", country.getPluralMoney());
 			dataFileConfig.addDefault(key + ".money.singular", country.getSingularMoney());
 			dataFileConfig.addDefault(key + ".money.taxrate", country.getTaxRate());
@@ -152,6 +153,7 @@ public class SaveFiles {
 			dataFileConfig.set(key + ".parks.size", country.getParks().size());
 					// serializePark() updates values as well.
 			dataFileConfig.set(key + ".protectionLevel", country.getProtectionLevel());
+			dataFileConfig.set(key + ".militaryLevel", country.getMilitaryLevel());
 			dataFileConfig.set(key + ".money.plural", country.getPluralMoney());
 			dataFileConfig.set(key + ".money.singular", country.getSingularMoney());
 			dataFileConfig.set(key + ".money.taxrate", country.getTaxRate());
@@ -191,6 +193,7 @@ public class SaveFiles {
 			countrytemp.setRequest(deserializeVector(key + ".residentrequest"));
 			countrytemp.setOffer(deserializeVector(key + "residentoffer"));
 			countrytemp.setProtectionLevel(dataFileConfig.getInt(key + ".protectionLevel"));
+			countrytemp.setMilitaryLevel(dataFileConfig.getInt(key + ".militaryLevel"));
 			countrytemp.setPluralMoney(dataFileConfig.getString(key + ".money.plural"));
 			countrytemp.setSingularMoney(dataFileConfig.getString(key + ".money.singular"));
 			countrytemp.setTaxRate(dataFileConfig.getDouble(key + ".money.taxrate"));

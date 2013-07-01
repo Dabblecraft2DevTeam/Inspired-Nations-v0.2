@@ -118,7 +118,8 @@ public class ManageCountry extends Menu{
 			}
 		}
 		
-		else if(inputs.get(answer).equals("Military Level")) {
+		// Military Level
+		else if(inputs.get(answer).equals("Military Level (" + menuType.OPTIONDESCRIP + country.getMilitaryLevel() + menuType.OPTION + ")")) {
 			return new CountryMilitaryLevel(plugin, player, 0);
 		}
 		

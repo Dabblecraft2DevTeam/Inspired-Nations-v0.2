@@ -39,7 +39,7 @@ public class ManageEconomy extends Menu {
 		if(country.getLoanAmount().compareTo(BigDecimal.ZERO) == 0){
 			inputs.add("Pay <player> <amount>");
 			inputs.add("Pay Country <country> <amount>");
-			inputs.add("Pay Town <town's country> <town> <amount>");
+			inputs.add("Pay Town <town's country> / <town> <amount>");
 		}
 		else {
 			inputs.add("*Pay <player> <amount> " + menuType.OPTIONDESCRIP + "Must pay back loans");
@@ -237,7 +237,7 @@ public class ManageEconomy extends Menu {
 				return new ManageEconomy(plugin, player, 3);
 			}
 			else {
-				String temp = tools.formatSpace(tools.subArray(args, 1, args.length-2));
+				String temp = tools.formatSpace(tools.subArray(args, 1, args.length-1));
 				String[] inaddress = temp.split("/");
 				if (inaddress.length!=2) {
 					return new ManageEconomy(plugin, player, 23);
