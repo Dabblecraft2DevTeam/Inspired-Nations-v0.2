@@ -63,7 +63,7 @@ public class Tools {
 		errors.add("\nThe country does not have that much money.");//22
 		errors.add("\nYou need to put a '/' in between the town's country and the town");//23
 		errors.add("\nIllegal Character '/'. You cannot create a country name with '/'.)");//24
-		errors.add("\nInsuficient Funds.");//25
+		errors.add("\nInsufficient Funds.");//25
 		errors.add("\nThat town name is already taken.");//26
 		errors.add("\nThe selection you made was a complex shape. This means that the sides of the shape crossed each other.");//27
 		errors.add("\nThe selection you made was too small with a volume of 0. Please select something larger.");//28
@@ -101,6 +101,10 @@ public class Tools {
 		errors.add("\nYou are not an owner of that business.");//60
 		errors.add("\nYou are not employed in that town.");//61
 		errors.add("\nYou are not an employee of that business.");//62
+		errors.add("\nYou have not requested ownership of that business.");//63
+		errors.add("\nYou have not requested a job from that business.");//64
+		errors.add("\nYou have not been offered ownership of that business.");//65
+		errors.add("\nYou have not been offered a job at that business.");//66
 	}
 	
 	public enum menuType {

@@ -94,7 +94,7 @@ public class ManageCountry extends Menu{
 			if(args.length > 1) {
 				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
-			return new HudConversationMain(plugin, player, 0);
+			return new ManageCountry(plugin, player, 0);
 		}
 		
 		try {
@@ -108,6 +108,7 @@ public class ManageCountry extends Menu{
 			return new ManageCountry(plugin, player, 2);
 		}
 		
+		// Finish Economy Setup
 		if (inputs.get(answer).equals("Finish Economy Setup")) {
 			if(country.getPluralMoney().equals("")) {
 				return new NewCountry2(plugin, player, 0);
@@ -115,6 +116,10 @@ public class ManageCountry extends Menu{
 			else {
 				return new NewCountry3(plugin, player, 0);
 			}
+		}
+		
+		else if(inputs.get(answer).equals("Military Level")) {
+			return new CountryMilitaryLevel(plugin, player, 0);
 		}
 		
 		// Country Government Regions

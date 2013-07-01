@@ -24,26 +24,22 @@ public class Jobs extends Menu {
 	public Jobs(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		country = PDI.getCountryResides();
-		for(GoodBusiness business:PDI.getGoodBusinessOwned()) {
-			towns.add(PDI.getCountryResides().getTowns().get(business.getTown()).getName());
+		for(Business business:PDI.getBusinesses()) {
 			businessesowned.add(business.getName() + " / " + country.getTowns().get(business.getTown()).getName());
 		}
-		for(ServiceBusiness business:PDI.getServiceBusinessOwned()) {
-			towns.add(PDI.getCountryResides().getTowns().get(business.getTown()).getName());
-			businessesowned.add(business.getName() + " / " + country.getTowns().get(business.getTown()).getName());
+		for(Town town:PDI.getCountryResides().getTowns()) {
+			towns.add(town.getName());
 		}
 	}
 	
 	public Jobs(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
 		super(instance, playertemp, errortemp, namestemp);
 		country = PDI.getCountryResides();
-		for(GoodBusiness business:PDI.getGoodBusinessOwned()) {
-			towns.add(PDI.getCountryResides().getTowns().get(business.getTown()).getName());
+		for(Business business:PDI.getBusinesses()) {
 			businessesowned.add(business.getName() + " / " + country.getTowns().get(business.getTown()).getName());
 		}
-		for(ServiceBusiness business:PDI.getServiceBusinessOwned()) {
-			towns.add(PDI.getCountryResides().getTowns().get(business.getTown()).getName());
-			businessesowned.add(business.getName() + " / " + country.getTowns().get(business.getTown()).getName());
+		for(Town town:PDI.getCountryResides().getTowns()) {
+			towns.add(town.getName());
 		}
 	}
 	
@@ -78,7 +74,6 @@ public class Jobs extends Menu {
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
-		// Cleared for use down below
 		
 		int answer = 0;
 		if (arg.startsWith("/")) {
@@ -104,12 +99,101 @@ public class Jobs extends Menu {
 		if (answer > inputs.size()-1) {
 			return new Jobs(plugin, player, 2);
 		}
-		
+		// Job Offers
 		if (inputs.get(answer).equals("Job Offers " + "(" + ChatColor.GRAY + 
 				(PMeth.getJobOffers().size() + PMeth.getOwnerOffers().size()) + ChatColor.GREEN + ")")) {
 			return new JobOffers(plugin, player, 0);
 		}
 		
+		// Remove Owner Request <job's town> / <job's name>
+		if(inputs.get(answer).equals("Remove Owner Request <job's town> / <job's name>")) {
+			if(args.length < 3) {
+				return new Jobs(plugin, player, 3); 
+			}
+			else {
+				String[] address = tools.formatSpace(tools.subArray(args, 1, args.length - 1)).split("/");
+				if(address.length != 2) {
+					return new Jobs(plugin, player, 58);
+				}
+				Vector<String> townposs = tools.find(address[0].trim(), towns);
+				if(townposs.size() == 0) {
+					return new Jobs(plugin, player, 59);
+				}
+				else if(townposs.size() > 1) {
+					return new Jobs(plugin, player, 4, townposs);
+				}
+				else {
+					Town towntemp = tools.findTown(PDI.getCountryResides(), address[0].trim()).get(0);
+					for(Business i:towntemp.getBusinesses()) {
+						businesses.add(i.getName());
+					}
+					Vector<String> businessposs = tools.find(address[1].trim(), businesses);
+					if(businessposs.size() == 0) {
+						return new Jobs(plugin,player, 53);
+					}
+					else if(businessposs.size() > 1) {
+						return new Jobs(plugin, player, 4, businessposs);
+					}
+					else {
+						Business business = tools.findBusiness(towntemp, businessposs.get(0)).get(0);
+							//TODO figure out how to handle if it's the last owner to leave the business
+						if(business.getOwnerRequest().contains(player.getName())) {
+							business.removeOwnerRequest(player.getName());
+							return new Jobs(plugin, player, 0);	
+						}
+						else {
+							return new Jobs(plugin, player, 63);
+						}
+						
+					}
+				}
+			}
+		}
+		// Remove Job Request <job's town> / <job's name>
+		if(inputs.get(answer).equals("Remove Owner Request <job's town> / <job's name>")) {
+			if(args.length < 3) {
+				return new Jobs(plugin, player, 3); 
+			}
+			else {
+				String[] address = tools.formatSpace(tools.subArray(args, 1, args.length - 1)).split("/");
+				if(address.length != 2) {
+					return new Jobs(plugin, player, 58);
+				}
+				Vector<String> townposs = tools.find(address[0].trim(), towns);
+				if(townposs.size() == 0) {
+					return new Jobs(plugin, player, 59);
+				}
+				else if(townposs.size() > 1) {
+					return new Jobs(plugin, player, 4, townposs);
+				}
+				else {
+					Town towntemp = tools.findTown(PDI.getCountryResides(), address[0].trim()).get(0);
+					for(Business i:towntemp.getBusinesses()) {
+						businesses.add(i.getName());
+					}
+					Vector<String> businessposs = tools.find(address[1].trim(), businesses);
+					if(businessposs.size() == 0) {
+						return new Jobs(plugin,player, 53);
+					}
+					else if(businessposs.size() > 1) {
+						return new Jobs(plugin, player, 4, businessposs);
+					}
+					else {
+						Business business = tools.findBusiness(towntemp, businessposs.get(0)).get(0);
+							//TODO figure out how to handle if it's the last owner to leave the business
+						if(business.getEmployRequest().contains(player.getName())) {
+							business.removeEmployRequest(player.getName());
+							return new Jobs(plugin, player, 0);
+						}
+						else {
+							return new Jobs(plugin, player, 64);
+						}
+						
+						
+					}
+				}
+			}
+		}
 		// Request Owner <job's town> / <job's name>
 		if(inputs.get(answer).equals("Request Owner <job's town> / <job's name>")) {
 			if (args.length < 3) {

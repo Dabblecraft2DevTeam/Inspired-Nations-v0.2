@@ -69,4 +69,13 @@ public class CountryMethods {
 		return country.getMoneyMultiplyer().multiply(new BigDecimal(park.Volume() * parklevel * countrylevel *
 				plugin.getConfig().getDouble("federal_park_base_cost")));
 	}
+	
+	public BigDecimal getMilitaryFunding(int level) {
+		BigDecimal base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
+		return tools.cut(base.pow(level).multiply(country.getMoneyMultiplyer()));
+	}
+	
+	public BigDecimal getMilitaryFunding() {
+		return getMilitaryFunding(country.getMilitaryLevel());
+	}
 }

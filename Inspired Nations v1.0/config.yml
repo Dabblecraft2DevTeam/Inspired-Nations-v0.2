@@ -10,6 +10,7 @@ loan_per_town_resident: 100
 selection_tool: 280
 park_tax_multiplyer: 1.5
 federal_park_base_cost: .05
+military_base_cost: 500
 min_diamond_value: 100
 max_diamond_value: 10000
 tax_cycle_length: 10
