@@ -17,6 +17,8 @@ import java.util.Vector;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.github.InspiredOne.InspiredNations.Tools.version;
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
@@ -32,18 +34,21 @@ public class PlayerMethods {
 	Player player;
 	PlayerData PDI;
 	String playername;
+	Tools tools;
 	
 	public PlayerMethods(InspiredNations instance, Player playertemp) {
 		plugin = instance;
 		player = playertemp;
 		PDI = plugin.playerdata.get(player.getName());
 		playername = player.getName();
+		tools = new Tools(plugin);
 	}
 	
 	public PlayerMethods(InspiredNations instance, String playernametemp) {
 		plugin = instance;
 		playername = playernametemp;
 		PDI = plugin.playerdata.get(playername);
+		tools = new Tools(plugin);
 	}
 	
 	public BigDecimal taxAmount() {
@@ -58,7 +63,199 @@ public class PlayerMethods {
 			player_target.sendRawMessage(player.getDisplayName() + ": " + msg);
 		}
 	}
+
+	public BigDecimal houseTax(Object obj, Town town, int level, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		switch(ver){
+		case OLD:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*PDI.getOldHouseTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*PDI.getOldHouseTax()*level/100.0));
+			}
+			break;
+		case NEW:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*town.getHouseTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*town.getHouseTax()*level/100.0));
+			}
+			break;
+		}
+		if(adjusted) {
+			return tools.cut(amount.multiply(PDI.getMoneyMultiplyer()));
+		}
+		else return amount;
+	}
 	
+	public BigDecimal houseTax(House house, int level, boolean adjusted, boolean total, version ver) {
+		Country country = plugin.countrydata.get(house.getCountry());
+		Town town = country.getTowns().get(house.getTown());
+		if (total) {
+			return this.houseTax(house.getRegion(), town, level, adjusted, ver);
+		}
+		else {
+			return this.houseTax(house.getRegion(), town, level, adjusted, ver).divide(new BigDecimal(house.getOwners().size()));
+		}
+	}
+	
+	public BigDecimal houseTax(House house, boolean adjusted, boolean total, version ver) {
+		return this.houseTax(house, house.getProtectionLevel(), adjusted, total, ver);
+	}
+	
+	public BigDecimal houseTax(Town town, boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(House house:town.getHouses()) {
+			amount = amount.add(houseTax(house, adjusted, total, ver));
+		}
+		return amount;
+	}
+	public BigDecimal houseTax(boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(House house:PDI.getHouseOwned()) {
+			amount = amount.add(houseTax(house, adjusted, total, ver));
+		}
+		return amount;
+	}
+
+/////////////////////////////////////////////////////////////////
+	public BigDecimal goodBusinessTax(Object obj, Town town, int level, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		switch(ver){
+		case OLD:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*PDI.getOldGoodBusinessTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*PDI.getOldGoodBusinessTax()*level/100.0));
+			}
+			break;
+		case NEW:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*town.getGoodBusinessTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*town.getGoodBusinessTax()*level/100.0));
+			}
+			break;
+		}
+		if(adjusted) {
+			return tools.cut(amount.multiply(PDI.getMoneyMultiplyer()));
+		}
+		else return amount;
+	}
+	
+	public BigDecimal goodBusinessTax(Business busi, int level, boolean adjusted, boolean total, version ver) {
+		Country country = plugin.countrydata.get(busi.getCountry());
+		Town town = country.getTowns().get(busi.getTown());
+		if(total) {
+			return this.goodBusinessTax(busi.getRegion(), town, level, adjusted, ver);
+		}
+		else {
+			return this.goodBusinessTax(busi.getRegion(), town, level, adjusted, ver).divide(new BigDecimal(busi.getOwners().size()));
+		}
+	}
+	
+	public BigDecimal goodBusinessTax(Business busi, boolean adjusted, boolean total, version ver) {
+		return this.goodBusinessTax(busi, busi.getProtectionLevel(), adjusted, total, ver);
+	}
+	
+	public BigDecimal goodBusinessTax(Town town, boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(Business busi:town.getGoodBusinesses()) {
+			if(busi.getOwners().contains(player.getName())) {
+				amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+			}
+		}
+		return amount;
+	}
+	public BigDecimal goodBusinessTax(boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(Business busi:PDI.getGoodBusinessOwned()) {
+			amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+		}
+		return amount;
+	}
+//////////////////////////////////////////////////////////////////////////////
+	public BigDecimal serviceBusinessTax(Object obj, Town town, int level, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		switch(ver){
+		case OLD:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*PDI.getOldServiceBusinessTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*PDI.getOldServiceBusinessTax()*level/100.0));
+			}
+			break;
+		case NEW:
+			if (obj instanceof Cuboid) {
+				obj = (Cuboid) obj;
+				amount = new BigDecimal(((Cuboid) obj).Volume()*town.getServiceBusinessTax() * level/100.0);
+				
+			}
+			else if (obj instanceof polygonPrism) {
+				obj = (polygonPrism) obj;
+				amount = new BigDecimal((((polygonPrism) obj).Volume()*town.getServiceBusinessTax()*level/100.0));
+			}
+			break;
+		}
+		if(adjusted) {
+			return tools.cut(amount.multiply(PDI.getMoneyMultiplyer()));
+		}
+		else return amount;
+	}
+	
+	public BigDecimal serviceBusinessTax(Business busi, int level, boolean adjusted, boolean total, version ver) {
+		Country country = plugin.countrydata.get(busi.getCountry());
+		Town town = country.getTowns().get(busi.getTown());
+		if(total) {
+			return this.serviceBusinessTax(busi.getRegion(), town, level, adjusted, ver);
+		}
+		else {
+			return this.serviceBusinessTax(busi.getRegion(), town, level, adjusted, ver).divide(new BigDecimal(busi.getOwners().size()));
+		}
+	}
+	
+	public BigDecimal serviceBusinessTax(Business busi, boolean adjusted, boolean total, version ver) {
+		return this.goodBusinessTax(busi, busi.getProtectionLevel(), adjusted, total, ver);
+	}
+	
+	public BigDecimal serviceBusinessTax(Town town, boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(Business busi:town.getGoodBusinesses()) {
+			if(busi.getOwners().contains(player.getName())) {
+				amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+			}
+		}
+		return amount;
+	}
+	public BigDecimal serviceBusinessTax(boolean adjusted, boolean total, version ver) {
+		BigDecimal amount = BigDecimal.ONE;
+		for(Business busi:PDI.getGoodBusinessOwned()) {
+			amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+		}
+		return amount;
+	}
+	
+///////////////////////////////////////////////////////////////////////////////
 	public BigDecimal houseTax() {
 		Vector<House> Houses = PDI.getHouseOwned();
 		Country country = PDI.getCountryResides();

@@ -35,8 +35,10 @@ public class CountryMilitaryLevel extends Menu {
 		
 		// Make Options Text
 		options = options.concat(menuType.LABEL + "Current Military Level: " + menuType.VALUE + country.getMilitaryLevel() + "\n");
-		options = options.concat(menuType.LABEL + "Current Military Cost: " + menuType.VALUE + CM.getMilitaryFunding() + "\n");
-		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getMilitaryFunding(country.getMilitaryLevel() + 1) + "\n");
+		options = options.concat(menuType.LABEL + "Current Military Cost: " + menuType.VALUE + CM.getMilitaryFunding() + menuType.UNIT + " " +
+				country.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getMilitaryFunding(country.getMilitaryLevel() + 1) +
+				menuType.UNIT + " " + country.getPluralMoney() + "\n");
 		options = tools.addDivider(options);
 		options = options.concat(menuType.VALUEDESCRI + "Military level is your country's ability to attack other countries and defend your " +
 				"own. If you have a higher military level than another country, you can bypass as many protection levels as you have military levels above" +

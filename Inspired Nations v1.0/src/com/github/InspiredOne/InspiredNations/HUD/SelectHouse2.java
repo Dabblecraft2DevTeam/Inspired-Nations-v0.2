@@ -60,7 +60,7 @@ public class SelectHouse2 extends Menu {
 				PM.setBlocksBack();
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
-				return new ManageHouse(plugin, player, 0);
+				return new ManageHouse1(plugin, player, 0);
 				
 			}
 			else {

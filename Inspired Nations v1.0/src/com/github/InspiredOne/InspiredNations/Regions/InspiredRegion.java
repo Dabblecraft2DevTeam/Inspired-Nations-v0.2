@@ -87,6 +87,13 @@ public class InspiredRegion {
 		return cubespace;
 	}
 	
+	public Object getRegion() {
+		if (this.isCubeSpace()) {
+			return this.getCubeSpace();
+		}
+		else return this.getPolySpace();
+	}
+	
 	public polygonPrism getPolySpace() {
 		return polyspace;
 	}

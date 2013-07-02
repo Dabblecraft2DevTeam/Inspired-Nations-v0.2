@@ -55,6 +55,9 @@ public class PlayerData {
 	private double houseTax = 0;
 	private double goodBusinessTax = 0;
 	private double serviceBusinessTax = 0;
+	private double oldHouseTax;
+	private double oldServiceBusinessTax;
+	private double oldGoodBusinessTax;
 	private BigDecimal loanAmount = new BigDecimal(0);
 	private BigDecimal maxLoan = new BigDecimal(5000);
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
@@ -787,5 +790,29 @@ public class PlayerData {
 			result.add(i);
 		}
 		return result;
+	}
+
+	public double getOldServiceBusinessTax() {
+		return oldServiceBusinessTax;
+	}
+
+	public void setOldServiceBusinessTax(double oldServiceBusinessTax) {
+		this.oldServiceBusinessTax = oldServiceBusinessTax;
+	}
+
+	public double getOldGoodBusinessTax() {
+		return oldGoodBusinessTax;
+	}
+
+	public void setOldGoodBusinessTax(double oldGoodBusinessTax) {
+		this.oldGoodBusinessTax = oldGoodBusinessTax;
+	}
+
+	public double getOldHouseTax() {
+		return oldHouseTax;
+	}
+
+	public void setOldHouseTax(double oldHouseTax) {
+		this.oldHouseTax = oldHouseTax;
 	}
 }

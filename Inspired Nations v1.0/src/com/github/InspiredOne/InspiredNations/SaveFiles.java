@@ -303,6 +303,9 @@ public class SaveFiles {
 			PDC.addDefault(key + ".money.housetax", PDI.getHouseTax());
 			PDC.addDefault(key + ".money.goodbusinesstax", PDI.getGoodBusinessTax());
 			PDC.addDefault(key + ".money.servicebusinesstax", PDI.getServiceBusinessTax());
+			PDC.addDefault(key + ".money.oldhousetax", PDI.getOldHouseTax());
+			PDC.addDefault(key + ".money.oldgoodbusinesstax", PDI.getOldGoodBusinessTax());
+			PDC.addDefault(key + ".money.oldservicebusinesstax", PDI.getOldServiceBusinessTax());
 			PDC.addDefault(key + ".money.loan", PDI.getRawLoanAmount().toString());
 			PDC.addDefault(key + ".money.maxloan", PDI.getRawMaxLoan().toString());
 			
@@ -413,6 +416,9 @@ public class SaveFiles {
 			PDC.set(key + ".money.housetax", PDI.getHouseTax());
 			PDC.set(key + ".money.goodbusinesstax", PDI.getGoodBusinessTax());
 			PDC.set(key + ".money.servicebusinesstax", PDI.getServiceBusinessTax());
+			PDC.set(key + ".money.oldhousetax", PDI.getOldHouseTax());
+			PDC.set(key + ".money.oldgoodbusinesstax", PDI.getOldGoodBusinessTax());
+			PDC.set(key + ".money.oldservicebusinesstax", PDI.getOldServiceBusinessTax());
 			PDC.set(key + ".money.loan", PDI.getRawLoanAmount().toString());
 			PDC.set(key + ".money.maxloan", PDI.getRawMaxLoan().toString());
 		}
@@ -472,6 +478,9 @@ public class SaveFiles {
 			PDI.setHouseTax(PDC.getDouble(key + ".money.housetax"));
 			PDI.setGoodBusinessTax(PDC.getDouble(key + ".money.goodbusinesstax"));
 			PDI.setServiceBusinessTax(PDC.getDouble(key + ".money.servicebusinesstax"));
+			PDI.setOldHouseTax(PDC.getDouble(key + ".money.oldhousetax"));
+			PDI.setOldGoodBusinessTax(PDC.getDouble(key + ".money.oldgoodbusinesstax"));
+			PDI.setOldServiceBusinessTax(PDC.getDouble(key + ".money.oldservicebusinesstax"));
 			PDI.setRawLoanAmount(new BigDecimal(PDC.getString(key + ".money.loan")));
 			PDI.setRawMaxLoan(new BigDecimal(PDC.getString(key + ".money.maxloan")));
 			playerdata.put(key, PDI);

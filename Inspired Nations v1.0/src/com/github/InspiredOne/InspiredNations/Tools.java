@@ -106,6 +106,9 @@ public class Tools {
 		errors.add("\nYou have not been offered ownership of that business.");//65
 		errors.add("\nYou have not been offered a job at that business.");//66
 	}
+	public enum version {
+		OLD, NEW
+	}
 	
 	public enum menuType {
 		HEADER(ChatColor.GOLD + "" + ChatColor.BOLD),

@@ -72,7 +72,7 @@ public class CountryMethods {
 	
 	public BigDecimal getMilitaryFunding(int level) {
 		BigDecimal base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
-		return tools.cut(base.pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
+		return tools.cut(base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
 	}
 	
 	public BigDecimal getMilitaryFunding() {
