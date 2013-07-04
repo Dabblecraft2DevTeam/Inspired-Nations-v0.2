@@ -12,6 +12,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class CountryMilitaryLevel extends Menu {
 	
@@ -35,9 +36,9 @@ public class CountryMilitaryLevel extends Menu {
 		
 		// Make Options Text
 		options = options.concat(menuType.LABEL + "Current Military Level: " + menuType.VALUE + country.getMilitaryLevel() + "\n");
-		options = options.concat(menuType.LABEL + "Current Military Cost: " + menuType.VALUE + CM.getMilitaryFunding() + menuType.UNIT + " " +
+		options = options.concat(menuType.LABEL + "Current Military Cost: " + menuType.VALUE + CM.getMilitaryFunding(true, version.NEW) + menuType.UNIT + " " +
 				country.getPluralMoney() + "\n");
-		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getMilitaryFunding(country.getMilitaryLevel() + 1) +
+		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getMilitaryFunding(country.getMilitaryLevel() + 1, true, version.NEW) +
 				menuType.UNIT + " " + country.getPluralMoney() + "\n");
 		options = tools.addDivider(options);
 		options = options.concat(menuType.VALUEDESCRI + "Military level is your country's ability to attack other countries and defend your " +
@@ -84,8 +85,8 @@ public class CountryMilitaryLevel extends Menu {
 				try {
 					int newlevel = Integer.decode(args[1]);
 
-					BigDecimal oldtax = CM.getMilitaryFunding();
-					BigDecimal newtax = CM.getMilitaryFunding(newlevel);
+					BigDecimal oldtax = CM.getMilitaryFunding(true, version.OLD);
+					BigDecimal newtax = CM.getMilitaryFunding(newlevel, true, version.OLD);
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					

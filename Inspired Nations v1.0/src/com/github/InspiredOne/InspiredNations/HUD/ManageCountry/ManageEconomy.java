@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class ManageEconomy extends Menu {
@@ -68,9 +69,9 @@ public class ManageEconomy extends Menu {
 		options = options.concat(menuType.VALUE + "" + country.getMoney() + menuType.UNIT + " " + country.getPluralMoney() + " in total\n");
 		options = options.concat(menuType.SUBHEADER + "Taxes:\n" + ChatColor.RESET);
 		options = options.concat(menuType.LABEL + "Tax Rate: " + menuType.VALUE + country.getTaxRate() + menuType.UNIT+ "%\n");
-		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + CM.getTaxAmount() + menuType.UNIT + " " + country.getPluralMoney() + "\n");
-		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + CM.getRevenue() + " " + menuType.UNIT + country.getPluralMoney() + "\n");
-		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + CM.getRevenue().subtract(CM.getTaxAmount()).toString() + menuType.UNIT + " "
+		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + CM.getTaxAmount(true, version.NEW) + menuType.UNIT + " " + country.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + CM.getRevenue(true, version.NEW) + " " + menuType.UNIT + country.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + CM.getRevenue(true, version.NEW).subtract(CM.getTaxAmount(true, version.NEW)).toString() + menuType.UNIT + " "
 		+ country.getPluralMoney() + "\n");
 		if(country.getLoanAmount().compareTo(BigDecimal.ZERO) != 0) {
 			options = options.concat(menuType.SUBHEADER + "Loans Due:\n" + ChatColor.RESET);

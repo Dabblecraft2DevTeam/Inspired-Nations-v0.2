@@ -15,6 +15,7 @@ import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.TownMethods;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class Town {
 	
@@ -47,6 +48,7 @@ public class Town {
 	private BigDecimal maxLoan;
 	private boolean isCapital = false;
 	private int protectionLevel = 0;
+	private int militaryLevel = 0;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	TownMethods TM;
@@ -479,8 +481,8 @@ public class Town {
 	public void setProtectionLevel(int protection) {
 	
 		try {
-			BigDecimal oldtax = TM.getTaxAmount();
-			BigDecimal newtax = TM.getTaxAmount(protection);
+			BigDecimal oldtax = TM.getTaxAmount(true, version.OLD);
+			BigDecimal newtax = TM.getTaxAmount(protection, this.getMilitaryLevel(), true, version.OLD);
 			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 			BigDecimal difference;
 			
@@ -643,7 +645,7 @@ public class Town {
 		BigDecimal taxRevenue = BigDecimal.ZERO;
 		for (String playername:plugin.countrydata.get(country).getResidents()) {
 			PlayerMethods PMI = new PlayerMethods(plugin, playername);
-			taxRevenue = taxRevenue.add(PMI.taxAmount(name));
+			taxRevenue = taxRevenue.add(PMI.taxAmount(name, true, false, version.NEW));
 		}
 		return taxRevenue;
 	}
@@ -786,5 +788,13 @@ public class Town {
 			result.add(i);
 		}
 		return result;
+	}
+
+	public int getMilitaryLevel() {
+		return militaryLevel;
+	}
+
+	public void setMilitaryLevel(int militaryLevel) {
+		this.militaryLevel = militaryLevel;
 	}
 }

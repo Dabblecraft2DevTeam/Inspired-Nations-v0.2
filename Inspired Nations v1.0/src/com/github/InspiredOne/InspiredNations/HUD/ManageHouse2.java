@@ -36,7 +36,7 @@ public class ManageHouse2 extends Menu {
 		String errmsg = ChatColor.RED + tools.errors.get(error);
 		
 		// Make Inputs Vector
-		inputs.add("Add Builder <player>");
+		inputs.add("Add Builder <player> " + ChatColor.GRAY + "Adds person that can interact");
 		if(house.getBuilders().size() !=0) {
 			inputs.add("Remove Builder <player>");
 		}

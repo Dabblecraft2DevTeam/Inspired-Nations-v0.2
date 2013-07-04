@@ -7,11 +7,11 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
-import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 
 public class ClaimTownLand extends Menu {
 
@@ -20,7 +20,7 @@ public class ClaimTownLand extends Menu {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
-		if (town.getMoney().compareTo(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
+		if (town.getMoney().compareTo(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			error = 25;
 		}
 	}

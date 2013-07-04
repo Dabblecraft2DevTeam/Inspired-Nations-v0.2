@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
 public class CountryProtectionLevel extends Menu{
@@ -35,9 +36,9 @@ public class CountryProtectionLevel extends Menu{
 		
 		// Make options text
 		options = tools.addLine(options, "Current Protection Level: " + ChatColor.GOLD + country.getProtectionLevel(), optionType.INSTRUCTION);
-		options = tools.addLine(options, "Current Military Funding: " + ChatColor.GOLD + CM.getTaxAmount() + " " +
+		options = tools.addLine(options, "Current Military Funding: " + ChatColor.GOLD + CM.getTaxAmount(true, version.NEW) + " " +
 				ChatColor.YELLOW + country.getPluralMoney(), optionType.INSTRUCTION);
-		options = tools.addLine(options, "Cost For Next Level: " + ChatColor.GOLD + CM.getTaxAmount(country.getProtectionLevel() + 1) + ChatColor.YELLOW
+		options = tools.addLine(options, "Cost For Next Level: " + ChatColor.GOLD + CM.getTaxAmount(country.getProtectionLevel() + 1,true, version.NEW) + ChatColor.YELLOW
 				+ " " + country.getPluralMoney(), optionType.INSTRUCTION);
 		options = tools.addDivider(options);
 		options = options.concat(ChatColor.GOLD + "Level 0: " + ChatColor.YELLOW + "(No protection) Any entity can claim or build on your country's land.\n" );
@@ -86,8 +87,8 @@ public class CountryProtectionLevel extends Menu{
 			else {
 				try {
 					int level = Integer.parseInt(args[1]);
-					BigDecimal oldtax = CM.getTaxAmount();
-					BigDecimal newtax = CM.getTaxAmount(level);
+					BigDecimal oldtax = CM.getTaxAmount(true, version.OLD);
+					BigDecimal newtax = CM.getTaxAmount(level, true, version.OLD);
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					

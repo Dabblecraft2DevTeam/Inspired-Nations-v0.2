@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageEconomy;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class ManageMoney extends Menu {
 
@@ -62,16 +63,16 @@ public class ManageMoney extends Menu {
 		options = options.concat(menuType.VALUE + "" + PDI.getMoneyInBank() + menuType.UNIT + " " + PDI.getPluralMoney() + " in the bank.\n");
 		if (PDI.isHouseOwner() || PDI.isGoodBusinessOwner() || PDI.isServiceBusinessOwner()) {
 			options = options.concat(menuType.SUBHEADER + "Taxes:" + ChatColor.RESET + "\n");
-			options = options.concat(menuType.LABEL +"Total: " + menuType.VALUE + tools.cut(PMeth.taxAmount()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
+			options = options.concat(menuType.LABEL +"Total: " + menuType.VALUE + tools.cut(PMeth.taxAmount(true, false, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n" );
 		}
 		if (PDI.isHouseOwner()) {
-			options = options.concat(menuType.LABEL + "Residential: " + menuType.VALUE + tools.cut(PMeth.houseTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Residential: " + menuType.VALUE + tools.cut(PMeth.houseTax(true, false, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isGoodBusinessOwner()) {
-			options = options.concat(menuType.LABEL + "Commercial Goods: " + menuType.VALUE + tools.cut(PMeth.goodBusinessTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Commercial Goods: " + menuType.VALUE + tools.cut(PMeth.goodBusinessTax(true, false, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.isServiceBusinessOwner()) {
-			options = options.concat(menuType.LABEL + "Commercial Services: "  + menuType.VALUE + tools.cut(PMeth.serviceBusinessTax()) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
+			options = options.concat(menuType.LABEL + "Commercial Services: "  + menuType.VALUE + tools.cut(PMeth.serviceBusinessTax(true, false, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + " per tax cycle.\n");
 		}
 		if (PDI.getLoanAmount().compareTo(new BigDecimal(0)) != 0) {
 			options = options.concat(menuType.SUBHEADER + "Loans due:" + ChatColor.RESET + "\n");

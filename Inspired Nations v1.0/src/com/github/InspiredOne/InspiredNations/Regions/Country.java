@@ -16,8 +16,8 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 
 public class Country {
 	
@@ -35,6 +35,9 @@ public class Country {
 	private Chunks area = new Chunks();
 	private String pluralMoneyName = "";
 	private String singularMoneyName = "";
+	private double oldChunkBase;
+	private double oldFedParkBase;
+	private double oldMilitaryBase;
 	private double taxRate = 1.0;
 	private BigDecimal moneyMultiplyer = new BigDecimal(Math.PI);
 	private BigDecimal money;
@@ -500,8 +503,8 @@ public class Country {
 	
 	public void setProtectionLevel(int level) {
 		try {
-			BigDecimal oldtax = CM.getTaxAmount();
-			BigDecimal newtax = CM.getTaxAmount(level);
+			BigDecimal oldtax = CM.getTaxAmount(true, version.OLD);
+			BigDecimal newtax = CM.getTaxAmount(level, true, version.OLD);
 			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 			BigDecimal difference;
 			
@@ -734,7 +737,7 @@ public class Country {
 			if (town.getChunks().isIn(tile, worldname)) {
 				TownMethods TM = new TownMethods(plugin, town);
 				town.getChunks().removeChunk(tile, worldname);
-				transferMoneyToTown(TM.getCostPerChunk(taxType.OLD), town.getName(), getName());
+				transferMoneyToTown(TM.getCostPerChunk(version.OLD), town.getName(), getName());
 				town.removeCutOutRegions();
 			}
 		}
@@ -746,5 +749,29 @@ public class Country {
 
 	public void setMilitaryLevel(int militaryLevel) {
 		this.militaryLevel = militaryLevel;
+	}
+
+	public double getOldChunkBase() {
+		return oldChunkBase;
+	}
+
+	public void setOldChunkBase(double oldChunkBase) {
+		this.oldChunkBase = oldChunkBase;
+	}
+
+	public double getOldFedParkBase() {
+		return oldFedParkBase;
+	}
+
+	public void setOldFedParkBase(double oldFedParkBase) {
+		this.oldFedParkBase = oldFedParkBase;
+	}
+
+	public double getOldMilitaryBase() {
+		return oldMilitaryBase;
+	}
+
+	public void setOldMilitaryBase(double oldMilitaryBase) {
+		this.oldMilitaryBase = oldMilitaryBase;
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 
@@ -20,7 +21,7 @@ public class ClaimCountryLand extends Menu {
 		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
 		CM = new CountryMethods(plugin, country);
-		if (country.getMoney().compareTo(CM.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
+		if (country.getMoney().compareTo(CM.getCostPerChunk(country.getProtectionLevel(), true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			error = 25;
 		}
 	}
@@ -45,7 +46,7 @@ public class ClaimCountryLand extends Menu {
 			
 		options = tools.addDivider(options);
 		options = options.concat(tools.drawCountryMap(player, mapSize.LARGE));
-		options = tools.addLine(options, "Cost per tax cycle: " + CM.getTaxAmount() + " " + country.getPluralMoney(), optionType.INSTRUCTION);
+		options = tools.addLine(options, "Cost per tax cycle: " + CM.getTaxAmount(true, version.NEW) + " " + country.getPluralMoney(), optionType.INSTRUCTION);
 		return space + main + options + end + errmsg;
 	}
 	

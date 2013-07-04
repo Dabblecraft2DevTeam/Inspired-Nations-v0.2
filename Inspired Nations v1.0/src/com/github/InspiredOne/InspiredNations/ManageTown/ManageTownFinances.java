@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 
@@ -66,9 +67,9 @@ public class ManageTownFinances extends Menu {
 		options = options.concat(menuType.SUBHEADER + "The Town Has:\n" + ChatColor.RESET);
 		options = options.concat(menuType.VALUE+ "" + town.getMoney() + menuType.UNIT + " " + town.getPluralMoney() + " in total\n");
 		options = options.concat(menuType.SUBHEADER + "Taxes:\n" + ChatColor.RESET);
-		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + tools.cut(TM.getTaxAmount()) + menuType.UNIT + " " + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + tools.cut(TM.getTaxAmount(true, version.NEW)) + menuType.UNIT + " " + town.getPluralMoney() + "\n");
 		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + tools.cut(town.getRevenue()) + " " + menuType.UNIT + town.getPluralMoney() + "\n");
-		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + tools.cut(town.getRevenue().subtract(TM.getTaxAmount())).toString() + menuType.UNIT + " "
+		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + tools.cut(town.getRevenue().subtract(TM.getTaxAmount(true, version.NEW))).toString() + menuType.UNIT + " "
 		+ town.getPluralMoney() + "\n");
 		if(town.getLoan().compareTo(BigDecimal.ZERO) != 0) {
 			options = options.concat(menuType.SUBHEADER + "Loans Due:\n" + ChatColor.RESET);

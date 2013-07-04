@@ -236,9 +236,9 @@ public class Tools {
 		
 		switch(Region) {
 		case GOODBUSINESS:
-			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building) +
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building, true, false, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building, Level + 1) +
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.goodBusinessTax((GoodBusiness) building, Level + 1, true, false, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
@@ -247,9 +247,9 @@ public class Tools {
 			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) Employees and owners gain protection from attacks within the business.\n");
 			break;
 		case SERVICEBUSINESS:
-			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building) +
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building, true, false, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building, Level + 1) +
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.serviceBusinessTax((ServiceBusiness) building, Level + 1, true, false, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your business.\n");
@@ -260,18 +260,18 @@ public class Tools {
 		case BANK:
 			break;
 		case FEDERALPARK:
-			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + CM.getFederalParkTax((Park) building)  +
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + CM.getFederalParkTax((Park) building, country.getProtectionLevel(), true, version.NEW)  +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getFederalParkTax((Park) building, Level + 1, country.getProtectionLevel()) +
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + CM.getFederalParkTax((Park) building, Level + 1, country.getProtectionLevel(), true, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your country can build in your park.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers and designated builders can build in the park.\n");
 			break;
 		case HOUSE:
-			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.houseTax((House) building)  +
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + PMeth.houseTax((House) building, true, false, version.NEW)  +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.houseTax((House) building, Level + 1) +
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + PMeth.houseTax((House) building, Level + 1, true, false, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build and interact in your town can build and interact in your house.\n");
@@ -280,9 +280,9 @@ public class Tools {
 			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) You gain damage protection from non-house residents.\n");
 			break;
 		case PARK:
-			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + TM.getLocalParkTax((Park) building)  +
+			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + TM.getLocalParkTax((Park) building, town.getProtectionLevel(), true, version.NEW)  +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
-			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getLocalParkTax((Park) building, Level + 1, town.getProtectionLevel()) +
+			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getLocalParkTax((Park) building, Level + 1, town.getProtectionLevel(), true, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your town can build in your park.\n");
@@ -1169,7 +1169,7 @@ public class Tools {
 			options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + PM.getCuboid().Volume() + menuType.UNIT + " Blocks\n");
 			if(PM.houseSelect()) {
 				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + menuType.VALUE + 
-						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
+						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1, true, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
 				options = this.addDivider(options);
 			}
 			options = options.concat(this.drawTownMap(plugin.getServer().getPlayer(PM.getPlayername()), mapSize.SMALL));
@@ -1181,7 +1181,7 @@ public class Tools {
 			options = options.concat(menuType.LABEL + "Size: " + menuType.VALUE + PM.getPolygon().Volume() + menuType.UNIT + " Blocks\n");
 			if (PM.houseSelect()) {
 				options = options.concat("Cost Per Tax Cycle At Level 1 Protection: " + menuType.VALUE + 
-						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
+						cut(PMeth.houseTax(PM.getCuboid(), PDI.getTownResides(), 1, true, version.NEW)) + menuType.UNIT + " " + PDI.getPluralMoney() + "\n");
 				options = this.addDivider(options);
 			}
 

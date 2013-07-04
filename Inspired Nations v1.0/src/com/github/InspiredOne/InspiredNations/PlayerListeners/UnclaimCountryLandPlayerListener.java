@@ -28,6 +28,7 @@ import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.UnclaimCountryLa
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class UnclaimCountryLandPlayerListener{
 	
@@ -69,7 +70,7 @@ public class UnclaimCountryLandPlayerListener{
 		else aloud = true;
 		if (aloud) {
 			country.removeChunk(tile);
-			country.transferMoneyFromNPC(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
+			country.transferMoneyFromNPC(countryMethods.getCostPerChunk(country.getProtectionLevel(), true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);
 				PM.resetLocationBooleans();

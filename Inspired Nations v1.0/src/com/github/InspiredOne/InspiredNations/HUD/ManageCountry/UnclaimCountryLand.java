@@ -11,6 +11,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.mapSize;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class UnclaimCountryLand extends Menu {
 
@@ -42,7 +43,7 @@ public class UnclaimCountryLand extends Menu {
 			
 		options = tools.addDivider(options);
 		options = options.concat(tools.drawCountryMap(player, mapSize.LARGE));
-		options = tools.addLine(options, "Cost per tax cycle: " + CM.getTaxAmount() + " " + country.getPluralMoney(), optionType.INSTRUCTION);
+		options = tools.addLine(options, "Cost per tax cycle: " + CM.getTaxAmount(true, version.NEW) + " " + country.getPluralMoney(), optionType.INSTRUCTION);
 		return space + main + options + end + errmsg;
 	}
 	

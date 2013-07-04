@@ -24,8 +24,8 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
-import com.github.InspiredOne.InspiredNations.TownMethods.taxType;
 import com.github.InspiredOne.InspiredNations.ManageTown.ClaimTownLand;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
@@ -93,7 +93,7 @@ public class ClaimTownLandPlayerListener {
 		}
 		spot = player.getLocation();
 
-		if(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
+		if(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
 			aloud = false;
 		}
 		
@@ -112,7 +112,7 @@ public class ClaimTownLandPlayerListener {
 
 			area.addChunk(tile);
 			town.setChunks(area);
-			town.transferMoneyToCountry(TM.getCostPerChunk(taxType.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())), town.getCountry());
+			town.transferMoneyToCountry(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())), town.getCountry());
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);
 				PM.resetLocationBooleans();

@@ -10,6 +10,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class ChangeTownTaxRates extends Menu {
 	
@@ -41,9 +42,9 @@ public class ChangeTownTaxRates extends Menu {
 		options = options.concat(menuType.LABEL + "Good Business Tax Rate: " + menuType.VALUE + town.getGoodBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
 		options = options.concat(menuType.LABEL + "Service Business Tax Rate: " + menuType.VALUE + town.getServiceBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
 		options = tools.addDivider(options);
-		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + TM.getTaxAmount() + menuType.UNIT + " " + town.getPluralMoney() + "\n");
+		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + TM.getTaxAmount(true, version.NEW) + menuType.UNIT + " " + town.getPluralMoney() + "\n");
 		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + town.getRevenue() + " " + menuType.UNIT + town.getPluralMoney() + "\n");
-		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + town.getRevenue().subtract(TM.getTaxAmount()).toString() + menuType.UNIT + " "
+		options = options.concat(menuType.LABEL + "Difference: " + menuType.VALUE + town.getRevenue().subtract(TM.getTaxAmount(true,version.NEW)).toString() + menuType.UNIT + " "
 		+ town.getPluralMoney() + "\n");
 		if(town.getLoan().compareTo(BigDecimal.ZERO) != 0) {
 			options = options.concat(menuType.SUBHEADER + "Loans Due:\n" + ChatColor.RESET);

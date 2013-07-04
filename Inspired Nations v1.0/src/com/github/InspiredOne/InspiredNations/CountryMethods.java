@@ -14,7 +14,10 @@ import java.math.BigDecimal;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
+import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.Park;
+import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 
 public class CountryMethods {
@@ -28,54 +31,121 @@ public class CountryMethods {
 		tools = new Tools(plugin);
 	}
 	
-	public BigDecimal getTaxAmount() {
-		return getTaxAmount(country.getProtectionLevel());
-	}
 	
-	public BigDecimal getTaxAmount(int level) {
-		BigDecimal temp = new BigDecimal(0);
-		temp = new BigDecimal(country.size()*level*(plugin.getConfig().getDouble("base_cost_per_chunk"))).multiply(country.getMoneyMultiplyer());
-		for (Park park : country.getParks()) {
-			temp = temp.add(getFederalParkTax(park, park.getProtectionLevel(), level));
+	
+	
+	public BigDecimal getFederalParkTax(Object obj, int level, int countrylevel, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		switch(ver) {
+		case OLD:
+			if(obj instanceof Cuboid) {
+			amount = (new BigDecimal(((Cuboid) obj).Volume() * level * country.getOldFedParkBase()/10000 *
+					plugin.getConfig().getDouble("park_tax_multiplyer") + ((Cuboid) obj).Volume() * countrylevel * country.getOldFedParkBase()/10000 *
+					plugin.getConfig().getDouble("park_tax_multiplyer"))); 
+			}
+			else {
+				amount = (new BigDecimal(((Cuboid) obj).Volume() * level * country.getOldFedParkBase()/10000 *
+						plugin.getConfig().getDouble("park_tax_multiplyer") + ((polygonPrism) obj).Volume() * countrylevel * country.getOldFedParkBase()/10000 *
+						plugin.getConfig().getDouble("park_tax_multiplyer"))); 
+			}
+			break;
+		case NEW:
+			if(obj instanceof Cuboid) {
+			amount = (new BigDecimal(((Cuboid) obj).Volume() * level * plugin.getConfig().getDouble("federal_park_base_cost")/10000 *
+					plugin.getConfig().getDouble("park_tax_multiplyer") + ((Cuboid) obj).Volume() * countrylevel * plugin.getConfig().getDouble("base_cost_per_chunk")/10000 *
+					plugin.getConfig().getDouble("park_tax_multiplyer")));
+			}
+			else {
+				amount = (new BigDecimal(((Cuboid) obj).Volume() * level * plugin.getConfig().getDouble("federal_park_base_cost")/10000 *
+						plugin.getConfig().getDouble("park_tax_multiplyer") + ((polygonPrism) obj).Volume() *  countrylevel * plugin.getConfig().getDouble("federal_park_base_cost")/10000 *
+						plugin.getConfig().getDouble("park_tax_multiplyer"))); 
+			}
+			break;
 		}
-		return tools.cut(temp);
+		if(adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
-	public int getMaxClaimableChunks() {
-		return (country.getMaxLoan().subtract(country.getLoanAmount()).add(country.getMoney().add(country.getRevenue())).divide((new BigDecimal(plugin.
-				getConfig().getDouble("base_cost_per_chunk") * 2).multiply(country.getMoneyMultiplyer())), 0, BigDecimal.ROUND_DOWN).toBigInteger().intValue());
+	public BigDecimal getFederalParkTax(Park park, int level, int countrylevel, boolean adjusted, version ver) {
+		return getFederalParkTax(park.getRegion(), level, countrylevel, adjusted, ver);
 	}
 	
-	public BigDecimal getCostPerChunk() {
-		return tools.cut(new BigDecimal(plugin.getConfig().getDouble("base_cost_per_chunk")).multiply(country.getMoneyMultiplyer()
-				.multiply(new BigDecimal(country.getProtectionLevel()))));
+	public BigDecimal getFederalParkTax(Park park, int countrylevel, boolean adjusted, version ver) {
+		return getFederalParkTax(park, park.getProtectionLevel(), countrylevel, adjusted, ver);
 	}
 	
-	public BigDecimal getRevenue() {
+	public BigDecimal getFederalParkTax(int countrylevel, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		for(Park park:country.getParks()) {
+			amount = amount.add(getFederalParkTax(park, countrylevel, adjusted, ver));
+		}
+		return amount;
+	}
+	
+	public BigDecimal getCostPerChunk(int countrylevel, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
+		switch(ver) {
+		case OLD:
+			amount = new BigDecimal(country.getOldChunkBase()*countrylevel);
+		case NEW:
+			amount = new BigDecimal(plugin.getConfig().getDouble("base_cost_per_chunk")*countrylevel);
+		}
+		if(adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
+	}
+	
+	public BigDecimal getTaxAmount(int countrylevel, boolean adjusted, version ver) {
+		return getCostPerChunk(countrylevel, adjusted, ver).multiply(new BigDecimal(country.
+				getChunks().Chunks.size())).add(this.getFederalParkTax(countrylevel, false, ver)) // false so we don't adjust twice for the inflation.
+				.add(this.getMilitaryFunding(false, ver)); // false so we don't adjust twice for the inflation.
+	}
+	
+	public BigDecimal getTaxAmount(boolean adjusted, version ver) {
+		return getTaxAmount(country.getProtectionLevel(), adjusted, ver);
+	}
+	
+	//////////////////////////////////////////////////////////////////
+	
+//	public int getMaxClaimableChunks() {
+//		return (country.getMaxLoan().subtract(country.getLoanAmount()).add(country.getMoney().add(country.getRevenue())).divide((new BigDecimal(plugin.
+//				getConfig().getDouble("base_cost_per_chunk") * 2).multiply(country.getMoneyMultiplyer())), 0, BigDecimal.ROUND_DOWN).toBigInteger().intValue());
+//	}
+//	
+	public BigDecimal getRevenue(Boolean adjusted, version ver) {
 		BigDecimal taxRevenuetemp = new BigDecimal(0);
+
 		for (int i = 0; i < country.getTowns().size(); i++) {
 			TownMethods TMI = new TownMethods(plugin, country.getTowns().get(i));
-			taxRevenuetemp = taxRevenuetemp.add(TMI.getTaxAmount());
+			taxRevenuetemp = taxRevenuetemp.add(TMI.getTaxAmount(adjusted, ver));
 		}
-		BigDecimal taxRevenue = taxRevenuetemp;
-		return tools.cut(taxRevenue);
+		return taxRevenuetemp;
 	}
 	
-	public BigDecimal getFederalParkTax(Park park) {
-		return getFederalParkTax(park, park.getProtectionLevel(), country.getProtectionLevel());
+	public BigDecimal getMilitaryFunding(int level, boolean adjusted, version ver) {
+		BigDecimal base = BigDecimal.ZERO;
+		switch(ver) {
+			case OLD:
+				base = new BigDecimal(country.getOldMilitaryBase());
+			case NEW:
+				base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
+		}
+		if(adjusted) {
+			return tools.cut(base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
+		}
+		else {
+			return base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level));
+		}
 	}
 	
-	public BigDecimal getFederalParkTax(Park park, int parklevel, int countrylevel) {
-		return country.getMoneyMultiplyer().multiply(new BigDecimal(park.Volume() * parklevel * countrylevel *
-				plugin.getConfig().getDouble("federal_park_base_cost")));
-	}
-	
-	public BigDecimal getMilitaryFunding(int level) {
-		BigDecimal base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
-		return tools.cut(base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
-	}
-	
-	public BigDecimal getMilitaryFunding() {
-		return getMilitaryFunding(country.getMilitaryLevel());
+	public BigDecimal getMilitaryFunding(boolean adjusted, version ver) {
+		return getMilitaryFunding(country.getMilitaryLevel(), adjusted, ver);
 	}
 }

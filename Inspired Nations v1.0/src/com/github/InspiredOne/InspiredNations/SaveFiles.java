@@ -128,6 +128,9 @@ public class SaveFiles {
 			dataFileConfig.addDefault(key + ".money.amount", country.getRawMoney().toString());
 			dataFileConfig.addDefault(key + ".money.loan", country.getRawLoanAmount().toString());
 			dataFileConfig.addDefault(key + ".money.maxloan", country.getRawMaxLoan().toString());
+			dataFileConfig.addDefault(key + ".money.oldchunkbase", country.getOldChunkBase());
+			dataFileConfig.addDefault(key + ".money.oldfedparkbase", country.getOldFedParkBase());
+			dataFileConfig.addDefault(key + ".money.oldmilitarybase", country.getOldMilitaryBase());
 			
 			// Updating file.
 			count = 0;
@@ -161,6 +164,9 @@ public class SaveFiles {
 			dataFileConfig.set(key + ".money.amount", country.getRawMoney().toString());
 			dataFileConfig.set(key + ".money.loan", country.getRawLoanAmount().toString());
 			dataFileConfig.set(key + ".money.maxloan", country.getRawMaxLoan().toString());
+			dataFileConfig.set(key + ".money.oldchunkbase", country.getOldChunkBase());
+			dataFileConfig.set(key + ".money.oldfedparkbase", country.getOldFedParkBase());
+			dataFileConfig.set(key + ".money.oldmilitarybase", country.getOldMilitaryBase());
 		}
 	}
 	
@@ -201,6 +207,9 @@ public class SaveFiles {
 			countrytemp.setRawMoney(new BigDecimal(dataFileConfig.getString(key + ".money.amount")));
 			countrytemp.setRawLoan(new BigDecimal(dataFileConfig.getString(key + ".money.loan")));
 			countrytemp.setRawMaxLoan(new BigDecimal(dataFileConfig.getString(key + ".money.maxloan")));
+			countrytemp.setOldChunkBase(dataFileConfig.getDouble(key + ".money.oldchunkbase"));
+			countrytemp.setOldFedParkBase(dataFileConfig.getDouble(key + ".money.oldfedparkbase"));
+			countrytemp.setOldMilitaryBase(dataFileConfig.getDouble(key + ".money.oldmilitarybase"));
 			temp.put(countrytemp.getName(), countrytemp);
 		}
 		return temp;
@@ -552,6 +561,7 @@ public class SaveFiles {
 			dataFileConfig.addDefault(key + ".area." + i + ".world", chunks.Chunks.get(i).world);
 		}
 		dataFileConfig.addDefault(key + ".protectionLevel", town.getProtectionLevel());
+		dataFileConfig.addDefault(key + ".militarylevel", town.getMilitaryLevel());
 		dataFileConfig.addDefault(key + ".nationTax", town.getNationTax());
 		dataFileConfig.addDefault(key + ".nationTaxOld", town.getNationTaxOld());
 		dataFileConfig.addDefault(key + ".houseTax", town.getHouseTax());
@@ -590,6 +600,7 @@ public class SaveFiles {
 			dataFileConfig.set(key + ".area." + i + ".world", chunks.Chunks.get(i).world);
 		}
 		dataFileConfig.set(key + ".protectionLevel", town.getProtectionLevel());
+		dataFileConfig.set(key + ".militarylevel", town.getMilitaryLevel());
 		dataFileConfig.set(key + ".nationTax", town.getNationTax());
 		dataFileConfig.set(key + ".nationTaxOld", town.getNationTaxOld());
 		dataFileConfig.set(key + ".houseTax", town.getHouseTax());
@@ -664,6 +675,7 @@ public class SaveFiles {
 
 
 		town.setProtectionLevel(dataFileConfig.getInt(key + ".protectionLevel"));
+		town.setMilitaryLevel(dataFileConfig.getInt(key + ".militarylevel"));
 		town.setRawLoan(new BigDecimal(dataFileConfig.getString(key + ".money.loan")));
 		town.setRawMaxLoan(new BigDecimal(dataFileConfig.getString(key + ".money.maxLoan")));
 		town.setIsCapital(dataFileConfig.getBoolean(key + ".isCapital"));

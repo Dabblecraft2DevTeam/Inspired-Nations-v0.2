@@ -10,6 +10,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class TownProtectionLevel extends Menu {
 	
@@ -33,9 +34,9 @@ public class TownProtectionLevel extends Menu {
 		
 		// Make Options Text
 		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + town.getProtectionLevel() + "\n");
-		options = options.concat(menuType.LABEL + "Current Protection Funding: " + menuType.VALUE + (TM.getTaxAmount()).toString()) +
+		options = options.concat(menuType.LABEL + "Current Protection Funding: " + menuType.VALUE + (TM.getTaxAmount(true, version.NEW)).toString()) +
 				menuType.UNIT + " " + town.getPluralMoney() + "\n";
-		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getTaxAmount(town.getProtectionLevel() + 1)) +
+		options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getTaxAmount(town.getProtectionLevel() + 1, town.getMilitaryLevel(), true, version.NEW)) +
 				menuType.UNIT + " " + town.getPluralMoney() + "\n";
 		options = tools.addDivider(options);
 		options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody can build in your town. Town Land can be" +
@@ -85,8 +86,8 @@ public class TownProtectionLevel extends Menu {
 			else {
 				try {
 					int level = Integer.parseInt(args[1]);
-					BigDecimal oldtax = TM.getTaxAmount();
-					BigDecimal newtax = TM.getTaxAmount(level);
+					BigDecimal oldtax = TM.getTaxAmount(true, version.OLD);
+					BigDecimal newtax = TM.getTaxAmount(level, town.getMilitaryLevel(), true, version.OLD);
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					

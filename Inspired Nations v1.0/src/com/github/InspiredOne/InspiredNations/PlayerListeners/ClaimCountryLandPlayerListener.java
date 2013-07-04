@@ -18,6 +18,7 @@ import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ClaimCountryLand
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 
 public class ClaimCountryLandPlayerListener {
@@ -69,7 +70,7 @@ public class ClaimCountryLandPlayerListener {
 			aloud = true;
 		}
 
-		if (country.getMoney().compareTo(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
+		if (country.getMoney().compareTo(countryMethods.getCostPerChunk(country.getProtectionLevel(),true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			aloud = false;
 		}
 		if (aloud && !area.isIn(spot) && plugin.chunks.containsKey(tile)){
@@ -82,7 +83,7 @@ public class ClaimCountryLandPlayerListener {
 		}
 		if (aloud) {
 			country.addChunk(tile);
-			country.transferMoneyToNPC(countryMethods.getCostPerChunk().multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
+			country.transferMoneyToNPC(countryMethods.getCostPerChunk(country.getProtectionLevel(), true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
 			//player.sendRawMessage(generateMap(country, player));
 			generateMap();
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
