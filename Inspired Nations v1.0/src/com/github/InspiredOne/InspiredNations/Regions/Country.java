@@ -737,7 +737,7 @@ public class Country {
 			if (town.getChunks().isIn(tile, worldname)) {
 				TownMethods TM = new TownMethods(plugin, town);
 				town.getChunks().removeChunk(tile, worldname);
-				transferMoneyToTown(TM.getCostPerChunk(version.OLD), town.getName(), getName());
+				transferMoneyToTown(TM.getCostPerChunk(true, version.OLD), town.getName(), getName());
 				town.removeCutOutRegions();
 			}
 		}

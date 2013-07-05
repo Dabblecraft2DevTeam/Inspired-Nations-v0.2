@@ -55,9 +55,9 @@ public class PlayerData {
 	private double houseTax = 0;
 	private double goodBusinessTax = 0;
 	private double serviceBusinessTax = 0;
-	private double oldHouseTax;
-	private double oldServiceBusinessTax;
-	private double oldGoodBusinessTax;
+	private double oldHouseTax = 0;
+	private double oldServiceBusinessTax = 0;
+	private double oldGoodBusinessTax = 0;
 	private BigDecimal loanAmount = new BigDecimal(0);
 	private BigDecimal maxLoan = new BigDecimal(5000);
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);

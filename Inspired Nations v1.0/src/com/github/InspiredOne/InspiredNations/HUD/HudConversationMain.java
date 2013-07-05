@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness1;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageCountry;
+import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse1;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry1;
 import com.github.InspiredOne.InspiredNations.ManageTown.ManageTown;
 
@@ -103,7 +104,7 @@ public class HudConversationMain extends Menu{
 			return new ManageTown(plugin, player, 0);
 		}
 		else if(inputs.get(answer).equals("Manage House")) {
-			
+			return new ManageHouse1(plugin, player, 0);
 		}
 		else if(inputs.get(answer).equals("Manage Business")) {
 			return new ManageBusiness1(plugin, player, 0);

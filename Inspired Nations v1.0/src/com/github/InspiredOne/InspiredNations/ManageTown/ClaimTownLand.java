@@ -20,7 +20,7 @@ public class ClaimTownLand extends Menu {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
 		TM = new TownMethods(plugin, town);
-		if (town.getMoney().compareTo(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
+		if (town.getMoney().compareTo(TM.getCostPerChunk(true, version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			error = 25;
 		}
 	}

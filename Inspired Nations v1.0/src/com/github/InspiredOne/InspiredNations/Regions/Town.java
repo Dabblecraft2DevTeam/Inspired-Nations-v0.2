@@ -280,6 +280,9 @@ public class Town {
 		try {
 			PlayerData PDITarget = plugin.playerdata.get(person);
 			PDITarget.setTownResides(this);
+			PDITarget.setHouseTax(this.houseTax);
+			PDITarget.setGoodBusinessTax(this.goodBusinessTax);
+			PDITarget.setServiceBusinessTax(serviceBusinessTax);
 		} catch (Exception e) {
 
 		}
@@ -645,7 +648,7 @@ public class Town {
 		BigDecimal taxRevenue = BigDecimal.ZERO;
 		for (String playername:plugin.countrydata.get(country).getResidents()) {
 			PlayerMethods PMI = new PlayerMethods(plugin, playername);
-			taxRevenue = taxRevenue.add(PMI.taxAmount(name, true, false, version.NEW));
+			taxRevenue = taxRevenue.add(PMI.taxAmount(name, true, true, version.NEW));
 		}
 		return taxRevenue;
 	}

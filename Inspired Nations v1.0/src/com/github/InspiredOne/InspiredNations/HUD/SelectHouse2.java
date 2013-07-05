@@ -6,6 +6,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse1;
 import com.github.InspiredOne.InspiredNations.ManageTown.InvalidSelection;
 import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
@@ -58,12 +59,15 @@ public class SelectHouse2 extends Menu {
 				PM.selectCuboid(false);
 				PM.selectPolygon(false);
 				PM.setBlocksBack();
+				PM.house(false);
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
 				return new ManageHouse1(plugin, player, 0);
 				
 			}
 			else {
+				PM.selectCuboid(false);
+				PM.selectPolygon(false);
 				PM.house(false);
 				PM.setBlocksBack();
 				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.HOUSE);

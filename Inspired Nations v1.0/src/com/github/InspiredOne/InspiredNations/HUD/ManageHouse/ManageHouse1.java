@@ -1,4 +1,4 @@
-package com.github.InspiredOne.InspiredNations.HUD;
+package com.github.InspiredOne.InspiredNations.HUD.ManageHouse;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
@@ -6,6 +6,8 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.House;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;

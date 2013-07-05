@@ -1062,7 +1062,7 @@ public class Tools {
 							}
 						}
 						
-						ServiceBusiness businesstemp1 = new ServiceBusiness(plugin, PM.getPolygon(), player, country1.getName(), country1.getTowns().indexOf(town), BusinessName1);
+						ServiceBusiness businesstemp1 = new ServiceBusiness(plugin, PM.getCuboid(), player, country1.getName(), country1.getTowns().indexOf(town), BusinessName1);
 						PDI.addServiceBusinessOwned(businesstemp1);
 						PDI.getTownResides().addServiceBusiness(businesstemp1);
 						break;
@@ -1089,7 +1089,7 @@ public class Tools {
 							}
 						}
 						
-						House housetemp = new House(plugin, PM.getPolygon(), player, PDI.getCountryResides().getName(), PDI.getCountryResides().getTowns().indexOf(town), HouseName);
+						House housetemp = new House(plugin, PM.getCuboid(), player, PDI.getCountryResides().getName(), PDI.getCountryResides().getTowns().indexOf(town), HouseName);
 						PDI.addHouseOwned(housetemp);
 						PDI.getTownResides().addHouse(housetemp);
 						break;

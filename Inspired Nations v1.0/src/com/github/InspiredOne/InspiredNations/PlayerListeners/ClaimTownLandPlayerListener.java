@@ -93,7 +93,7 @@ public class ClaimTownLandPlayerListener {
 		}
 		spot = player.getLocation();
 
-		if(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
+		if(TM.getCostPerChunk(true,version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
 			aloud = false;
 		}
 		
@@ -112,7 +112,7 @@ public class ClaimTownLandPlayerListener {
 
 			area.addChunk(tile);
 			town.setChunks(area);
-			town.transferMoneyToCountry(TM.getCostPerChunk(version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())), town.getCountry());
+			town.transferMoneyToCountry(TM.getCostPerChunk(true, version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())), town.getCountry());
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);
 				PM.resetLocationBooleans();

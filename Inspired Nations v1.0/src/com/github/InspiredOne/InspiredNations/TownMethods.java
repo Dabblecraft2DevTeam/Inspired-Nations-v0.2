@@ -35,15 +35,23 @@ public class TownMethods {
 	public BigDecimal getTaxAmount(boolean adjusted, version ver) {
 		int levelProt = town.getProtectionLevel();
 		int levelMil = town.getMilitaryLevel();
-		return getTaxAmount(levelProt, levelMil, adjusted, ver);
+		BigDecimal amount = getTaxAmount(levelProt, levelMil, adjusted, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	public BigDecimal getTaxAmount(int levelProt, int levelMil, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
 		switch(ver) {
 		case OLD:
-			amount = new BigDecimal(town.getArea()*levelProt*town.getNationTaxOld()/100);	
+			amount = new BigDecimal(town.getArea()*levelProt*town.getNationTaxOld()/100);
+			break;
 		case NEW:
 			amount = new BigDecimal(town.getArea()*levelProt*town.getNationTaxOld()/100);
+			break;
 		}
 		amount = amount.add(getLocalParkTax(levelProt, false, ver)); // false so we don't adjust twice with moneymultiplyer.
 		amount = amount.add(this.getMilitaryFunding(levelMil, false, ver)); // false so we don't adjust twice with moneymultiplyer.
@@ -94,19 +102,36 @@ public class TownMethods {
 	public BigDecimal getLocalParkTax(Park park, boolean adjusted, version ver) {
 		Country country = plugin.countrydata.get(park.getCountry());
 		Town town = country.getTowns().get(park.getTown());
-		return getLocalParkTax(park.getRegion(),park.getProtectionLevel(), town.getProtectionLevel(), adjusted, ver);
+		BigDecimal amount = getLocalParkTax(park.getRegion(),park.getProtectionLevel(), town.getProtectionLevel(), false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	public BigDecimal getLocalParkTax(Park park, int townlevel, boolean adjusted, version ver) {
-		return getLocalParkTax(park.getRegion(),park.getProtectionLevel(), townlevel, adjusted, ver);
+		BigDecimal amount = getLocalParkTax(park.getRegion(),park.getProtectionLevel(), townlevel, false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	public BigDecimal getLocalParkTax(int townlevel, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
 		for(Park park:town.getParks()) {
-			amount = amount.add(getLocalParkTax(park, townlevel, adjusted, ver));
+			amount = amount.add(getLocalParkTax(park, townlevel, false, ver));
 		}
-		return amount;
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	public BigDecimal getMilitaryFunding(int level, boolean adjusted, version ver) {
@@ -115,8 +140,10 @@ public class TownMethods {
 		switch(ver) {
 			case OLD:
 				base = new BigDecimal(country.getOldMilitaryBase());
+				break;
 			case NEW:
 				base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
+				break;
 		}
 		if(adjusted) {
 			return tools.cut(base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(town.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
@@ -127,21 +154,33 @@ public class TownMethods {
 	}
 	
 	public BigDecimal getMilitaryFunding(boolean adjusted, version ver) {
-		return getMilitaryFunding(town.getMilitaryLevel(), adjusted, ver);
+		BigDecimal amount = getMilitaryFunding(town.getMilitaryLevel(), false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 //////////////////////////////////////////////////////////////////////////
 	
 
 	
-	public BigDecimal getCostPerChunk(version tax) {
+	public BigDecimal getCostPerChunk(boolean adjusted, version tax) {
 		BigDecimal output = null;
 		switch(tax) {
 			case OLD:
-				output = tools.cut(town.getMoneyMultiplyer().multiply(new BigDecimal(town.getNationTaxOld()/100)).multiply(new BigDecimal(town.getProtectionLevel())));
-			
+				output = tools.cut((new BigDecimal(town.getNationTaxOld()/100)).multiply(new BigDecimal(town.getProtectionLevel())));
+				break;
 			case NEW:
-				output = tools.cut(town.getMoneyMultiplyer().multiply(new BigDecimal(town.getNationTax()/100)).multiply(new BigDecimal(town.getProtectionLevel())));
+				output = tools.cut((new BigDecimal(town.getNationTax()/100)).multiply(new BigDecimal(town.getProtectionLevel())));
+				break;
 		}
-		return output;
+		if (adjusted) {
+			return tools.cut(output.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return output;
+		}
 	}
 }

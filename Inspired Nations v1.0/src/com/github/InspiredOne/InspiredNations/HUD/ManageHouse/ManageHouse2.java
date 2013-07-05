@@ -1,4 +1,4 @@
-package com.github.InspiredOne.InspiredNations.HUD;
+package com.github.InspiredOne.InspiredNations.HUD.ManageHouse;
 
 
 import java.util.Vector;
@@ -9,6 +9,9 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
+import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness2;
 import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.House;
@@ -40,6 +43,8 @@ public class ManageHouse2 extends Menu {
 		if(house.getBuilders().size() !=0) {
 			inputs.add("Remove Builder <player>");
 		}
+		inputs.add("Protection Level (" + menuType.OPTIONDESCRIP + house.getProtectionLevel() + menuType.OPTION + ")");
+		
 		inputs.add("Rename <name>");
 		
 		
@@ -54,7 +59,7 @@ public class ManageHouse2 extends Menu {
 			arg = arg.substring(1);
 		}
 		if (arg.equalsIgnoreCase("back")) {
-			if(inputs.size() < 2) {
+			if(PDI.getHouseOwned().size() < 2) {
 				return new HudConversationMain(plugin, player, 0);
 			}
 			else {
@@ -78,6 +83,11 @@ public class ManageHouse2 extends Menu {
 		
 		if (answer > inputs.size()-1) {
 			return new ManageHouse2(plugin, player, house, 2);
+		}
+		
+		// House Protection Levels
+		if (inputs.get(answer).equals("Protection Level (" + menuType.OPTIONDESCRIP + house.getProtectionLevel() + menuType.OPTION + ")")) {
+			return new HouseProtectionLevels(plugin, player, house, 0);
 		}
 		
 		// Add Builder <player>

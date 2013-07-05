@@ -71,19 +71,34 @@ public class CountryMethods {
 	}
 	
 	public BigDecimal getFederalParkTax(Park park, int level, int countrylevel, boolean adjusted, version ver) {
-		return getFederalParkTax(park.getRegion(), level, countrylevel, adjusted, ver);
+		if (adjusted) {
+			return tools.cut(getFederalParkTax(park.getRegion(), level, countrylevel, false, ver).multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return getFederalParkTax(park.getRegion(), level, countrylevel, false, ver);
+		}
 	}
 	
 	public BigDecimal getFederalParkTax(Park park, int countrylevel, boolean adjusted, version ver) {
-		return getFederalParkTax(park, park.getProtectionLevel(), countrylevel, adjusted, ver);
+		if(adjusted) {
+			return tools.cut(getFederalParkTax(park, park.getProtectionLevel(), countrylevel, false, ver).multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return getFederalParkTax(park, park.getProtectionLevel(), countrylevel, false, ver);
+		}
 	}
 	
 	public BigDecimal getFederalParkTax(int countrylevel, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
 		for(Park park:country.getParks()) {
-			amount = amount.add(getFederalParkTax(park, countrylevel, adjusted, ver));
+			amount = amount.add(getFederalParkTax(park, countrylevel, false, ver));
 		}
-		return amount;
+		if (adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	public BigDecimal getCostPerChunk(int countrylevel, boolean adjusted, version ver) {
@@ -91,8 +106,10 @@ public class CountryMethods {
 		switch(ver) {
 		case OLD:
 			amount = new BigDecimal(country.getOldChunkBase()*countrylevel);
+			break;
 		case NEW:
 			amount = new BigDecimal(plugin.getConfig().getDouble("base_cost_per_chunk")*countrylevel);
+			break;
 		}
 		if(adjusted) {
 			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
@@ -103,13 +120,26 @@ public class CountryMethods {
 	}
 	
 	public BigDecimal getTaxAmount(int countrylevel, boolean adjusted, version ver) {
-		return getCostPerChunk(countrylevel, adjusted, ver).multiply(new BigDecimal(country.
+		BigDecimal amount =  getCostPerChunk(countrylevel, false, ver).multiply(new BigDecimal(country.
 				getChunks().Chunks.size())).add(this.getFederalParkTax(countrylevel, false, ver)) // false so we don't adjust twice for the inflation.
 				.add(this.getMilitaryFunding(false, ver)); // false so we don't adjust twice for the inflation.
+		
+		if (adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	public BigDecimal getTaxAmount(boolean adjusted, version ver) {
-		return getTaxAmount(country.getProtectionLevel(), adjusted, ver);
+		BigDecimal amount = getTaxAmount(country.getProtectionLevel(), false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 	
 	//////////////////////////////////////////////////////////////////
@@ -124,9 +154,14 @@ public class CountryMethods {
 
 		for (int i = 0; i < country.getTowns().size(); i++) {
 			TownMethods TMI = new TownMethods(plugin, country.getTowns().get(i));
-			taxRevenuetemp = taxRevenuetemp.add(TMI.getTaxAmount(adjusted, ver));
+			taxRevenuetemp = taxRevenuetemp.add(TMI.getTaxAmount(false, ver));
 		}
-		return taxRevenuetemp;
+		if (adjusted) {
+			return tools.cut(taxRevenuetemp.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return taxRevenuetemp;
+		}
 	}
 	
 	public BigDecimal getMilitaryFunding(int level, boolean adjusted, version ver) {
@@ -134,18 +169,26 @@ public class CountryMethods {
 		switch(ver) {
 			case OLD:
 				base = new BigDecimal(country.getOldMilitaryBase());
+				break;
 			case NEW:
 				base = new BigDecimal(plugin.getConfig().getDouble("military_base_cost"));
+				break;
 		}
 		if(adjusted) {
 			return tools.cut(base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level)));
 		}
 		else {
-			return base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(country.getMoneyMultiplyer()).multiply(new BigDecimal(level));
+			return base.multiply(BigDecimal.valueOf(3)).pow(level).multiply(new BigDecimal(level));
 		}
 	}
 	
 	public BigDecimal getMilitaryFunding(boolean adjusted, version ver) {
-		return getMilitaryFunding(country.getMilitaryLevel(), adjusted, ver);
+		BigDecimal amount = getMilitaryFunding(country.getMilitaryLevel(), false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
 	}
 }

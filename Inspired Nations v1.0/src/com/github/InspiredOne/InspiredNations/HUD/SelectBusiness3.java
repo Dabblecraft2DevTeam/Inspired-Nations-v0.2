@@ -65,6 +65,7 @@ public class SelectBusiness3 extends Menu {
 				if(tools.selectionValid(player, region.SERVICEBUSINESS)) {
 					PM.selectCuboid(false);
 					PM.selectPolygon(false);
+					PM.serviceBusiness(false);
 					PM.setBlocksBack();
 					PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 					PM.setCuboid(new Cuboid(player.getWorld().getName()));
@@ -82,6 +83,7 @@ public class SelectBusiness3 extends Menu {
 					PM.selectCuboid(false);
 					PM.selectPolygon(false);
 					PM.setBlocksBack();
+					PM.goodBusiness(false);
 					PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 					PM.setCuboid(new Cuboid(player.getWorld().getName()));
 					return new ManageBusiness1(plugin, player, 0);
