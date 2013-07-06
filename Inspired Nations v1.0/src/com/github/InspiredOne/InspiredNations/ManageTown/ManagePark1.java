@@ -7,13 +7,28 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Regions.Park;
 
-public class ManagePark1 extends Menu {
+public class ManagePark1 extends Menu implements Prompt {
 
 	// Constructor
 	public ManagePark1(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
+		for(Park park:town.getParks()) {
+			inputs.add(park.getName());
+		}
+	}
+	
+	@Override
+	public boolean blocksForInput(ConversationContext arg0) {
+		if (inputs.size() == 1) {
+			PDI.getConversation().acceptInput("1");
+			return true;
+		}
+		else {
+			return true;
+		}
 	}
 	
 	@Override
@@ -23,6 +38,9 @@ public class ManagePark1 extends Menu {
 		String options = "";
 		String end = tools.footer(false);
 		String errmsg = ChatColor.RED + tools.errors.get(error);
+		
+		// Make options text
+		options = options.concat(tools.options(inputs));
 		
 		return space + main + options + end + errmsg;
 	}
@@ -48,6 +66,16 @@ public class ManagePark1 extends Menu {
 		if (answer > inputs.size()-1) {
 			return new ManagePark1(plugin, player, 2);
 		}
-		return new ManagePark1(plugin, player, 2);
+		
+		Park selection = null;
+		for(Park park: town.getParks()) {
+			if(park.getName().equals(inputs.get(answer))) {
+				selection = park;
+				break;
+			}
+		}
+		arg0.setSessionData("localpark", selection);
+		
+		return new ManagePark2(plugin, player, 0);
 	}
 }

@@ -29,6 +29,7 @@ public class SelectPark1 extends Menu {
 			arg = arg.substring(1);
 		}
 		if (arg.equalsIgnoreCase("back")) {
+			PM.setReSelectLocalPark(false);
 			PM.park(false);
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);

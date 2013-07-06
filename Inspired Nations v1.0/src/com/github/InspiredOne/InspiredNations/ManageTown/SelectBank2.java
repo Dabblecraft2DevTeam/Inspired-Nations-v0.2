@@ -12,11 +12,19 @@ import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 import com.github.InspiredOne.InspiredNations.Tools.region;
 
 public class SelectBank2 extends Menu {
-
+	Cuboid cube;
+	polygonPrism poly;
 	// Constructor
 	public SelectBank2(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
+		if (town.hasBank()) {
+			if (town.getBank().isCubeSpace()) {
+				cube = town.getBank().getCubeSpace();
+			} else {
+				poly = town.getBank().getPolySpace();
+			}
+		}
 	}
 	
 	@Override
@@ -53,16 +61,31 @@ public class SelectBank2 extends Menu {
 			return new TownGovernmentRegions(plugin, player, 0);
 		}
 		else if(arg.equalsIgnoreCase("finish")) {
+			if(town.hasBank()){
+				town.getBank().setCubeSpace(null);
+				town.getBank().setPolySpace(null);
+			}
 			if(tools.selectionValid(player, region.BANK)) {
+				if(PM.isSelectingCuboid()) {
+					town.getBank().setCubeSpace(PM.getCuboid());
+				}
+				else {
+					town.getBank().setPolySpace(PM.getPolygon());
+				}
 				PM.selectCuboid(false);
 				PM.selectPolygon(false);
 				PM.setBlocksBack();
+				PM.localBank(false);
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
 				return new ManageBank(plugin, player, 0);
 				
 			}
 			else {
+				if(town.hasBank()){
+					town.getBank().setCubeSpace(cube);
+					town.getBank().setPolySpace(poly);
+				}
 				PM.localBank(false);
 				PM.setBlocksBack();
 				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.BANK);

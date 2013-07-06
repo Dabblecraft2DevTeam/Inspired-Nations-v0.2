@@ -16,6 +16,7 @@ import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.House;
+import com.github.InspiredOne.InspiredNations.Regions.Park;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
 
@@ -40,6 +41,7 @@ public abstract class Menu extends StringPrompt {
 	public Business busi;
 	public boolean isGoodBusiness = true;
 	public House house;
+	public Park park;
 	
 	// Constructor
 	public Menu(InspiredNations instance, Player playertemp, int errortemp) {

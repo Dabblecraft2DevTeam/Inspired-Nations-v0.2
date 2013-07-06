@@ -109,11 +109,11 @@ public class ManageHouse2 extends Menu {
 					return new ManageHouse2(plugin ,player,  4, names);
 				}
 				else {
-					if (busi.getBuilders().contains(names.get(0))) {
+					if (house.getBuilders().contains(names.get(0))) {
 						return new ManageHouse2(plugin, player, 42);
 					}
 					else {
-						busi.addBuilder(names.get(0));
+						house.addBuilder(names.get(0));
 					}
 					return new ManageHouse2(plugin, player,  0);
 				}
@@ -136,7 +136,7 @@ public class ManageHouse2 extends Menu {
 					return new ManageHouse2(plugin ,player, 4, names);
 				}
 				else {
-					busi.removeBuilder(names.get(0));
+					house.removeBuilder(names.get(0));
 					return new ManageHouse2(plugin, player, 0);
 				}
 				
@@ -150,7 +150,7 @@ public class ManageHouse2 extends Menu {
 			else {
 				String HouseName = tools.formatSpace(tools.subArray(args, 1, args.length - 1));
 				if(HouseName.contains("/")) {
-					return new ManageHouse2(plugin, player, 50);
+					return new ManageHouse2(plugin, player, 69);
 				}
 				boolean works = true;
 				for(House test:PDI.getTownResides().getHouses()) {
@@ -163,7 +163,7 @@ public class ManageHouse2 extends Menu {
 					return new ManageHouse2(plugin, player, 0);
 				}
 				else {
-					return new ManageHouse2(plugin, player, 36);
+					return new ManageHouse2(plugin, player, 67);
 				}
 			}
 		}

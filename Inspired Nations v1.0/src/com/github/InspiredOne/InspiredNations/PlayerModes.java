@@ -49,6 +49,7 @@ public class PlayerModes {
 	private boolean reSelectHouse = false;
 	private boolean reSelectGoodBusiness = false;
 	private boolean reSelectServiceBusiness = false;
+	private boolean reSelectLocalPark = false;
 	private polygonPrism selectiontemp;
 	private Cuboid selectiontemp2;
 	private HashMap<Point3D, Byte> blocks;
@@ -386,6 +387,14 @@ public class PlayerModes {
 
 	public void setReSelectServiceBusiness(boolean reSelectServiceBusiness) {
 		this.reSelectServiceBusiness = reSelectServiceBusiness;
+	}
+
+	public boolean isReSelectLocalPark() {
+		return reSelectLocalPark;
+	}
+
+	public void setReSelectLocalPark(boolean reSelectLocalPark) {
+		this.reSelectLocalPark = reSelectLocalPark;
 	}
 }
 

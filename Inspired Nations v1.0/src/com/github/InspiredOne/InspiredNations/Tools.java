@@ -105,6 +105,10 @@ public class Tools {
 		errors.add("\nYou have not requested a job from that business.");//64
 		errors.add("\nYou have not been offered ownership of that business.");//65
 		errors.add("\nYou have not been offered a job at that business.");//66
+		errors.add("\nThat house name is already taken.");//67
+		errors.add("\nThat park name is already taken.");//68
+		errors.add("\nIllegal Character '/'. You cannot create a house name with '/'.)");//69
+		errors.add("\nIllegal Character '/'. You cannot create a park name with '/'.)");//70
 	}
 	public enum version {
 		OLD, NEW
@@ -147,7 +151,7 @@ public class Tools {
 		SMALL,MEDIUM,LARGE
 	}
 	public enum region {
-		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY, REGOOD, RESERVICE, REHOUSE
+		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY, REGOOD, RESERVICE, REHOUSE, REPARK
 	}
 	
 	// A method that builds new lines on a string with the standard formatting
@@ -785,10 +789,14 @@ public class Tools {
 				plugin.logger.info("5");
 				switch(type) {
 					case PRISON:
-						town.setPrison(new LocalPrison(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						if(!town.hasPrison()) {
+							town.setPrison(new LocalPrison(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						}
 						break;
 					case BANK:
-						town.setBank(new LocalBank(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						if(!town.hasBank()) {
+							town.setBank(new LocalBank(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						}
 						break;
 					case GOODBUSINESS:
 						String BusinessName = "";
@@ -895,26 +903,28 @@ public class Tools {
 						PDI.getTownResides().addHouse(housetemp);
 						break;
 					case PARK:
-						String ParkName = "";
-						int test = town.getParks().size();
-						boolean works3 = true;
-						while(ParkName.isEmpty()) {
-							works3 = true;
-							for(Park parktest: town.getParks()) {
-								if(parktest.getName().equalsIgnoreCase("Park " + test)) {
-									works3 = false;
-									break;
+						if(!PM.isReSelectLocalPark()) {
+							String ParkName = "";
+							int test = town.getParks().size();
+							boolean works3 = true;
+							while(ParkName.isEmpty()) {
+								works3 = true;
+								for(Park parktest: town.getParks()) {
+									if(parktest.getName().equalsIgnoreCase("Park " + test)) {
+										works3 = false;
+										break;
+									}
 								}
+								if(!works3) {
+									test += 1;
+								}
+								else {
+									ParkName = "Park " + test;
+								}
+	
 							}
-							if(!works3) {
-								test += 1;
-							}
-							else {
-								ParkName = "Park " + test;
-							}
-
+							town.addPark(new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						}
-						town.addPark(new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						break;
 					case FEDERALPARK:
 						Country country11 = PDI.getCountryResides();
@@ -1018,10 +1028,14 @@ public class Tools {
 				// put the region in the town
 				switch(type) {
 					case PRISON:
-						town.setPrison(new LocalPrison(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						if(!town.hasPrison()) {
+							town.setPrison(new LocalPrison(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						}
 						break;
 					case BANK:
-						town.setBank(new LocalBank(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						if(!town.hasBank()) {
+							town.setBank(new LocalBank(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town)));
+						}
 						break;
 					case GOODBUSINESS:
 						String BusinessName = "";
@@ -1120,25 +1134,30 @@ public class Tools {
 						PDI.getTownResides().addHouse(housetemp);
 						break;
 					case PARK:
-						String ParkName = "";
-
-						int test = town.getParks().size();
-						while(ParkName.isEmpty()) {
-							boolean works3 = true;
-							for(Park park: town.getParks()) {
-								if(park.getName().equalsIgnoreCase("Park " + test)) {
-									works3 = false;
-									break;
+						if(!PM.isReSelectLocalPark()) {
+							String ParkName = "";
+	
+							int test = town.getParks().size();
+							while(ParkName.isEmpty()) {
+								boolean works3 = true;
+								for(Park park: town.getParks()) {
+									if(park.getName().equalsIgnoreCase("Park " + test)) {
+										works3 = false;
+										break;
+									}
+								}
+								if(!works3) {
+									test += 1;
+								}
+								else {
+									ParkName = "Park " + test;
 								}
 							}
-							if(!works3) {
-								test += 1;
-							}
-							else {
-								ParkName = "Park " + test;
-							}
+							Park park = new Park(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName));
+							town.addPark(park);
+							PDI.getConversation().getContext().setSessionData("localpark", park);
 						}
-						town.addPark(new Park(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
+
 						break;
 					case FEDERALPARK:
 						Country country11 = PDI.getCountryResides();

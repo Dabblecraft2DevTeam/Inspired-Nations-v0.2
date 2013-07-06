@@ -13,10 +13,20 @@ import com.github.InspiredOne.InspiredNations.Tools.region;
 
 public class SelectPrison2 extends Menu {
 
+	polygonPrism poly;
+	Cuboid cube;
 	// Constructor
 	public SelectPrison2(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
+		if(town.hasPrison()) {
+			if(town.getPrison().isCubeSpace()) {
+				cube = town.getPrison().getCubeSpace();
+			}
+			else {
+				poly = town.getPrison().getPolySpace();
+			}
+		}
 	}
 
 	@Override
@@ -54,16 +64,31 @@ public class SelectPrison2 extends Menu {
 			return new TownGovernmentRegions(plugin, player, 0);
 		}
 		else if(arg.equalsIgnoreCase("finish")) {
+			if(town.hasPrison()) {
+				town.getPrison().setPolySpace(null);
+				town.getPrison().setCubeSpace(null);
+			}
 			if(tools.selectionValid(player, region.PRISON)) {
+				if(PM.isSelectingCuboid()) {
+					town.getPrison().setCubeSpace(PM.getCuboid());
+				}
+				else {
+					town.getPrison().setPolySpace(PM.getPolygon());
+				}
 				PM.selectCuboid(false);
 				PM.selectPolygon(false);
 				PM.setBlocksBack();
+				PM.localPrison(false);
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
 				return new ManagePrison(plugin, player, 0);
 				
 			}
 			else {
+				if(town.hasPrison()){
+					town.getPrison().setCubeSpace(cube);
+					town.getPrison().setPolySpace(poly);
+				}
 				PM.localPrison(false);
 				PM.setBlocksBack();
 				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.PRISON);

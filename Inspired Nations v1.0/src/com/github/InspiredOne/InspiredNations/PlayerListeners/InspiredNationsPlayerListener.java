@@ -108,7 +108,7 @@ public class InspiredNationsPlayerListener implements Listener {
 		// put this under onPlayerInteract
 		if(resetPlayerModes(player, PM)) return;
 		
-		if(PM.houseSelect() || PM.isReSelectGoodBusiness() || PM.isReSelectServiceBusiness() || PM.isReSelectHouse()
+		if(PM.houseSelect() || PM.isReSelectGoodBusiness() || PM.isReSelectServiceBusiness() || PM.isReSelectHouse() ||PM.isReSelectLocalPark()
 				|| PM.goodBusinessSelect() || PM.serviceBusinessSelect() || PM.federalParkSelect() || PM.isMap() || PM.parkSelect() || PM.localBankSelect()
 				|| PM.localPrisonSelect()) {
 			generateMessage(PDI);
@@ -371,6 +371,7 @@ public class InspiredNationsPlayerListener implements Listener {
 						|| PM.isReSelectGoodBusiness()
 						|| PM.isReSelectHouse()
 						|| PM.isReSelectServiceBusiness()
+						|| PM.isReSelectLocalPark()
 						|| PM.placesign
 						|| PM.isMap())
 						) {
@@ -390,6 +391,7 @@ public class InspiredNationsPlayerListener implements Listener {
 			PM.setReSelectGoodBusiness(false);
 			PM.setReSelectHouse(false);
 			PM.setReSelectServiceBusiness(false);
+			PM.setReSelectLocalPark(false);
 			PM.setBlocksBack();
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);

@@ -6,13 +6,18 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
+import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 
 public class SelectBank1 extends Menu {
-	
+
 	// Constructor
 	public SelectBank1(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		town = PDI.getTownMayored();
+		if(town.hasBank()) {
+
+		}
 	}
 	
 	@Override

@@ -24,6 +24,12 @@ public class ManagePrison extends Menu {
 		String end = tools.footer(false);
 		String errmsg = ChatColor.RED + tools.errors.get(error);
 		
+		//Make Inputs Vector
+		inputs.add("Reclaim Prison");
+		
+		// Make Output text
+		options = options.concat(tools.options(inputs));
+		
 		return space + main + options + end + errmsg;
 	}
 	
@@ -48,6 +54,12 @@ public class ManagePrison extends Menu {
 		if (answer > inputs.size()-1) {
 			return new ManagePrison(plugin, player, 2);
 		}
+		
+		if(inputs.get(answer).equals("Reclaim Prison")) {
+			PM.localPrison(true);
+			return new SelectPrison1(plugin, player, 0);
+		}
+		
 		return new ManagePrison(plugin, player, 2);
 	}
 
