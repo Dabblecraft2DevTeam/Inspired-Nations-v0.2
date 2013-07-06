@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse1;
-import com.github.InspiredOne.InspiredNations.ManageTown.InvalidSelection;
 import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;

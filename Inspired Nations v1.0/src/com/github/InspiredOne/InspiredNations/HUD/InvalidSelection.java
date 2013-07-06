@@ -1,4 +1,4 @@
-package com.github.InspiredOne.InspiredNations.ManageTown;
+package com.github.InspiredOne.InspiredNations.HUD;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationContext;
@@ -8,15 +8,15 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 import com.github.InspiredOne.InspiredNations.Tools.region;
-import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
-import com.github.InspiredOne.InspiredNations.HUD.Menu;
-import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
-import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ReselectBusiness2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.SelectFederalPark2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ReselectHouse2;
+import com.github.InspiredOne.InspiredNations.ManageTown.SelectBank2;
+import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark2;
+import com.github.InspiredOne.InspiredNations.ManageTown.SelectPrison2;
+import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 
