@@ -66,7 +66,7 @@ public class ClaimHousePlayerListener {
 	}
 	
 	public void onPlayerInteract() {
-		if (!PM.houseSelect() || !(PM.isSelectingCuboid() || PM.isSelectingPolygon())) return;
+		if (!(PM.houseSelect() || PM.isReSelectHouse()) || !(PM.isSelectingCuboid() || PM.isSelectingPolygon())) return;
 		
 		// Generic selection code
 		if (PM.isSelectingCuboid()) {

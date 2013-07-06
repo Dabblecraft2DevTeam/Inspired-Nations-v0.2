@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.ServiceBusiness;
 
@@ -73,7 +74,14 @@ public class ManageBusiness1 extends Menu implements Prompt {
 		if (answer > inputs.size()-1) {
 			return new ManageBusiness1(plugin, player, 2);
 		}
-		return new ManageBusiness2(plugin, player, 0, inputs.get(answer));
+		for(Business i: PDI.getBusinesses()){
+			if (i.getName().equals(inputs.get(answer))) {
+				busi = i;
+			}
+		}
+		
+		arg0.setSessionData("business", busi);
+		return new ManageBusiness2(plugin, player, 0);
 		//return new ManageBusiness1(plugin, player, 2);
 	}
 

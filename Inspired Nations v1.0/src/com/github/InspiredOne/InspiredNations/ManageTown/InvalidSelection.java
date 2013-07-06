@@ -12,7 +12,11 @@ import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
 import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ManageBusiness2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ReselectBusiness2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.SelectFederalPark2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ReselectHouse2;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 
@@ -24,7 +28,7 @@ public class InvalidSelection extends Menu {
 	// Constructor
 	public InvalidSelection(InspiredNations instance, Player playertemp, int errortemp, Object object, region type) {
 		super(instance, playertemp, errortemp);
-		town = PDI.getTownMayored();
+		town = PDI.getTownResides();
 		Region = type;
 		selectionError = (Integer) object;
 	}
@@ -78,8 +82,10 @@ public class InvalidSelection extends Menu {
 				return new SelectHouse2(plugin, player, 0);
 			case GOODBUSINESS:
 				PM.goodBusiness(true);
+				return new SelectBusiness3(plugin, player, 0);
 			case SERVICEBUSINESS:
 				PM.serviceBusiness(true);
+				return new SelectBusiness3(plugin, player, 0);
 			case PARK:
 				PM.park(true);
 				return new SelectPark2(plugin ,player, 0);
@@ -89,6 +95,15 @@ public class InvalidSelection extends Menu {
 			case FEDERALPARK:
 				PM.federalPark(true);
 				return new SelectFederalPark2(plugin, player, 0);
+			case REGOOD:
+				PM.setReSelectGoodBusiness(true);
+				return new ReselectBusiness2(plugin, player, 0);
+			case RESERVICE:
+				PM.setReSelectServiceBusiness(true);
+				return new ReselectBusiness2(plugin, player, 0);
+			case REHOUSE:
+				PM.setReSelectHouse(true);
+				return new ReselectHouse2(plugin, player, 0);
 			default:
 				break;
 			}
@@ -132,6 +147,15 @@ public class InvalidSelection extends Menu {
 			case FEDERALPARK:
 				PM.federalPark(true);
 				return new SelectFederalPark2(plugin, player, 0);
+			case REGOOD:
+				PM.setReSelectGoodBusiness(true);
+				return new ReselectBusiness2(plugin, player, 0);
+			case RESERVICE:
+				PM.setReSelectServiceBusiness(true);
+				return new ReselectBusiness2(plugin, player, 0);
+			case REHOUSE:
+				PM.setReSelectHouse(true);
+				return new ReselectHouse2(plugin, player, 0);
 			case TOWN:
 				break;
 			default:
@@ -144,6 +168,9 @@ public class InvalidSelection extends Menu {
 			PM.setBlocksBack();
 			PM.goodBusiness(false);
 			PM.serviceBusiness(false);
+			PM.setReSelectGoodBusiness(false);
+			PM.setReSelectHouse(false);
+			PM.setReSelectServiceBusiness(false);
 			PM.house(false);
 			PM.town(false);
 			PM.localBank(false);
@@ -151,9 +178,9 @@ public class InvalidSelection extends Menu {
 			PM.park(false);
 			PM.country(false);
 			PM.federalPark(false);
-			PM.reSelectHouse = false;
-			PM.reSelectGoodBusiness = false;
-			PM.reSelectServiceBusiness = false;
+			PM.setReSelectHouse(false);
+			PM.setReSelectGoodBusiness(false);
+			PM.setReSelectServiceBusiness(false);
 			PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 			PM.setCuboid(new Cuboid(player.getWorld().getName()));
 			
@@ -170,6 +197,12 @@ public class InvalidSelection extends Menu {
 				return new TownGovernmentRegions(plugin, player, 0);
 			case BANK:
 				return new TownGovernmentRegions(plugin, player, 0);
+			case REGOOD:
+				return new ManageBusiness2(plugin, player, 0);
+			case RESERVICE:
+				return new ManageBusiness2(plugin, player, 0);
+			case REHOUSE:
+				return new ManageHouse2(plugin, player, 0);
 			case COUNTRY:
 				break;
 			case FEDERALPARK:

@@ -1,33 +1,43 @@
-package com.github.InspiredOne.InspiredNations.HUD;
-
+package com.github.InspiredOne.InspiredNations.HUD.ManageHouse;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
-import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse1;
+import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.ManageTown.InvalidSelection;
-import com.github.InspiredOne.InspiredNations.ManageTown.TownGovernmentRegions;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
+import com.github.InspiredOne.InspiredNations.Regions.House;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 import com.github.InspiredOne.InspiredNations.Tools.region;
 
-public class SelectHouse2 extends Menu {
+public class ReselectHouse2 extends Menu {
 
+	polygonPrism poly;
+	Cuboid cube;
+	
 	// Constructor
-	public SelectHouse2(InspiredNations instance, Player playertemp, int errortemp) {
+	public ReselectHouse2(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
-		town = PDI.getTownResides();
+		this.house = (House) PDI.getConversation().getContext().getSessionData("house");
+		if(house.isCubeSpace()) {
+			cube = house.getCubeSpace();
+		}
+		else {
+			poly = house.getPolySpace();
+		}
 	}
 	
 	@Override
 	public String getPromptText(ConversationContext arg0) {
-		return tools.writeRegionSelection2("house", error, PM);
+		return tools.writeRegionSelection2("House", error, PM);
 	}
+
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
+		this.house = (House) arg0.getSessionData("house");
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}
@@ -36,41 +46,52 @@ public class SelectHouse2 extends Menu {
 			if(args.length > 1) {
 				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
-			return new SelectHouse2(plugin, player, 0);
+			return new ReselectHouse2(plugin, player, 0);
 		}
 		
 		if (arg.equalsIgnoreCase("back")) {
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);
 			PM.setBlocksBack();
-			return new SelectHouse1(plugin, player, 0);
+			return new ReselectHouse1(plugin, player, 0);
 		}
 		else if(arg.equalsIgnoreCase("cancel")) {
 			PM.setBlocksBack();
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);
-			PM.house(false);
+			PM.setReSelectHouse(false);
 			PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 			PM.setCuboid(new Cuboid(player.getWorld().getName()));
-			return new HudConversationMain(plugin, player, 0);
+			return new ManageHouse2(plugin, player, 0);
 		}
 		else if(arg.equalsIgnoreCase("finish")) {
-			if(tools.selectionValid(player, region.HOUSE)) {
+			house.setCubeSpace(null);
+			house.setPolySpace(null);
+			if(tools.selectionValid(player, region.REHOUSE)) {
+				if(PM.isSelectingCuboid()) {
+					house.setCubeSpace(PM.getCuboid());
+				}
+				else {
+					house.setPolySpace(PM.getPolygon());
+				}
 				PM.selectCuboid(false);
 				PM.selectPolygon(false);
 				PM.setBlocksBack();
-				PM.house(false);
+				PM.setReSelectHouse(false);
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
 				return new ManageHouse1(plugin, player, 0);
-				
 			}
 			else {
-				PM.house(false);
+				house.setCubeSpace(cube);
+				house.setPolySpace(poly);
+				PM.setReSelectHouse(false);
 				PM.setBlocksBack();
-				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.HOUSE);
+				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.REHOUSE);
 			}
 		}
-		return new SelectHouse2(plugin, player, 2);
+		return new ReselectHouse2(plugin, player, 2);
 	}
+
+
 }

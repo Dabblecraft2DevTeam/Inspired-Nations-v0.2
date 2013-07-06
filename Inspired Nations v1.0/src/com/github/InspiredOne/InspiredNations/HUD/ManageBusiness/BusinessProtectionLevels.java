@@ -46,7 +46,7 @@ public class BusinessProtectionLevels extends Menu {
 			return new BusinessProtectionLevels(plugin, player, 0, businessname);
 		}
 		if (arg.equalsIgnoreCase("back")) {
-			return new ManageBusiness2(plugin, player, 0, businessname);
+			return new ManageBusiness2(plugin, player, 0);
 		}
 		try {
 			answer = Integer.decode(args[0])-1;
@@ -68,6 +68,7 @@ public class BusinessProtectionLevels extends Menu {
 					int level = Integer.decode(args[1]);
 
 					busi.setProtectionLevel(level);
+					return new BusinessProtectionLevels(plugin, player, 0, businessname);
 				}
 				catch(Exception ex) {
 					return new BusinessProtectionLevels(plugin ,player, 17, businessname);

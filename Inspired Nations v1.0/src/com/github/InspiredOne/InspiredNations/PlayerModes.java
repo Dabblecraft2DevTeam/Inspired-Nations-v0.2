@@ -46,9 +46,9 @@ public class PlayerModes {
 	private boolean selectCountry = false;
 	private boolean preDeselectCountry = false;
 	private boolean deselectCountry = false;
-	public boolean reSelectHouse = false;
-	public boolean reSelectGoodBusiness = false;
-	public boolean reSelectServiceBusiness = false;
+	private boolean reSelectHouse = false;
+	private boolean reSelectGoodBusiness = false;
+	private boolean reSelectServiceBusiness = false;
 	private polygonPrism selectiontemp;
 	private Cuboid selectiontemp2;
 	private HashMap<Point3D, Byte> blocks;
@@ -362,6 +362,30 @@ public class PlayerModes {
 
 	public void setMap(boolean map) {
 		this.map = map;
+	}
+
+	public boolean isReSelectHouse() {
+		return reSelectHouse;
+	}
+
+	public void setReSelectHouse(boolean reSelectHouse) {
+		this.reSelectHouse = reSelectHouse;
+	}
+
+	public boolean isReSelectGoodBusiness() {
+		return reSelectGoodBusiness;
+	}
+
+	public void setReSelectGoodBusiness(boolean reSelectGoodBusiness) {
+		this.reSelectGoodBusiness = reSelectGoodBusiness;
+	}
+
+	public boolean isReSelectServiceBusiness() {
+		return reSelectServiceBusiness;
+	}
+
+	public void setReSelectServiceBusiness(boolean reSelectServiceBusiness) {
+		this.reSelectServiceBusiness = reSelectServiceBusiness;
 	}
 }
 

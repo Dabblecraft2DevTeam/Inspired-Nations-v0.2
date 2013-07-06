@@ -16,6 +16,7 @@ import java.awt.Point;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -26,6 +27,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
+import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ReselectBusiness2;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
 import com.github.InspiredOne.InspiredNations.Regions.Point3D;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
@@ -67,7 +69,7 @@ public class ClaimGoodBusinessPlayerListener {
 	}
 	
 	public void onPlayerInteract() {
-		if (!PM.goodBusinessSelect() || !(PM.isSelectingCuboid() || PM.isSelectingPolygon())) return;
+		if (!(PM.goodBusinessSelect() || PM.isReSelectGoodBusiness()) || !(PM.isSelectingCuboid() || PM.isSelectingPolygon())) return;
 		
 		// Generic selection code
 		if (PM.isSelectingCuboid()) {
@@ -160,8 +162,14 @@ public class ClaimGoodBusinessPlayerListener {
 	
 	// A method to generate the message
 	public void generateMessage() {
-		SelectBusiness3 convo = new SelectBusiness3(plugin, player, 0);
 		ConversationContext arg = PDI.getConversation().getContext();
+		Prompt convo;
+		if(PM.isReSelectGoodBusiness()) {
+			convo = new ReselectBusiness2(plugin, player, 0);
+		}
+		else {
+			convo = new SelectBusiness3(plugin, player, 0);
+		}
 		String current = convo.getPromptText(arg);
 		PDI.getConversation().outputNextPrompt();
 		plugin.InspiredNationsPL.previous = current;

@@ -20,7 +20,9 @@ import com.github.InspiredOne.InspiredNations.PlayerModes;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
 import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
 import com.github.InspiredOne.InspiredNations.HUD.ShowMap;
+import com.github.InspiredOne.InspiredNations.HUD.ManageBusiness.ReselectBusiness2;
 import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.SelectFederalPark2;
+import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ReselectHouse2;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectBank2;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectPark2;
 import com.github.InspiredOne.InspiredNations.ManageTown.SelectPrison2;
@@ -106,7 +108,8 @@ public class InspiredNationsPlayerListener implements Listener {
 		// put this under onPlayerInteract
 		if(resetPlayerModes(player, PM)) return;
 		
-		if(PM.houseSelect() || PM.goodBusinessSelect() || PM.serviceBusinessSelect() || PM.federalParkSelect() || PM.isMap() || PM.parkSelect() || PM.localBankSelect()
+		if(PM.houseSelect() || PM.isReSelectGoodBusiness() || PM.isReSelectServiceBusiness() || PM.isReSelectHouse()
+				|| PM.goodBusinessSelect() || PM.serviceBusinessSelect() || PM.federalParkSelect() || PM.isMap() || PM.parkSelect() || PM.localBankSelect()
 				|| PM.localPrisonSelect()) {
 			generateMessage(PDI);
 		}
@@ -118,11 +121,11 @@ public class InspiredNationsPlayerListener implements Listener {
 			UnclaimCountryLandPlayerListener UCLPL = new UnclaimCountryLandPlayerListener(plugin, event);
 			ClaimTownLandPlayerListener TLPL = new ClaimTownLandPlayerListener(plugin, event);
 			UnclaimTownLandPlayerListener UCTLPL = new UnclaimTownLandPlayerListener(plugin, event);
-			//ClaimFederalParkPlayerListener FPPL = new ClaimFederalParkPlayerListener(plugin, event);
+			ClaimFederalParkPlayerListener FPPL = new ClaimFederalParkPlayerListener(plugin, event);
 			CLPL.onPlayerMove();
 			UCLPL.onPlayerMove();
 			TLPL.onPlayerMove();
-			//FPPL.onPlayerMove();
+			FPPL.onPlayerMove();
 			UCTLPL.onPlayerMove();
 		
 			// Player Tracker
@@ -321,6 +324,8 @@ public class InspiredNationsPlayerListener implements Listener {
 		PlayerModes PM = plugin.playermodes.get(PDI.playername);
 		Player player = plugin.getServer().getPlayer(PDI.playername);
 		Prompt convo;
+		ConversationContext arg = PDI.getConversation().getContext();
+
 		
 		if (PM.isMap()) convo = new ShowMap(plugin, player, 0);
 		else if (PM.houseSelect()) convo = new SelectHouse2(plugin, player, 0);
@@ -330,9 +335,11 @@ public class InspiredNationsPlayerListener implements Listener {
 		else if (PM.goodBusinessSelect()) convo = new SelectBusiness3(plugin, player, 0);
 		else if (PM.serviceBusinessSelect()) convo = new SelectBusiness3(plugin, player, 0);
 		else if (PM.federalParkSelect()) convo = new SelectFederalPark2(plugin, player, 0);
+		else if (PM.isReSelectGoodBusiness()) convo = new ReselectBusiness2(plugin, player, 0);
+		else if (PM.isReSelectServiceBusiness()) convo = new ReselectBusiness2(plugin, player, 0);
+		else if (PM.isReSelectHouse()) convo = new ReselectHouse2(plugin, player, 0);
 		else convo = null;
 		
-		ConversationContext arg = PDI.getConversation().getContext();
 		String current = convo.getPromptText(arg);
 		if (!current.equals(plugin.InspiredNationsPL.previous)) {
 			PDI.getConversation().outputNextPrompt();
@@ -361,6 +368,9 @@ public class InspiredNationsPlayerListener implements Listener {
 						|| PM.serviceBusinessSelect() 
 						|| PM.goodBusinessSelect() 
 						|| PM.getPlaceItem() 
+						|| PM.isReSelectGoodBusiness()
+						|| PM.isReSelectHouse()
+						|| PM.isReSelectServiceBusiness()
 						|| PM.placesign
 						|| PM.isMap())
 						) {
@@ -377,6 +387,9 @@ public class InspiredNationsPlayerListener implements Listener {
 			PM.house(false);
 			PM.goodBusiness(false);
 			PM.serviceBusiness(false);
+			PM.setReSelectGoodBusiness(false);
+			PM.setReSelectHouse(false);
+			PM.setReSelectServiceBusiness(false);
 			PM.setBlocksBack();
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);

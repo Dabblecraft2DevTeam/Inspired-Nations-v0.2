@@ -124,25 +124,25 @@ public class InspiredRegion {
 	
 	public Boolean isPolySpace() {
 		try {	
-			if (cubespace.equals(null)) {
-				return true;
+			if (polyspace.equals(null)) {
+				return false;
 			}
-			else return false;
+			else return true;
 		}
 		catch (Exception ex) {
-			return true;
+			return false;
 		}
 	}
 	
 	public Boolean isCubeSpace() {
 		try {	
-			if (polyspace.equals(null)) {
-				return true;
+			if (cubespace.equals(null)) {
+				return false;
 			}
-			else return false;
+			else return true;
 		}
 		catch (Exception ex) {
-			return true;
+			return false;
 		}
 	}
 	

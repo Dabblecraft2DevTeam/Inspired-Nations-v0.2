@@ -147,7 +147,7 @@ public class Tools {
 		SMALL,MEDIUM,LARGE
 	}
 	public enum region {
-		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY
+		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY, REGOOD, RESERVICE, REHOUSE
 	}
 	
 	// A method that builds new lines on a string with the standard formatting
@@ -225,10 +225,11 @@ public class Tools {
 		String end = this.footer(false);
 		String errmsg = this.errormsg(error);
 		PlayerMethods PMeth = new PlayerMethods(plugin, player);
+		PlayerData PDI = plugin.playerdata.get(player.getName());
 		
 		Country country = plugin.countrydata.get(building.getCountry());
 		CountryMethods CM = new CountryMethods(plugin, country);
-		Town town = country.getTowns().get(building.getTown());
+		Town town = PDI.getTownResides();
 		TownMethods TM = new TownMethods(plugin, town);
 		options = options.concat(menuType.LABEL + "Current Protection Level: " + menuType.VALUE + Level + menuType.UNIT + "\n");
 		
@@ -687,7 +688,7 @@ public class Tools {
 					ParkName = "Park " + test;
 				}
 			}
-			
+
 			country.addPark(new Park(plugin, PM.getCuboid(), country.getName(), -1, true, ParkName));
 		}
 		return true;
@@ -700,7 +701,6 @@ public class Tools {
 		ConversationContext context = PDI.getConversation().getContext();
 		Town town = PDI.getTownResides();
 		
-		plugin.logger.info("1");
 		
 		// Finish
 			player.sendRawMessage(menuType.INSTRUCTION + "Please wait while the server determines if this is a valid selection.");
@@ -918,6 +918,12 @@ public class Tools {
 						break;
 					case FEDERALPARK:
 						break;
+					case REGOOD:
+						break;
+					case RESERVICE:
+						break;
+					case REHOUSE:
+						break;
 				case COUNTRY:
 					break;
 				case TOWN:
@@ -1115,6 +1121,12 @@ public class Tools {
 						town.addPark(new Park(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						break;
 					case FEDERALPARK:
+						break;
+					case REGOOD:
+						break;
+					case RESERVICE:
+						break;
+					case REHOUSE:
 						break;
 				case COUNTRY:
 					break;

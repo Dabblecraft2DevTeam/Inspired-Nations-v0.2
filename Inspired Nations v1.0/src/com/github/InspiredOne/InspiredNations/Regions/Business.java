@@ -28,11 +28,12 @@ public class Business extends InspiredRegion{
 	
 	public Business(InspiredNations instance, polygonPrism space, Vector<String> owner,  String countrytemp, int towntemp, String nametemp) {
 		super(instance, space, countrytemp, towntemp, nametemp);
-
+		owners = owner;
 	}
 
 	public Business(InspiredNations instance, Cuboid space, Vector<String> owner, String countrytemp, int towntemp, String nametemp) {
 		super(instance, space, countrytemp, towntemp, nametemp);
+		owners = owner;
 	}
 	
 	public void setOwner(Player owner) {

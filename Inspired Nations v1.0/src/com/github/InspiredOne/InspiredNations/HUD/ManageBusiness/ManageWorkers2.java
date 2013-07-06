@@ -14,14 +14,14 @@ import com.github.InspiredOne.InspiredNations.HUD.Menu;
 public class ManageWorkers2 extends Menu {
 	
 	// Constructor
-	public ManageWorkers2(InspiredNations instance, Player playertemp, int errortemp, String business) {
-		super(instance, playertemp, errortemp, business);
+	public ManageWorkers2(InspiredNations instance, Player playertemp, int errortemp) {
+		super(instance, playertemp, errortemp);
 		town = PDI.getTownResides();
 	}
 	
 	// Constructor
-	public ManageWorkers2(InspiredNations instance, Player playertemp, int errortemp, String business, Vector<String> namestemp) {
-		super(instance, playertemp, errortemp, business, namestemp);
+	public ManageWorkers2(InspiredNations instance, Player playertemp, int errortemp, Vector<String> namestemp) {
+		super(instance, playertemp, errortemp, namestemp);
 		town = PDI.getTownResides();
 	}
 	
@@ -60,42 +60,42 @@ public class ManageWorkers2 extends Menu {
 			if(args.length > 1) {
 				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
-			return new ManageWorkers2(plugin, player, 0, businessname);
+			return new ManageWorkers2(plugin, player, 0);
 		}
 		
 		if (arg.equalsIgnoreCase("back")) {
-			return new ManageWorkers1(plugin, player, 0, businessname);
+			return new ManageWorkers1(plugin, player, 0);
 		}
 		try {
 			answer = Integer.decode(args[0])-1;
 		}
 		catch (Exception ex) {
-			return new ManageWorkers2(plugin, player,1, businessname);
+			return new ManageWorkers2(plugin, player,1);
 		}
 		
 		if (answer > inputs.size()-1) {
-			return new ManageWorkers2(plugin, player, 2, businessname);
+			return new ManageWorkers2(plugin, player, 2);
 		}
 		
 		// Accept Owner Request <player>
 		if (inputs.get(answer).equals("Accept Owner Request <player>")) {
 			if (args.length !=2) {
-				return new ManageWorkers2(plugin, player, 3, businessname);
+				return new ManageWorkers2(plugin, player, 3);
 			}
 			else {
 				Vector<String> names;
 				names = tools.find(args[1], busi.getOwnerRequest());
 				
 				if(names.size() == 0) {
-					return new ManageWorkers2(plugin, player, 48, businessname);
+					return new ManageWorkers2(plugin, player, 48);
 				}
 				else if(names.size() > 1) {
-					return new ManageWorkers2(plugin ,player, 4, businessname, names);
+					return new ManageWorkers2(plugin ,player, 4, names);
 				}
 				else {
 					busi.removeOwnerRequest(names.get(0));
 					busi.addOwner(names.get(0));
-					return new ManageWorkers2(plugin, player, 0, businessname);
+					return new ManageWorkers2(plugin, player, 0);
 				}
 			}
 		}
@@ -103,23 +103,23 @@ public class ManageWorkers2 extends Menu {
 		// Accept Job Request <player>
 		if (inputs.get(answer).equals("Accept Job Request <player>")) {
 			if (args.length !=2) {
-				return new ManageWorkers2(plugin, player, 3, businessname);
+				return new ManageWorkers2(plugin, player, 3);
 			}
 			else {
 				Vector<String> names;
 				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
-					return new ManageWorkers2(plugin, player, 49, businessname);
+					return new ManageWorkers2(plugin, player, 49);
 				}
 				else if(names.size() > 1) {
-					return new ManageWorkers2(plugin ,player, 4, businessname, names);
+					return new ManageWorkers2(plugin ,player, 4, names);
 				}
 				else {
 					busi.removeEmployRequest(names.get(0));
 					busi.addEmployee(names.get(0));
 
-					return new ManageWorkers2(plugin, player, 0, businessname);
+					return new ManageWorkers2(plugin, player, 0);
 				}
 			}
 		}
@@ -127,22 +127,22 @@ public class ManageWorkers2 extends Menu {
 		// Reject Owner Request <player>
 		if (inputs.get(answer).equals("Reject Owner Request <player>")) {
 			if (args.length !=2) {
-				return new ManageWorkers2(plugin, player, 3, businessname);
+				return new ManageWorkers2(plugin, player, 3);
 			}
 			else {
 				Vector<String> names;
 				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
-					return new ManageWorkers2(plugin, player, 48, businessname);
+					return new ManageWorkers2(plugin, player, 48);
 				}
 				else if(names.size() > 1) {
-					return new ManageWorkers2(plugin ,player, 4, businessname, names);
+					return new ManageWorkers2(plugin ,player, 4, names);
 				}
 				else {
 					busi.removeOwnerRequest(names.get(0));
 
-					return new ManageWorkers2(plugin, player, 0, businessname);
+					return new ManageWorkers2(plugin, player, 0);
 				}
 			}
 		}
@@ -150,24 +150,24 @@ public class ManageWorkers2 extends Menu {
 		// Reject Job Request <player>
 		if (inputs.get(answer).equals("Reject Job Request <player>")) {
 			if (args.length !=2) {
-				return new ManageWorkers2(plugin, player, 3, businessname);
+				return new ManageWorkers2(plugin, player, 3);
 			}
 			else {
 				Vector<String> names;
 				names = tools.find(args[1], busi.getEmployRequest());
 				
 				if(names.size() == 0) {
-					return new ManageWorkers2(plugin, player, 49, businessname);
+					return new ManageWorkers2(plugin, player, 49);
 				}
 				else if(names.size() > 1) {
-					return new ManageWorkers2(plugin ,player, 4, businessname, names);
+					return new ManageWorkers2(plugin ,player, 4, names);
 				}
 				else {
 					busi.removeEmployRequest(names.get(0));
-					return new ManageWorkers2(plugin, player, 0, businessname);
+					return new ManageWorkers2(plugin, player, 0);
 				}
 			}
 		}
-		return new ManageWorkers2(plugin, player, 2, businessname);
+		return new ManageWorkers2(plugin, player, 2);
 	}
 }

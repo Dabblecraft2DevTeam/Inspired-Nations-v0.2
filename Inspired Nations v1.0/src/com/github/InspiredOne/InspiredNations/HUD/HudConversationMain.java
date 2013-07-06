@@ -18,7 +18,7 @@ public class HudConversationMain extends Menu{
 	// Constructor
 	public HudConversationMain(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
-		PM.reSelectHouse = false;
+		PM.setReSelectHouse(false);
 	}
 
 	@Override

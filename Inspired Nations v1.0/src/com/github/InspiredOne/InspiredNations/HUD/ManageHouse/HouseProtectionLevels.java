@@ -40,7 +40,7 @@ public class HouseProtectionLevels extends Menu {
 			return new HouseProtectionLevels(plugin, player, house, 0);
 		}
 		if (arg.equalsIgnoreCase("back")) {
-			return new ManageHouse2(plugin, player, house, 0);
+			return new ManageHouse2(plugin, player, 0);
 		}
 		try {
 			answer = Integer.decode(args[0])-1;
@@ -62,6 +62,7 @@ public class HouseProtectionLevels extends Menu {
 					int level = Integer.decode(args[1]);
 
 					house.setProtectionLevel(level);
+					return new HouseProtectionLevels(plugin, player, house, 0);
 				}
 				catch(Exception ex) {
 					return new HouseProtectionLevels(plugin ,player, house, 17);

@@ -51,6 +51,14 @@ public abstract class Menu extends StringPrompt {
 		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		names = "";
+		this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
+		businessname = busi.getName();
+		if((Object) busi instanceof ServiceBusiness) {
+			this.isGoodBusiness = false;
+		}
+		else {
+			this.isGoodBusiness = true;
+		}
 	}
 	
 	// Constructor
@@ -63,6 +71,14 @@ public abstract class Menu extends StringPrompt {
 		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		names = tools.format(namestemp);
+		this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
+		businessname = busi.getName();
+		if((Object) busi instanceof ServiceBusiness) {
+			this.isGoodBusiness = false;
+		}
+		else {
+			this.isGoodBusiness = true;
+		}
 	}
 	
 	// Constructor
@@ -79,6 +95,12 @@ public abstract class Menu extends StringPrompt {
 		for(Business i: PDI.getBusinesses()){
 			if (i.getName().equals(business)) {
 				busi = i;
+				if(busi instanceof GoodBusiness) {
+					this.isGoodBusiness = true;
+				}
+				else {
+					this.isGoodBusiness = false;
+				}
 			}
 		}
 	}
@@ -96,6 +118,12 @@ public abstract class Menu extends StringPrompt {
 		for(Business i: PDI.getBusinesses()){
 			if (i.getName().equals(business)) {
 				busi = i;
+				if(busi instanceof GoodBusiness) {
+					this.isGoodBusiness = true;
+				}
+				else {
+					this.isGoodBusiness = false;
+				}
 			}
 		}
 	}

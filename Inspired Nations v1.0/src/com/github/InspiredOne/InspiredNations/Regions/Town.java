@@ -648,9 +648,9 @@ public class Town {
 		BigDecimal taxRevenue = BigDecimal.ZERO;
 		for (String playername:plugin.countrydata.get(country).getResidents()) {
 			PlayerMethods PMI = new PlayerMethods(plugin, playername);
-			taxRevenue = taxRevenue.add(PMI.taxAmount(name, true, true, version.NEW));
+			taxRevenue = taxRevenue.add(PMI.taxAmount(name, false, true, version.NEW));
 		}
-		return taxRevenue;
+		return tools.cut(taxRevenue.multiply(this.getMoneyMultiplyer()));
 	}
 	
 	public int getProtectionLevel() {

@@ -47,6 +47,7 @@ public class PlayerMethods {
 	public PlayerMethods(InspiredNations instance, String playernametemp) {
 		plugin = instance;
 		playername = playernametemp;
+		player = plugin.getServer().getPlayerExact(playernametemp);
 		PDI = plugin.playerdata.get(playername);
 		tools = new Tools(plugin);
 	}
@@ -56,6 +57,7 @@ public class PlayerMethods {
 	}
 	public BigDecimal taxAmount(String townname, boolean adjusted, boolean total, version ver){
 		Country country = PDI.getCountryResides();
+
 		Town town = tools.findTown(country, townname).get(0);
 		BigDecimal amount = (houseTax(town, adjusted, total, ver).add(goodBusinessTax(town, adjusted, total, ver)).add(serviceBusinessTax(town, adjusted, total, ver)));
 		if(adjusted) {
@@ -74,7 +76,6 @@ public class PlayerMethods {
 
 	public BigDecimal houseTax(Object obj, Town town, int level, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
-		plugin.logger.info(ver + "");
 		switch(ver){
 		case OLD:
 			if (obj instanceof Cuboid) {
@@ -88,13 +89,8 @@ public class PlayerMethods {
 			}
 			break;
 		case NEW:
-			plugin.logger.info("here");
-			plugin.logger.info((obj instanceof Cuboid) + "");
 			if (obj instanceof Cuboid) {
 				obj = (Cuboid) obj;
-				plugin.logger.info(((Cuboid) obj).Volume() + "");
-				plugin.logger.info(town.getHouseTax() + "");
-				plugin.logger.info(level + "");
 				amount = new BigDecimal(((Cuboid) obj).Volume()*town.getHouseTax() * level/100.0);
 			}
 			else if (obj instanceof polygonPrism) {
@@ -103,7 +99,6 @@ public class PlayerMethods {
 			}
 			break;
 		default:
-			plugin.logger.info("broken");
 			break;
 		}
 		if(adjusted) {
@@ -143,7 +138,9 @@ public class PlayerMethods {
 	public BigDecimal houseTax(Town town, boolean adjusted, boolean total, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
 		for(House house:town.getHouses()) {
-			amount = amount.add(houseTax(house, adjusted, total, ver));
+			if(house.getOwners().contains(player.getName())) {
+				amount = amount.add(houseTax(house, adjusted, total, ver));
+			}
 		}
 		if(adjusted) {
 			return tools.cut(amount);
@@ -184,7 +181,6 @@ public class PlayerMethods {
 			if (obj instanceof Cuboid) {
 				obj = (Cuboid) obj;
 				amount = new BigDecimal(((Cuboid) obj).Volume()*town.getGoodBusinessTax() * level/100.0);
-				
 			}
 			else if (obj instanceof polygonPrism) {
 				obj = (polygonPrism) obj;
@@ -293,6 +289,7 @@ public class PlayerMethods {
 			amount = this.serviceBusinessTax(busi.getRegion(), town, level, adjusted, ver);
 		}
 		else {
+
 			amount = this.serviceBusinessTax(busi.getRegion(), town, level, adjusted, ver).divide(new BigDecimal(busi.getOwners().size()));
 		}
 		if(adjusted) {
@@ -304,7 +301,7 @@ public class PlayerMethods {
 	}
 	
 	public BigDecimal serviceBusinessTax(Business busi, boolean adjusted, boolean total, version ver) {
-		BigDecimal amount = this.goodBusinessTax(busi, busi.getProtectionLevel(), adjusted, total, ver);
+		BigDecimal amount = this.serviceBusinessTax(busi, busi.getProtectionLevel(), adjusted, total, ver);
 		if(adjusted) {
 			return tools.cut(amount);
 		}
@@ -315,9 +312,9 @@ public class PlayerMethods {
 	
 	public BigDecimal serviceBusinessTax(Town town, boolean adjusted, boolean total, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
-		for(Business busi:town.getGoodBusinesses()) {
+		for(Business busi:town.getServiceBusinesses()) {
 			if(busi.getOwners().contains(player.getName())) {
-				amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+				amount = amount.add(serviceBusinessTax(busi, adjusted, total, ver));
 			}
 		}
 		if(adjusted) {
@@ -329,8 +326,8 @@ public class PlayerMethods {
 	}
 	public BigDecimal serviceBusinessTax(boolean adjusted, boolean total, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
-		for(Business busi:PDI.getGoodBusinessOwned()) {
-			amount = amount.add(goodBusinessTax(busi, adjusted, total, ver));
+		for(Business busi:PDI.getServiceBusinessOwned()) {
+			amount = amount.add(serviceBusinessTax(busi, adjusted, total, ver));
 		}
 		if(adjusted) {
 			return tools.cut(amount);

@@ -78,7 +78,8 @@ public class ManageHouse1 extends Menu implements Prompt {
 				house = i;
 			}
 		}
-		return new ManageHouse2(plugin, player, house, 0);
+		arg0.setSessionData("house", house);
+		return new ManageHouse2(plugin, player, 0);
 	}
 
 
