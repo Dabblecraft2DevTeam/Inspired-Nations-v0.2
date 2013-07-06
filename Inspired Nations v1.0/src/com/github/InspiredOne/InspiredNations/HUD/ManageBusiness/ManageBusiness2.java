@@ -194,7 +194,7 @@ public class ManageBusiness2 extends Menu {
 			}
 		}
 		
-		if (inputs.get(answer).equals("Protection Levels")) {
+		if (inputs.get(answer).equals("Protection Levels (" + menuType.OPTIONDESCRIP + busi.getProtectionLevel() + menuType.OPTION + ")")) {
 			return new BusinessProtectionLevels(plugin, player, 0, businessname);
 		}
 		

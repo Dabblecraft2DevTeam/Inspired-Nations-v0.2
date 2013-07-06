@@ -41,7 +41,8 @@ public class ManageTown extends Menu {
 		}
 		
 		inputs.add("Manage Finances");
-		inputs.add("Protection Level");
+		inputs.add("Protection Level (" + menuType.OPTIONDESCRIP + town.getProtectionLevel() + menuType.OPTION + ")");
+		inputs.add("Military Level (" + menuType.OPTIONDESCRIP + town.getMilitaryLevel() + menuType.OPTION + ")");
 		inputs.add("Manage People");
 		inputs.add("Rename <name>");
 		
@@ -101,8 +102,11 @@ public class ManageTown extends Menu {
 		else if(inputs.get(answer).equals("Government Regions")) {
 			return new TownGovernmentRegions(plugin, player, 0);
 		}
-		else if(inputs.get(answer).equals("Protection Level")) {
+		else if(inputs.get(answer).equals("Protection Level (" + menuType.OPTIONDESCRIP + town.getProtectionLevel() + menuType.OPTION + ")")) {
 			return new TownProtectionLevel(plugin, player, 0);
+		}
+		else if(inputs.get(answer).equals("Military Level (" + menuType.OPTIONDESCRIP + town.getMilitaryLevel() + menuType.OPTION + ")")) {
+			return new TownMilitaryLevel(plugin, player, 0);
 		}
 		else if(inputs.get(answer).equals("Rename <name>")) {
 			if(args.length < 2) {

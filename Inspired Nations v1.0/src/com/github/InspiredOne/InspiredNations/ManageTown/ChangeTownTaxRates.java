@@ -38,9 +38,9 @@ public class ChangeTownTaxRates extends Menu {
 		options = options.concat(menuType.SUBHEADER +  "The Town Has:\n" + ChatColor.RESET);
 		options = options.concat(menuType.VALUE + "" + town.getMoney() + menuType.UNIT + " " + town.getPluralMoney() + " in total\n");
 		options = options.concat(menuType.SUBHEADER + "Taxes:\n" + ChatColor.RESET);
-		options = options.concat(menuType.LABEL + "House Tax Rate: " + menuType.VALUE+ town.getHouseTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
-		options = options.concat(menuType.LABEL + "Good Business Tax Rate: " + menuType.VALUE + town.getGoodBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
-		options = options.concat(menuType.LABEL + "Service Business Tax Rate: " + menuType.VALUE + town.getServiceBusinessTax() + menuType.UNIT + town.getPluralMoney() + "%\n");
+		options = options.concat(menuType.LABEL + "House Tax Rate: " + menuType.VALUE+ town.getHouseTax() + menuType.UNIT + "%\n");
+		options = options.concat(menuType.LABEL + "Good Business Tax Rate: " + menuType.VALUE + town.getGoodBusinessTax() + menuType.UNIT + "%\n");
+		options = options.concat(menuType.LABEL + "Service Business Tax Rate: " + menuType.VALUE + town.getServiceBusinessTax() + menuType.UNIT + "%\n");
 		options = tools.addDivider(options);
 		options = options.concat(menuType.LABEL + "Expenditures: " + menuType.VALUE + TM.getTaxAmount(true, version.NEW) + menuType.UNIT + " " + town.getPluralMoney() + "\n");
 		options = options.concat(menuType.LABEL + "Revenue: " + menuType.VALUE + town.getRevenue() + " " + menuType.UNIT + town.getPluralMoney() + "\n");

@@ -51,13 +51,18 @@ public abstract class Menu extends StringPrompt {
 		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		names = "";
-		this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
-		businessname = busi.getName();
-		if((Object) busi instanceof ServiceBusiness) {
-			this.isGoodBusiness = false;
+		try {
+			this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
+			businessname = busi.getName();
+			if((Object) busi instanceof ServiceBusiness) {
+				this.isGoodBusiness = false;
+			}
+			else {
+				this.isGoodBusiness = true;
+			}
 		}
-		else {
-			this.isGoodBusiness = true;
+		catch (Exception ex) {
+			
 		}
 	}
 	
@@ -71,13 +76,18 @@ public abstract class Menu extends StringPrompt {
 		PMeth = new PlayerMethods(plugin, player);
 		error = errortemp;
 		names = tools.format(namestemp);
-		this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
-		businessname = busi.getName();
-		if((Object) busi instanceof ServiceBusiness) {
-			this.isGoodBusiness = false;
+		try {
+			this.busi = (Business) PDI.getConversation().getContext().getSessionData("business");
+			businessname = busi.getName();
+			if((Object) busi instanceof ServiceBusiness) {
+				this.isGoodBusiness = false;
+			}
+			else {
+				this.isGoodBusiness = true;
+			}
 		}
-		else {
-			this.isGoodBusiness = true;
+		catch (Exception ex) {
+			
 		}
 	}
 	
