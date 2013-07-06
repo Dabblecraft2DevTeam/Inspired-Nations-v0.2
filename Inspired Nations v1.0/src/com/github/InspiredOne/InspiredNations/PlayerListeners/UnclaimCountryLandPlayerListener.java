@@ -66,7 +66,8 @@ public class UnclaimCountryLandPlayerListener{
 		//player.sendRawMessage(generateMap(country, player));
 		generateMap();
 		if (!PM.countryDeselect()) return;
-		if ((!area.isIn(spot) || !chunkAdjacent(area, spot, tile)) && area.Chunks.size() != 0) return;
+		if ((!area.isIn(spot)));
+				//|| !chunkAdjacent(area, spot, tile)) && area.Chunks.size() != 0) return;
 		else aloud = true;
 		if (aloud) {
 			country.removeChunk(tile);

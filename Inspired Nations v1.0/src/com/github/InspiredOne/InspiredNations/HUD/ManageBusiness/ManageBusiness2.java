@@ -48,7 +48,7 @@ public class ManageBusiness2 extends Menu {
 			}
 		inputs.add("Manage Budget");
 		inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")");
-		inputs.add("Protection Levels");
+		inputs.add("Protection Levels (" + menuType.OPTIONDESCRIP + busi.getProtectionLevel() + menuType.OPTION + ")");
 		inputs.add("Reclaim Land");
 		inputs.add("Rename <name>");
 		

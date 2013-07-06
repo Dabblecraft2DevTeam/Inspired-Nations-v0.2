@@ -65,7 +65,8 @@ public class UnclaimTownLandPlayerListener {
 		if (!PM.preDeselectTown()) return;
 		generateMap(player);
 		if (!PM.townDeselect()) return;
-		if ((!area.isIn(spot) || !chunkAdjacent(area, spot, tile)) && area.Chunks.size() != 0) return;
+		if ((!area.isIn(spot))) return; 
+				//|| !chunkAdjacent(area, spot, tile)) && area.Chunks.size() != 0) return;
 		else aloud = true;
 		if (aloud) {
 			town.removeChunk(tile);

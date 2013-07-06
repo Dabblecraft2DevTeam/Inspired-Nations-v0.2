@@ -917,6 +917,26 @@ public class Tools {
 						town.addPark(new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						break;
 					case FEDERALPARK:
+						Country country11 = PDI.getCountryResides();
+						String ParkName1 = "";
+						int test11 = country11.getParks().size();
+						boolean works31 = true;
+						while(ParkName1.isEmpty()) {
+							works31 = true;
+							for(Park parktest: country11.getParks()) {
+								if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
+									works31 = false;
+									break;
+								}
+							}
+							if(!works31) {
+								test11 += 1;
+							}
+							else {
+								ParkName1 = "Park " + test11;
+							}
+							country11.addPark(new Park(plugin, PM.getPolygon(), country11.getName(), -1, true, ParkName1));
+						}
 						break;
 					case REGOOD:
 						break;
@@ -1121,6 +1141,26 @@ public class Tools {
 						town.addPark(new Park(plugin, PM.getCuboid(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
 						break;
 					case FEDERALPARK:
+						Country country11 = PDI.getCountryResides();
+						String ParkName1 = "";
+						int test11 = country11.getParks().size();
+						boolean works31 = true;
+						while(ParkName1.isEmpty()) {
+							works31 = true;
+							for(Park parktest: country11.getParks()) {
+								if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
+									works31 = false;
+									break;
+								}
+							}
+							if(!works31) {
+								test11 += 1;
+							}
+							else {
+								ParkName1 = "Park " + test11;
+							}
+						}
+							country11.addPark(new Park(plugin, PM.getCuboid(), country11.getName(), -1, true, ParkName1));
 						break;
 					case REGOOD:
 						break;

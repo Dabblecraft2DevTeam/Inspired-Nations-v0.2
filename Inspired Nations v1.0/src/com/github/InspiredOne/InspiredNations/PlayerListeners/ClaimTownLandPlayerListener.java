@@ -60,7 +60,7 @@ public class ClaimTownLandPlayerListener {
 		Country country = PDI.getCountryResides();
 		Chunks area = town.getChunks();
 		Location spot = player.getLocation();
-		boolean aloud = false;
+		boolean allowed = false;
 		ChunkData tile = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());	
 		// Select Town
 
@@ -78,37 +78,38 @@ public class ClaimTownLandPlayerListener {
 		if (!country.isIn(spot)) {
 			return;
 		}
-		spot.setX(spot.getX() + 16);
-		if (area.isIn(spot)) aloud = true;
+		allowed = true;
+/*		spot.setX(spot.getX() + 16);
+		if (area.isIn(spot)) allowed = true;
 		spot.setX(spot.getX() - 32);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setX(spot.getX() + 16);
 		spot.setZ(spot.getZ() + 16);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setZ(spot.getZ() - 32);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setZ(spot.getZ() + 16);
 		if (area.Area() == 0) {
-			aloud = true;
-		}
+			allowed = true;
+		}*/
 		spot = player.getLocation();
 
 		if(TM.getCostPerChunk(true,version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())).compareTo(town.getMoney()) > 0) {
-			aloud = false;
+			allowed = false;
 		}
 		
 		for(Town towntest:country.getTowns()) {
-			if(aloud && towntest.isIn(spot) && towntest != town) {
+			if(allowed && towntest.isIn(spot) && towntest != town) {
 				if (towntest.getProtectionLevel() == 0) {
 					//TownMethods TMtest = new TownMethods(plugin, towntest);
 					towntest.removeChunk(tile);
 					//country.transferMoneyToTown(TMtest.getCostPerChunk(taxType.OLD), towntest.getName(), country.getName());
 				}
-				else aloud = false;
+				else allowed = false;
 			}
 		}
 		
-		if (aloud) {
+		if (allowed) {
 
 			area.addChunk(tile);
 			town.setChunks(area);

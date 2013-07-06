@@ -46,7 +46,7 @@ public class ClaimCountryLandPlayerListener {
 		Country country = PDI.getCountryRuled();
 		Chunks area = country.getChunks();
 		Location spot = player.getLocation();
-		boolean aloud = false;
+		boolean allowed = false;
 		ChunkData tile = new ChunkData(new Point(spot.getChunk().getX(), spot.getChunk().getZ()), spot.getWorld().getName());
 		
 		// Select Country
@@ -55,33 +55,34 @@ public class ClaimCountryLandPlayerListener {
 		generateMap();
 		if (!PM.countrySelect()) return;
 		if (area.isIn(spot)) return;
+		allowed = true;
 
-		spot.setX(spot.getX() + 16);
-		if (area.isIn(spot)) aloud = true;
+/*		spot.setX(spot.getX() + 16);
+		if (area.isIn(spot)) allowed = true;
 		spot.setX(spot.getX() - 32);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setX(spot.getX() + 16);
 		spot.setZ(spot.getZ() + 16);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setZ(spot.getZ() - 32);
-		if (area.isIn(spot)) aloud = true;
+		if (area.isIn(spot)) allowed = true;
 		spot.setZ(spot.getZ() + 16);
 		if (area.Area() == 0) {
-			aloud = true;
-		}
+			allowed = true;
+		}*/
 
 		if (country.getMoney().compareTo(countryMethods.getCostPerChunk(country.getProtectionLevel(),true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
-			aloud = false;
+			allowed = false;
 		}
-		if (aloud && !area.isIn(spot) && plugin.chunks.containsKey(tile)){
+		if (allowed && !area.isIn(spot) && plugin.chunks.containsKey(tile)){
 			if (plugin.countrydata.get(plugin.chunks.get(tile)).getProtectionLevel() == 0) {
 				plugin.countrydata.get(plugin.chunks.get(tile)).removeChunk(tile);
 			}
 			else {
-				aloud = false;
+				allowed = false;
 			}
 		}
-		if (aloud) {
+		if (allowed) {
 			country.addChunk(tile);
 			country.transferMoneyToNPC(countryMethods.getCostPerChunk(country.getProtectionLevel(), true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())));
 			//player.sendRawMessage(generateMap(country, player));
