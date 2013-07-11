@@ -55,7 +55,12 @@ public class ManagePark1 extends Menu implements Prompt {
 			return new TownGovernmentRegions(plugin, player, 0);
 		}
 		String[] args = arg.split(" ");
-		
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ManagePark1(plugin, player, 0);
+		}
 		try {
 			answer = Integer.decode(args[0])-1;
 		}

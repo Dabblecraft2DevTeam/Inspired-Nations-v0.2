@@ -65,7 +65,12 @@ public class ManagePark2 extends Menu {
 			}
 		}
 		String[] args = arg.split(" ");
-		
+		if (args[0].equalsIgnoreCase("say"))  {
+			if(args.length > 1) {
+				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
+			}
+			return new ManagePark2(plugin, player, 0);
+		}
 		try {
 			answer = Integer.decode(args[0])-1;
 		}
@@ -77,6 +82,7 @@ public class ManagePark2 extends Menu {
 			return new ManagePark2(plugin, player, 2);
 		}
 		
+		//Reclaim Park
 		if(inputs.get(answer).equals("Reclaim Park")) {
 			PM.park(true);
 			PM.setReSelectLocalPark(true);
@@ -124,7 +130,7 @@ public class ManagePark2 extends Menu {
 					return new ManagePark2(plugin ,player, 4, names);
 				}
 				else {
-					busi.removeBuilder(names.get(0));
+					park.removeBuilder(names.get(0));
 					return new ManagePark2(plugin, player, 0);
 				}
 				

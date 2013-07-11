@@ -50,6 +50,7 @@ public class PlayerModes {
 	private boolean reSelectGoodBusiness = false;
 	private boolean reSelectServiceBusiness = false;
 	private boolean reSelectLocalPark = false;
+	private boolean reSelectFederalPark = false;
 	private polygonPrism selectiontemp;
 	private Cuboid selectiontemp2;
 	private HashMap<Point3D, Byte> blocks;
@@ -395,6 +396,14 @@ public class PlayerModes {
 
 	public void setReSelectLocalPark(boolean reSelectLocalPark) {
 		this.reSelectLocalPark = reSelectLocalPark;
+	}
+
+	public boolean isReSelectFederalPark() {
+		return reSelectFederalPark;
+	}
+
+	public void setReSelectFederalPark(boolean reSelectFederalPark) {
+		this.reSelectFederalPark = reSelectFederalPark;
 	}
 }
 

@@ -109,6 +109,9 @@ public class Tools {
 		errors.add("\nThat park name is already taken.");//68
 		errors.add("\nIllegal Character '/'. You cannot create a house name with '/'.)");//69
 		errors.add("\nIllegal Character '/'. You cannot create a park name with '/'.)");//70
+		errors.add("\nThat cell names is already in use.");//71
+		errors.add("\nPrison cells must be within the prison.");//72
+		errors.add("\nThat cell does not exist");//73
 	}
 	public enum version {
 		OLD, NEW
@@ -143,7 +146,6 @@ public class Tools {
         }
 	}
 
-	
 	public enum optionType {
 		OPTION, UNAVAILABLE, INSTRUCTION, ALERT
 	}
@@ -151,7 +153,7 @@ public class Tools {
 		SMALL,MEDIUM,LARGE
 	}
 	public enum region {
-		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY, REGOOD, RESERVICE, REHOUSE, REPARK
+		PRISON,BANK,HOUSE,GOODBUSINESS,SERVICEBUSINESS,PARK,FEDERALPARK,TOWN,COUNTRY, REGOOD, RESERVICE, REHOUSE, REPARK, REFEDERALPARK
 	}
 	
 	// A method that builds new lines on a string with the standard formatting
@@ -923,29 +925,35 @@ public class Tools {
 								}
 	
 							}
-							town.addPark(new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName)));
+							Park park = new Park(plugin, PM.getPolygon(), town.getCountry(), plugin.countrydata.get(town.getCountry()).getTowns().indexOf(town),false,(ParkName));
+							town.addPark(park);
+							PDI.getConversation().getContext().setSessionData("localpark", park);
 						}
 						break;
 					case FEDERALPARK:
-						Country country11 = PDI.getCountryResides();
-						String ParkName1 = "";
-						int test11 = country11.getParks().size();
-						boolean works31 = true;
-						while(ParkName1.isEmpty()) {
-							works31 = true;
-							for(Park parktest: country11.getParks()) {
-								if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
-									works31 = false;
-									break;
+						if(!PM.isReSelectFederalPark()) {
+							Country country11 = PDI.getCountryResides();
+							String ParkName1 = "";
+							int test11 = country11.getParks().size();
+							boolean works31 = true;
+							while(ParkName1.isEmpty()) {
+								works31 = true;
+								for(Park parktest: country11.getParks()) {
+									if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
+										works31 = false;
+										break;
+									}
 								}
+								if(!works31) {
+									test11 += 1;
+								}
+								else {
+									ParkName1 = "Park " + test11;
+								}
+								Park park = new Park(plugin, PM.getPolygon(), country11.getName(), -1, true, ParkName1);
+								country11.addPark(park);
+								PDI.getConversation().getContext().setSessionData("federalpakr", park);
 							}
-							if(!works31) {
-								test11 += 1;
-							}
-							else {
-								ParkName1 = "Park " + test11;
-							}
-							country11.addPark(new Park(plugin, PM.getPolygon(), country11.getName(), -1, true, ParkName1));
 						}
 						break;
 					case REGOOD:
@@ -1160,26 +1168,30 @@ public class Tools {
 
 						break;
 					case FEDERALPARK:
-						Country country11 = PDI.getCountryResides();
-						String ParkName1 = "";
-						int test11 = country11.getParks().size();
-						boolean works31 = true;
-						while(ParkName1.isEmpty()) {
-							works31 = true;
-							for(Park parktest: country11.getParks()) {
-								if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
-									works31 = false;
-									break;
+						if(!PM.isReSelectFederalPark()) {
+							Country country11 = PDI.getCountryResides();
+							String ParkName1 = "";
+							int test11 = country11.getParks().size();
+							boolean works31 = true;
+							while(ParkName1.isEmpty()) {
+								works31 = true;
+								for(Park parktest: country11.getParks()) {
+									if(parktest.getName().equalsIgnoreCase("Park " + test11)) {
+										works31 = false;
+										break;
+									}
+								}
+								if(!works31) {
+									test11 += 1;
+								}
+								else {
+									ParkName1 = "Park " + test11;
 								}
 							}
-							if(!works31) {
-								test11 += 1;
-							}
-							else {
-								ParkName1 = "Park " + test11;
-							}
+							Park park = new Park(plugin, PM.getCuboid(), country11.getName(), -1, true, ParkName1);
+							country11.addPark(park);
+							PDI.getConversation().getContext().setSessionData("federalpark", park);
 						}
-							country11.addPark(new Park(plugin, PM.getCuboid(), country11.getName(), -1, true, ParkName1));
 						break;
 					case REGOOD:
 						break;

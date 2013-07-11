@@ -8,15 +8,27 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.InvalidSelection;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
+import com.github.InspiredOne.InspiredNations.Regions.Park;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 import com.github.InspiredOne.InspiredNations.Tools.region;
 
 public class SelectFederalPark2 extends Menu {
 
+	Cuboid cube;
+	polygonPrism poly;
 	// Constructor
 	public SelectFederalPark2(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
 		country = PDI.getCountryRuled();
+		if(PM.isReSelectFederalPark()) {
+			park = (Park) PDI.getConversation().getContext().getSessionData("federalpark");
+			if(park.isCubeSpace()) {
+				cube = park.getCubeSpace();
+			}
+			else {
+				poly = park.getPolySpace();
+			}
+		}
 	}
 	
 	@Override
@@ -46,25 +58,47 @@ public class SelectFederalPark2 extends Menu {
 			PM.setBlocksBack();
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);
-			PM.park(false);
+			PM.setReSelectFederalPark(false);
+			PM.federalPark(false);
 			PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 			PM.setCuboid(new Cuboid(player.getWorld().getName()));
 			return new CountryGovernmentRegions(plugin, player, 0);
 		}
 		else if(arg.equalsIgnoreCase("finish")) {
+			if(PM.isReSelectFederalPark()) {
+				park.setCubeSpace(null);
+				park.setPolySpace(null);
+			}
 			if(tools.selectionValid(player, region.FEDERALPARK)) {
+				if(PM.isReSelectFederalPark()) {
+					if(PM.isSelectingCuboid()){
+						park.setCubeSpace(PM.getCuboid());
+					}
+					else {
+						park.setPolySpace(PM.getPolygon());
+					}
+				}
 				PM.selectCuboid(false);
 				PM.selectPolygon(false);
 				PM.setBlocksBack();
+				PM.federalPark(false);
+				PM.setReSelectFederalPark(false);
 				PM.setPolygon(new polygonPrism(player.getWorld().getName()));
 				PM.setCuboid(new Cuboid(player.getWorld().getName()));
 				return new ManageFederalPark1(plugin, player, 0);
 				
 			}
 			else {
-				PM.park(false);
+				if(PM.isReSelectFederalPark()) {
+					if(PM.isSelectingCuboid()) {
+						park.setCubeSpace(cube);
+						park.setPolySpace(poly);
+					}
+				}
+				PM.federalPark(false);
+				PM.setReSelectFederalPark(false);
 				PM.setBlocksBack();
-				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.FEDERALPARK);
+				return new InvalidSelection(plugin, player, 0, arg0.getSessionData("error"), region.REFEDERALPARK);
 			}
 		}
 		return new SelectFederalPark2(plugin, player, 2);

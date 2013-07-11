@@ -31,6 +31,7 @@ public class SelectFederalPark1 extends Menu{
 			arg = arg.substring(1);
 		}
 		if (arg.equalsIgnoreCase("back")) {
+			PM.setReSelectFederalPark(false);
 			PM.federalPark(false);
 			PM.selectCuboid(false);
 			PM.selectPolygon(false);

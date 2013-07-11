@@ -1,4 +1,4 @@
-package com.github.InspiredOne.InspiredNations.ManageTown;
+package com.github.InspiredOne.InspiredNations.HUD.ManageCountry;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -6,16 +6,17 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.ManageTown.ManagePark2;
 import com.github.InspiredOne.InspiredNations.Regions.Park;
 import com.github.InspiredOne.InspiredNations.Tools.region;
 
-public class LocalParkProtectionLevels extends Menu {
-
+public class FederalParkProtectionLevels extends Menu {
+	
 	// Constructor
-	public LocalParkProtectionLevels(InspiredNations instance, Player playertemp, int errortemp) {
+	public FederalParkProtectionLevels(InspiredNations instance, Player playertemp, int errortemp) {
 		super(instance, playertemp, errortemp);
-		town = PDI.getTownMayored();
-		park = (Park) PDI.getConversation().getContext().getSessionData("localpark");
+		country = PDI.getCountryRuled();
+		park = (Park) PDI.getConversation().getContext().getSessionData("federalpark");
 	}
 	
 	@Override
@@ -23,7 +24,7 @@ public class LocalParkProtectionLevels extends Menu {
 		// Make Inputs Vector
 		inputs.add("Set Level <level>");
 		
-		return tools.protLevels(park, player,"Park", error, park.getProtectionLevel(), region.PARK, inputs);
+		return tools.protLevels(park, player,"Park", error, park.getProtectionLevel(), region.FEDERALPARK, inputs);
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class LocalParkProtectionLevels extends Menu {
 			if(args.length > 1) {
 				PMeth.SendChat(tools.formatSpace(tools.subArray(args, 1, args.length - 1)));
 			}
-			return new LocalParkProtectionLevels(plugin, player, 0);
+			return new FederalParkProtectionLevels(plugin, player, 0);
 		}
 		if (arg.equalsIgnoreCase("back")) {
 			return new ManagePark2(plugin, player, 0);
@@ -46,33 +47,31 @@ public class LocalParkProtectionLevels extends Menu {
 			answer = Integer.decode(args[0])-1;
 		}
 		catch (Exception ex) {
-			return new LocalParkProtectionLevels(plugin, player, 1);
+			return new FederalParkProtectionLevels(plugin, player, 1);
 		}
 		
 		if (answer > inputs.size()-1) {
-			return new LocalParkProtectionLevels(plugin, player, 2);
+			return new FederalParkProtectionLevels(plugin, player, 2);
 		}
 		
 		if (inputs.get(answer).equals("Set Level <level>")) {
 			if (args.length != 2) {
-				return new LocalParkProtectionLevels(plugin, player, 3);
+				return new FederalParkProtectionLevels(plugin, player, 3);
 			}
 			else {
 				try {
 					int level = Integer.decode(args[1]);
 
 					park.setProtectionLevel(level);
-					return new LocalParkProtectionLevels(plugin, player, 0);
+					return new FederalParkProtectionLevels(plugin, player, 0);
 				}
 				catch(Exception ex) {
-					return new LocalParkProtectionLevels(plugin ,player,17);
+					return new FederalParkProtectionLevels(plugin ,player,17);
 				}
 			}
 		}
 		
-		return new LocalParkProtectionLevels(plugin, player, 2);
+		return new FederalParkProtectionLevels(plugin, player, 2);
 	}
-
-
 
 }
