@@ -24,8 +24,8 @@ public class AddCell extends Menu {
 	@Override
 	public String getPromptText(ConversationContext arg0) {
 		String space = tools.space();
-		String main = tools.header("Manage Prison. Type an option number.");
-		String options = "";
+		String main = tools.header("Add Cell. Read the Instructions.");
+		String options = ""; 
 		String end = tools.footer(false);
 		String errmsg = ChatColor.RED + tools.errors.get(error);
 		

@@ -13,6 +13,7 @@ import java.util.Vector;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
@@ -112,6 +113,10 @@ public class Tools {
 		errors.add("\nThat cell names is already in use.");//71
 		errors.add("\nPrison cells must be within the prison.");//72
 		errors.add("\nThat cell does not exist");//73
+		errors.add("\nYou cannot place your sign on sand, gravel, or other signs.");//74
+		errors.add("\nYou must put your sign inside your business.");//75
+		errors.add("\nThe block that you put your sign on must be inside your business.");//76
+		errors.add("\nYou must first place a valid sign.");//77
 	}
 	public enum version {
 		OLD, NEW
@@ -221,6 +226,21 @@ public class Tools {
 			n += 1;
 		}
 		return output;
+	}
+	
+	// A Method to build the name of an item from it's ItemStack
+	public String getItemName(ItemStack stack) {
+		String[] namesplit = stack.getType().name().split("_");
+		String itemname = "";
+		for (int i = 0; i < namesplit.length; i++) {
+			itemname = itemname.concat(namesplit[i] + " ");
+		}
+		
+		if(stack.getType().equals(Material.INK_SACK) && stack.getDurability() != 0) {
+			itemname = "DYE";
+		}
+		
+		return itemname;
 	}
 	
 	// A Method that builds the Protection Level Text

@@ -6,7 +6,10 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -71,6 +74,24 @@ public class InspiredNationsPlayerListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onSignChange(SignChangeEvent event) {
+		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
+		CSPL.onSignChangeEvent();
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
+		CSPL.onBlockPlace();
+	}
+	
+	@EventHandler
+	public void onPlayerHeld(PlayerItemHeldEvent event) {
+		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
+		CSPL.onItemHeld();
+	}
+	
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		String playername = player.getName();
@@ -85,7 +106,7 @@ public class InspiredNationsPlayerListener implements Listener {
 		ClaimHousePlayerListener CHPL = new ClaimHousePlayerListener(plugin, event);
 		ClaimServiceBusinessPlayerListener CSBPL = new ClaimServiceBusinessPlayerListener(plugin, event);
 		ClaimGoodBusinessPlayerListener CGBPL = new ClaimGoodBusinessPlayerListener(plugin, event);
-		//ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
+		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
 		LBPL.onPlayerInteract();
 		PPL.onPlayerInteract();
 		LPPL.onPlayerInteract();
@@ -93,7 +114,7 @@ public class InspiredNationsPlayerListener implements Listener {
 		CHPL.onPlayerInteract();
 		CSBPL.onPlayerInteract();
 		CGBPL.onPlayerInteract();
-		//CSPL.onInteractWithChest();
+		CSPL.onInteractWithChest();
 	}
 	
 	@EventHandler

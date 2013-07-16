@@ -12,26 +12,24 @@ package com.github.InspiredOne.InspiredNations.Regions;
 
 
 import org.bukkit.Location;
+import org.bukkit.block.Chest;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 
 public class ChestShop {
 
-	private Inventory items;
 	private ItemStack itemtype;
 	private double price;
 	Location[] chests;
-	private boolean doubleChest = false;
 	private int quantity;
 	
 	// 1 and 2 for chests, 3 for sign, 4 for block sign is on.
-	public ChestShop(Inventory item, ItemStack itemtypetemp, double cost,int quant, Location[] spots, boolean doublechesttemp) {
-		items = item;
+	public ChestShop( ItemStack itemtypetemp, double cost,int quant, Location[] spots) {
 		itemtype = itemtypetemp;
 		price = cost;
 		chests = spots.clone();
-		doubleChest = doublechesttemp;
 		quantity = quant;
 	}
 	
@@ -43,6 +41,12 @@ public class ChestShop {
 		return itemtype;
 	}
 	
+	public String getMaterialName() {
+		
+		return null;
+		
+	}
+	
 	public void setPrice(double pricetemp) {
 		price = pricetemp;
 	}
@@ -51,24 +55,20 @@ public class ChestShop {
 		return price;
 	}
 	
-	public void setInventory(Inventory itemstemp) {
-		items = itemstemp;
-	}
-	
-	public Inventory getInventory() {
-		return items;
-	}
-	
 	public Location[] getSpot() {
 		return chests;
 	}
 	
-	public void setDoubleChest(boolean isit) {
-		doubleChest = isit;
-	}
-	
 	public boolean getDoubleChest() {
-		return doubleChest;
+		
+		Inventory inventory = ((Chest) chests[0].getBlock()).getInventory();
+		
+		if(inventory instanceof DoubleChestInventory){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public void setQuantity(int quant) {
@@ -80,7 +80,7 @@ public class ChestShop {
 	}
 	
 	public boolean isIn(Location spot) {
-		if (doubleChest) {
+		if (this.getDoubleChest()) {
 			if (spot.getBlock().getLocation().equals(chests[0])) {
 				return true;
 			}

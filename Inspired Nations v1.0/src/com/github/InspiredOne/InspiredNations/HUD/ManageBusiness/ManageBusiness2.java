@@ -12,6 +12,7 @@ import com.github.InspiredOne.InspiredNations.HUD.HudConversationMain;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
 import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Cuboid;
+import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Regions.polygonPrism;
 import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
@@ -49,6 +50,9 @@ public class ManageBusiness2 extends Menu {
 		inputs.add("Manage Budget");
 		inputs.add("Manage Workers ("+ menuType.OPTIONDESCRIP + (busi.getEmployRequest().size() + busi.getOwnerRequest().size()) + menuType.OPTION + ")");
 		inputs.add("Protection Levels (" + menuType.OPTIONDESCRIP + busi.getProtectionLevel() + menuType.OPTION + ")");
+		if(busi instanceof GoodBusiness) {
+			inputs.add("Add Shop");
+		}
 		inputs.add("Reclaim Land");
 		inputs.add("Rename <name>");
 		
@@ -192,6 +196,11 @@ public class ManageBusiness2 extends Menu {
 					return new ManageBusiness2(plugin, player, 36);
 				}
 			}
+		}
+		
+		if(inputs.get(answer).equals("Add Shop")) {
+			PM.setPlaceItem(true);
+			return new AddShop1(plugin, player, 0);
 		}
 		
 		if (inputs.get(answer).equals("Protection Levels (" + menuType.OPTIONDESCRIP + busi.getProtectionLevel() + menuType.OPTION + ")")) {

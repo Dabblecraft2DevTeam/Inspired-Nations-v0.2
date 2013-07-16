@@ -1681,11 +1681,11 @@ public class SaveFiles {
 	
 	public void serializeChestShop(ChestShop shop, String key) {
 		// Adding new values
-		dataFileConfig.addDefault(key + ".inventory", InventoryToString(shop.getInventory()));
 		dataFileConfig.addDefault(key + ".cost", shop.getPrice());
 		dataFileConfig.addDefault(key + ".quantity", shop.getQuantity());
 		dataFileConfig.addDefault(key + ".double", shop.getDoubleChest());
 		dataFileConfig.addDefault(key + ".material", shop.getMaterial());
+		dataFileConfig.addDefault(key + ".durability", shop.getMaterial().getDurability());
 		if (shop.getDoubleChest()) {
 			dataFileConfig.addDefault(key + ".1.world", shop.getSpot()[0].getWorld().getName());
 			dataFileConfig.addDefault(key + ".1.x", shop.getSpot()[0].getBlockX());
@@ -1720,11 +1720,11 @@ public class SaveFiles {
 		}
 		
 		// updating values
-		dataFileConfig.set(key + ".inventory", InventoryToString(shop.getInventory()));
 		dataFileConfig.set(key + ".cost", shop.getPrice());
 		dataFileConfig.set(key + ".quantity", shop.getQuantity());
 		dataFileConfig.set(key + ".double", shop.getDoubleChest());
 		dataFileConfig.set(key + ".material", shop.getMaterial());
+		dataFileConfig.set(key + ".durability", shop.getMaterial().getDurability());
 		if (shop.getDoubleChest()) {
 			dataFileConfig.set(key + ".1.world", shop.getSpot()[0].getWorld().getName());
 			dataFileConfig.set(key + ".1.x", shop.getSpot()[0].getBlockX());
@@ -1760,11 +1760,11 @@ public class SaveFiles {
 	}
 	
 	public ChestShop deserializeChestShop(String key) {
-		Inventory inventory = StringToInventory(dataFileConfig.getString(key + ".inventory"));
 		boolean doubleChest = dataFileConfig.getBoolean(key + ".double");
 		double price = dataFileConfig.getDouble(key + ".cost");
 		int quantity = dataFileConfig.getInt(key + ".quantity");
 		ItemStack item = dataFileConfig.getItemStack(key + ".material");
+		item.setDurability((short) dataFileConfig.getInt(key + ".durability"));
 		Location[] chests = new Location[4];
 		if (doubleChest) {
 			chests[0] = new Location(plugin.getServer().getWorld(dataFileConfig.getString(key + ".1.world")), dataFileConfig.getDouble(key + ".1.x"),
@@ -1785,7 +1785,7 @@ public class SaveFiles {
 					dataFileConfig.getDouble(key + ".4.y"), dataFileConfig.getDouble(key + ".4.z"));
 		}
 		
-		return new ChestShop(inventory, item, price, quantity, chests, doubleChest);
+		return new ChestShop(item, price, quantity, chests);
 	}
 	
 	// Method to deserialize and serialize vectors

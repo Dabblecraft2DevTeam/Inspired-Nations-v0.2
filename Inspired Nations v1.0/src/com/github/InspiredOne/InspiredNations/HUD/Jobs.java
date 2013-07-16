@@ -58,7 +58,7 @@ public class Jobs extends Menu {
 		inputs.add("Remove Job Request <job's town> / <job's name>");
 		inputs.add("Quit Owner <job's town> / <job's name>");
 		inputs.add("Quit Job <job's town> / <job's name>");
-		inputs.add("Job Offers " + "(" + menuType.OPTIONDESCRIP + 
+		inputs.add("Job Offers (" + menuType.OPTIONDESCRIP + 
 				(PMeth.getJobOffers().size() + PMeth.getOwnerOffers().size()) + menuType.OPTION + ")");
 		
 		options = options.concat(menuType.LABEL + "Owner: " + menuType.VALUE + tools.format(businessesowned) + "\n");

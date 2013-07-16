@@ -12,6 +12,7 @@ import com.github.InspiredOne.InspiredNations.HUD.ManageCountry.ManageCountry;
 import com.github.InspiredOne.InspiredNations.HUD.ManageHouse.ManageHouse1;
 import com.github.InspiredOne.InspiredNations.HUD.NewCountry.NewCountry1;
 import com.github.InspiredOne.InspiredNations.ManageTown.ManageTown;
+import com.github.InspiredOne.InspiredNations.Tools.menuType;
 
 public class HudConversationMain extends Menu{
 	
@@ -54,7 +55,8 @@ public class HudConversationMain extends Menu{
 			inputs.add("New House");
 		}
 		if (PDI.getIsCountryResident()) {
-			inputs.add("Jobs");
+			inputs.add("Jobs ("+ menuType.OPTIONDESCRIP + 
+					(PMeth.getJobOffers().size() + PMeth.getOwnerOffers().size()) + menuType.OPTION + ")");
 		}
 		inputs.add("Map");
 		
@@ -126,7 +128,8 @@ public class HudConversationMain extends Menu{
 			PM.setMap(true);
 			return new ShowMap(plugin, player, 0);
 		}
-		else if(inputs.get(answer).equals("Jobs")) {
+		else if(inputs.get(answer).equals("Jobs ("+ menuType.OPTIONDESCRIP + 
+				(PMeth.getJobOffers().size() + PMeth.getOwnerOffers().size()) + menuType.OPTION + ")")) {
 			return new Jobs(plugin, player, 0);
 		}
 		
