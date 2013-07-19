@@ -20,6 +20,7 @@ import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.PlayerData;
 import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.PlayerModes;
+import com.github.InspiredOne.InspiredNations.Economy.ItemIndexes;
 import com.github.InspiredOne.InspiredNations.HUD.SelectBusiness3;
 import com.github.InspiredOne.InspiredNations.HUD.SelectHouse2;
 import com.github.InspiredOne.InspiredNations.HUD.ShowMap;
@@ -39,9 +40,11 @@ public class InspiredNationsPlayerListener implements Listener {
 
 	public String previous = "";
 	// Grabbing instance of plugin
+	ItemIndexes index;
 	InspiredNations plugin;
 	public InspiredNationsPlayerListener(InspiredNations instance) {
 		plugin = instance;
+		index = new ItemIndexes(plugin);
 	}
 	
 	
@@ -89,6 +92,11 @@ public class InspiredNationsPlayerListener implements Listener {
 	public void onPlayerHeld(PlayerItemHeldEvent event) {
 		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
 		CSPL.onItemHeld();
+		
+		
+		
+		System.out.println(index.contains(event.getPlayer().getInventory().getItem(event.getNewSlot())));
+		System.out.println(index.get(event.getPlayer().getInventory().getItem(event.getNewSlot())));
 	}
 	
 	@EventHandler

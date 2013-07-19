@@ -3,6 +3,7 @@ package com.github.InspiredOne.InspiredNations.Economy.Nodes;
 import java.math.BigDecimal;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Economy.NPC;
 
 public class CobDugNode extends Node {
 
@@ -10,7 +11,7 @@ public class CobDugNode extends Node {
 	double[] power;
 	double[] ratios;
 	
-	public CobDugNode(InspiredNations instance, int id, int[] elems, double[] power) {
+	public CobDugNode(NPC instance, int id, int[] elems, double[] power) {
 		super(instance, id, elems);
 		this.power = power;
 	}
@@ -24,8 +25,11 @@ public class CobDugNode extends Node {
 			double holder = Math.pow(ref.get(elems[i]).getCoef(), power[i]);
 			
 			if(holder >= thresh) {
+				ratios[i] = 1;
 				coeftemp = coeftemp*holder;
-				
+			}
+			else {
+				ratios[i] = -1;
 			}
 		}
 		return coeftemp;
@@ -33,8 +37,21 @@ public class CobDugNode extends Node {
 
 	@Override
 	public void buy(BigDecimal amount) {
-		// TODO Auto-generated method stub
-
+		double divisor = 0;
+		
+		if(ratios.equals(null)) {
+			this.getCoef();
+		}
+		
+		for(int i = 0; i < power.length; i++) {
+			if(ratios[i] > 0) {
+				divisor += power[i];
+			}
+		}	
+		for(int i = 0; i < elems.length; i++) {
+			if(ratios[i] > 0) {
+				ref.get(elems[i]).buy(amount.multiply(new BigDecimal(power[i])).divide(new BigDecimal(divisor)));
+			}
+		}
 	}
-
 }

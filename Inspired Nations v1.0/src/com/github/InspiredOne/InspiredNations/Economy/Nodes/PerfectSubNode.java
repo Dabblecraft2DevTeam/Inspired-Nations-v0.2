@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.util.Vector;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Economy.NPC;
 
 public class PerfectSubNode extends Node {
 
 	double[] coefs;
 	int choice = -1;
 	
-	public PerfectSubNode(InspiredNations instance, int id, int[] elems, double[] coefs) {
+	public PerfectSubNode(NPC instance, int id, int[] elems, double[] coefs) {
 		super(instance, id, elems);
 		this.coefs = coefs;
 	}

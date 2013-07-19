@@ -3,12 +3,13 @@ package com.github.InspiredOne.InspiredNations.Economy.Nodes;
 import java.math.BigDecimal;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.Economy.NPC;
 
 public class PerfectCompNode extends Node {
 
 	double[] ratio;
 	
-	public PerfectCompNode(InspiredNations instance, int id, int[] elems, double[] ratio) {
+	public PerfectCompNode(NPC instance, int id, int[] elems, double[] ratio) {
 		super(instance, id, elems);
 		this.ratio = ratio;
 	}
