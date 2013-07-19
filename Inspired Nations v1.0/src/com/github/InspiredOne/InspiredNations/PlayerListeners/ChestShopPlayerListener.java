@@ -143,7 +143,6 @@ public class ChestShopPlayerListener {
 		if (PM.getPlaceItem()){
 			if (interact.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 				if (interact.getClickedBlock().getTypeId()==54) {
-					PM.alreadyChest = false;
 					Location spot = interact.getClickedBlock().getLocation();
 					GoodBusiness business = (GoodBusiness) PDI.getConversation().getContext().getSessionData("business");
 	
@@ -219,6 +218,10 @@ public class ChestShopPlayerListener {
 	}
 	
 	public void onBlockPlace() {
+		
+		//TODO make it so if chest is placed next to chestshop to make it a double chest, 
+		
+		
 		if (PM.placesign) {
 			GoodBusiness business = (GoodBusiness) PDI.getConversation().getContext().getSessionData("business");
 			if (place.getBlockPlaced().getTypeId() != 63 && place.getBlockPlaced().getTypeId() != 68) return;
@@ -252,7 +255,7 @@ public class ChestShopPlayerListener {
 	
 	public void onSignChangeEvent() {
 		if (PM.placesign) {
-			GoodBusiness business = null;
+			GoodBusiness business = (GoodBusiness) PDI.getConversation().getContext().getSessionData("business");
 			for (GoodBusiness temp:PDI.getGoodBusinessOwned()) {
 				if (temp.getName().equalsIgnoreCase(PM.businessName)) {
 					business = temp;
@@ -261,13 +264,10 @@ public class ChestShopPlayerListener {
 			}
 			if (!business.isIn(sign.getBlock().getLocation())) return;
 			sign.setLine(0, PM.itemname);
-			sign.setLine(1, "Price: " + tools.cut(new BigDecimal(PM.cost)).toString());
+			sign.setLine(1, "Price: " + tools.cut(PM.cost).toString());
 			sign.setLine(2, "Qt: " + PM.quantity);
 		}
 	}
-
-	
-
 	
 	// A method to generate the printout for PlaceShop1
 	public void generateMessage(int error) {

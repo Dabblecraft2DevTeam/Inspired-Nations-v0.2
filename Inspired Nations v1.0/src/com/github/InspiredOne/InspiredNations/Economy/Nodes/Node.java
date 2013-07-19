@@ -8,9 +8,16 @@ public abstract class Node {
 
 	InspiredNations plugin;
 	int ID;
-	public Node(InspiredNations instance, int id) {
+	NodeRef ref;
+	double thresh = 0.0000001;
+	int[] elems;
+	
+	public Node(InspiredNations instance, int id, int[] elems) {
 		plugin = instance;
 		ID = id;
+		ref = plugin.node;
+		this.elems = elems;
+		ref.put(ID, this);
 	}
 	
 	public abstract double getCoef();

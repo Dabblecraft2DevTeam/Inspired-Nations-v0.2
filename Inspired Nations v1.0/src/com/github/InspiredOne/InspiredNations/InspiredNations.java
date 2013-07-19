@@ -17,6 +17,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.InspiredOne.InspiredNations.Economy.TaxTimer;
+import com.github.InspiredOne.InspiredNations.Economy.Nodes.NodeRef;
 import com.github.InspiredOne.InspiredNations.PlayerListeners.InspiredNationsPlayerListener;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
@@ -33,6 +34,7 @@ public class InspiredNations extends JavaPlugin {
 	public InspiredNationsCommandExecutor InspiredNationsCE = new InspiredNationsCommandExecutor(this);
 	public InspiredNationsPlayerListener InspiredNationsPL = new InspiredNationsPlayerListener(this);
 	public TaxTimer taxTimer;
+	public NodeRef node = new NodeRef();
 	
 	public void onEnable() {
 		PluginManager pm = this.getServer().getPluginManager();

@@ -307,10 +307,13 @@ public class Tools {
 			options = options.concat(menuType.VALUE + "Level 3: " + menuType.VALUEDESCRI + "(Player protection) You gain damage protection from non-house residents.\n");
 			break;
 		case PARK:
+			plugin.logger.info("her1)");
 			options = options.concat(menuType.LABEL + "Current Protection Cost: " + menuType.VALUE + TM.getLocalParkTax((Park) building, town.getProtectionLevel(), true, version.NEW)  +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			plugin.logger.info("her2)");
 			options = options.concat(menuType.LABEL + "Cost For Next Level: " + menuType.VALUE + TM.getLocalParkTax((Park) building, Level + 1, town.getProtectionLevel(), true, version.NEW) +
 					menuType.UNIT + " " + town.getPluralMoney() + "\n");
+			plugin.logger.info("her3)");
 			options = this.addDivider(options);
 			options = options.concat(menuType.VALUE + "Level 0: " + menuType.VALUEDESCRI + "(No protection) Anybody that can build in your town can build in your park.\n");
 			options = options.concat(menuType.VALUE + "Level 1: " + menuType.VALUEDESCRI + "(Complete protection) Only country rulers, town rulers and designated builders can build in the park.\n");

@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.HUD.Menu;
+import com.github.InspiredOne.InspiredNations.Regions.ChestShop;
+import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
 import com.github.InspiredOne.InspiredNations.Tools.optionType;
 
 public class AddShop3 extends Menu {
@@ -64,6 +66,7 @@ public class AddShop3 extends Menu {
 		}
 		
 		if (arg.equalsIgnoreCase("finish")) {
+			((GoodBusiness) arg0.getSessionData("business")).addChestShop(new ChestShop(PM.getItemType(), PM.cost, PM.quantity, PM.tempchests.clone()));
 			return new ManageBusiness2(plugin, player, 0);
 		}
 		

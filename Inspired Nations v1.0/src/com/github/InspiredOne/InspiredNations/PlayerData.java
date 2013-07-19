@@ -3,6 +3,7 @@ package com.github.InspiredOne.InspiredNations;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.bukkit.conversations.Conversation;
@@ -44,6 +45,12 @@ public class PlayerData {
 	private LocalPrison localPrisonJailed = null;
 	private Town townResides = null;
 	private Country countryResides = null;
+	private double repScore;
+	private double repPoints;
+	private HashMap<String, Double> recipients = new HashMap<String, Double>();
+	private Vector<Vector<String>> msgunread = new Vector<Vector<String>>();
+	private Vector<Vector<String>> msgread = new Vector<Vector<String>>();
+	private Vector<String> notification = new Vector<String>();
 	
 	// Economy Variables
 	private BigDecimal money = new BigDecimal(500);
@@ -814,5 +821,53 @@ public class PlayerData {
 
 	public void setOldHouseTax(double oldHouseTax) {
 		this.oldHouseTax = oldHouseTax;
+	}
+
+	public double getRepScore() {
+		return repScore;
+	}
+
+	public void setRepScore(double repScore) {
+		this.repScore = repScore;
+	}
+
+	public double getRepPoints() {
+		return repPoints;
+	}
+
+	public void setRepPoints(double repPoints) {
+		this.repPoints = repPoints;
+	}
+
+	public HashMap<String, Double> getRecipients() {
+		return recipients;
+	}
+
+	public void setRecipients(HashMap<String, Double> recipients) {
+		this.recipients = recipients;
+	}
+
+	public Vector<Vector<String>> getMsgunread() {
+		return msgunread;
+	}
+
+	public void setMsgunread(Vector<Vector<String>> msgunread) {
+		this.msgunread = msgunread;
+	}
+
+	public Vector<Vector<String>> getMsgread() {
+		return msgread;
+	}
+
+	public void setMsgread(Vector<Vector<String>> msgread) {
+		this.msgread = msgread;
+	}
+
+	public Vector<String> getNotification() {
+		return notification;
+	}
+
+	public void setNotification(Vector<String> notification) {
+		this.notification = notification;
 	}
 }

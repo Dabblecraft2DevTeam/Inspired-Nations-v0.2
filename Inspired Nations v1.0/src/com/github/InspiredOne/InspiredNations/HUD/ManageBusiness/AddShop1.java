@@ -77,6 +77,7 @@ public class AddShop1 extends Menu {
 			answer = Integer.decode(args[0]);
 			PM.setPlaceItem(false);
 			PM.quantity = answer;
+			PM.itemname = tools.getItemName(PM.getItemType());
 			return new AddShop2(plugin, player, 0);
 		}
 		catch (Exception ex) {

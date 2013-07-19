@@ -37,7 +37,7 @@ public class AddShop2 extends Menu {
 	
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String arg) {
-		double answer = 0.;
+		BigDecimal answer = BigDecimal.ZERO;
 		if (arg.startsWith("/")) {
 			arg = arg.substring(1);
 		}
@@ -52,7 +52,7 @@ public class AddShop2 extends Menu {
 			return new AddShop1(plugin, player, 0);
 		}
 		try {
-			answer = Double.parseDouble(args[0]);
+			answer = new BigDecimal(args[0]);
 			PM.cost = answer;
 			PM.placesign = true;
 			return new AddShop3(plugin, player, 0);

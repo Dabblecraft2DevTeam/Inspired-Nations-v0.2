@@ -73,7 +73,7 @@ public class TownMethods {
 					plugin.getConfig().getDouble("park_tax_multiplyer"))); 
 			}
 			else {
-				amount = (new BigDecimal(((Cuboid) obj).Volume() * level * town.getNationTax()/10000 *
+				amount = (new BigDecimal(((polygonPrism) obj).Volume() * level * town.getNationTax()/10000 *
 						plugin.getConfig().getDouble("park_tax_multiplyer") + ((polygonPrism) obj).Volume() * townlevel * town.getNationTaxOld()/10000 *
 						plugin.getConfig().getDouble("park_tax_multiplyer"))); 
 			}
@@ -85,7 +85,7 @@ public class TownMethods {
 					plugin.getConfig().getDouble("park_tax_multiplyer")));
 			}
 			else {
-				amount = (new BigDecimal(((Cuboid) obj).Volume() * level * town.getNationTax()/10000 *
+				amount = (new BigDecimal(((polygonPrism) obj).Volume() * level * town.getNationTax()/10000 *
 						plugin.getConfig().getDouble("park_tax_multiplyer") + ((polygonPrism) obj).Volume() * townlevel * town.getNationTax()/10000 *
 						plugin.getConfig().getDouble("park_tax_multiplyer"))); 
 			}
@@ -113,6 +113,16 @@ public class TownMethods {
 	
 	public BigDecimal getLocalParkTax(Park park, int townlevel, boolean adjusted, version ver) {
 		BigDecimal amount = getLocalParkTax(park.getRegion(),park.getProtectionLevel(), townlevel, false, ver);
+		if (adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
+	}
+	
+	public BigDecimal getLocalParkTax(Park park, int parklevel, int townlevel, boolean adjusted, version ver) {
+		BigDecimal amount = getLocalParkTax(park.getRegion(),parklevel, townlevel, false, ver);
 		if (adjusted) {
 			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
 		}

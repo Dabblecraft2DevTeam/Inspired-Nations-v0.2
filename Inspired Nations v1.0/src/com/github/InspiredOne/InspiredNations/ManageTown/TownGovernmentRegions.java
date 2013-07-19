@@ -95,6 +95,9 @@ public class TownGovernmentRegions extends Menu {
 			PM.park(true);
 			return new SelectPark1(plugin, player, 0);
 		}
+		else if(inputs.get(answer).equals("Manage Park")) {
+			return new ManagePark1(plugin, player, 0);
+		}
 		return new TownGovernmentRegions(plugin, player, 2);
 	}
 

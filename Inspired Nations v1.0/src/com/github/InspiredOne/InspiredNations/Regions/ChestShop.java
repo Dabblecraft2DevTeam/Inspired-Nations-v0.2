@@ -11,6 +11,8 @@
 package com.github.InspiredOne.InspiredNations.Regions;
 
 
+import java.math.BigDecimal;
+
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.DoubleChestInventory;
@@ -21,12 +23,12 @@ import org.bukkit.inventory.ItemStack;
 public class ChestShop {
 
 	private ItemStack itemtype;
-	private double price;
+	private BigDecimal price;
 	Location[] chests;
 	private int quantity;
 	
 	// 1 and 2 for chests, 3 for sign, 4 for block sign is on.
-	public ChestShop( ItemStack itemtypetemp, double cost,int quant, Location[] spots) {
+	public ChestShop( ItemStack itemtypetemp, BigDecimal cost,int quant, Location[] spots) {
 		itemtype = itemtypetemp;
 		price = cost;
 		chests = spots.clone();
@@ -47,11 +49,11 @@ public class ChestShop {
 		
 	}
 	
-	public void setPrice(double pricetemp) {
+	public void setPrice(BigDecimal pricetemp) {
 		price = pricetemp;
 	}
 	
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 	

@@ -46,7 +46,7 @@ public class ManagePrison extends Menu {
 		
 		// Make Output text
 		options = options.concat(menuType.LABEL + "Cells: ");
-		options = options.concat(tools.format(new Vector<String>(town.getPrison().getCells().keySet())));
+		options = options.concat(menuType.VALUE + tools.format(new Vector<String>(town.getPrison().getCells().keySet())) + "\n");
 		options = tools.addDivider(options);
 		options = options.concat(tools.options(inputs));
 		

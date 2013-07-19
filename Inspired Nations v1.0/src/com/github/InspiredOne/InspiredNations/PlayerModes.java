@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.github.InspiredOne.InspiredNations;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.bukkit.Location;
@@ -66,10 +67,9 @@ public class PlayerModes {
 	public String itemname;
 	public Integer quantity;
 	private ItemStack itemtype;
-	public double cost;
-	public Location[] tempchests = new Location[4];
+	public BigDecimal cost;
+	public Location[] tempchests = new Location[4]; // first two are for the chest, second two are for the sign and the block the sign is on.
 	public ChestShop tempshop;
-	public Inventory items;
 	public boolean placesign = false;
 	private boolean placeitem = false;
 	public boolean legalChest = false;
@@ -80,7 +80,6 @@ public class PlayerModes {
 	public boolean againstoutside = false;
 	public boolean legalsign = false;
 	public boolean doublechest;
-	public boolean alreadyChest = false;
 	
 	
 	// Grabbing instance of plugin

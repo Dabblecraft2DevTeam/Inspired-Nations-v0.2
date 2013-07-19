@@ -303,6 +303,15 @@ public class SaveFiles {
 			else {
 				PDC.addDefault(key + ".countryResides", null);
 			}
+			PDC.addDefault(key + ".rep.points", PDI.getRepPoints());
+			PDC.addDefault(key + ".rep.score", PDI.getRepScore());
+			PDC.addDefault(key + ".recipient.size", PDI.getRecipients().size());
+			int iter = 0; // used to number label the recipients
+			for(String name:PDI.getRecipients().keySet()) {
+				PDC.addDefault(key + ".recipient." + iter + ".points", PDI.getRecipients().get(name));
+				PDC.addDefault(key + ".recipient." + iter + ".name", name);
+				iter++;
+			}
 			PDC.addDefault(key + ".money.amount", PDI.getRawMoney().toString());
 			PDC.addDefault(key + ".money.inBankHigh", PDI.getRawMoneyInBankHigh().toString());
 			PDC.addDefault(key + ".money.inBankLow", PDI.getRawMoneyInBankLow().toString());
@@ -416,6 +425,16 @@ public class SaveFiles {
 			else {
 				PDC.set(key + ".countryResides", null);
 			}
+			PDC.set(key + ".rep.points", PDI.getRepPoints());
+			PDC.set(key + ".rep.score", PDI.getRepScore());
+			PDC.set(key + ".recipient.size", PDI.getRecipients().size());
+			@SuppressWarnings("unused")
+			int iterator = 0; // used to number label the recipients
+			for(String name:PDI.getRecipients().keySet()) {
+				PDC.set(key + ".recipient." + iter + ".points", PDI.getRecipients().get(name));
+				PDC.set(key + ".recipient." + iter + ".name", name);
+				iterator++;
+			}
 			PDC.set(key + ".money.amount", PDI.getRawMoney().toString());
 			PDC.set(key + ".money.inBankHigh", PDI.getRawMoneyInBankHigh().toString());
 			PDC.set(key + ".money.inBankLow", PDI.getRawMoneyInBankLow().toString());
@@ -476,6 +495,12 @@ public class SaveFiles {
 			}
 			else {
 				PDI.setTownResides(null);
+			}
+			
+			PDI.setRepPoints(PDC.getDouble(key + ".rep.points"));
+			PDI.setRepScore(PDC.getDouble(key + ".rep.score"));
+			for(int j = 0; j < PDC.getInt(key + ".recipient.size"); j++) {
+				PDI.getRecipients().put(PDC.getString(key + ".recipient." + j + ".name"), PDC.getDouble(key + ".recipient." + j + ".points"));
 			}
 			PDI.setCountryResides(plugin.countrydata.get(PDC.getString(key + ".countryResides")));
 			PDI.setMoneyMultiplyer(new BigDecimal(PDC.getString(key + ".money.multiplyer")));
@@ -1761,7 +1786,7 @@ public class SaveFiles {
 	
 	public ChestShop deserializeChestShop(String key) {
 		boolean doubleChest = dataFileConfig.getBoolean(key + ".double");
-		double price = dataFileConfig.getDouble(key + ".cost");
+		BigDecimal price = new BigDecimal(dataFileConfig.getString(key + ".cost"));
 		int quantity = dataFileConfig.getInt(key + ".quantity");
 		ItemStack item = dataFileConfig.getItemStack(key + ".material");
 		item.setDurability((short) dataFileConfig.getInt(key + ".durability"));
