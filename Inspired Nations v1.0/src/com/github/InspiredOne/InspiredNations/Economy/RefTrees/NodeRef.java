@@ -2,6 +2,8 @@ package com.github.InspiredOne.InspiredNations.Economy.RefTrees;
 
 import java.util.HashMap;
 
+import org.bukkit.inventory.ItemStack;
+
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Economy.NPC;
 import com.github.InspiredOne.InspiredNations.Economy.Nodes.ItemNode;
@@ -15,7 +17,7 @@ public class NodeRef {
 	
 	public NodeRef(NPC instance) {
 		npc = instance;
-		new ItemNode(npc, 1, 2, 200); //Iron Sword
+		new ItemNode(npc, 1, 2, new ItemStack(1,1,(short) 3)); //Iron Sword
 		new PerfectCompNode(npc, 2, new int[] {3,4}, new double[] {2,1}); //
 		new ItemNode(npc, 3, 5, 100);
 	}
