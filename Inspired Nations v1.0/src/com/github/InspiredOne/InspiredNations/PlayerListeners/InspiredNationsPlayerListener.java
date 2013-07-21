@@ -1,8 +1,11 @@
 package com.github.InspiredOne.InspiredNations.PlayerListeners;
 
+import net.minecraft.server.v1_5_R3.Item;
+
 import org.bukkit.Location;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
@@ -93,10 +97,20 @@ public class InspiredNationsPlayerListener implements Listener {
 		ChestShopPlayerListener CSPL = new ChestShopPlayerListener(plugin, event);
 		CSPL.onItemHeld();
 		
+		;
+		ItemStack actual = event.getPlayer().getInventory().getItem(event.getNewSlot());
+		ItemStack test = actual.clone();
 		
+		test.setAmount(1);
+		if(test.equals(new ItemStack(278,1,(short) 0))) {
+			System.out.println("Here I am!!)");
+			actual.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+		}
 		
-		System.out.println(index.contains(event.getPlayer().getInventory().getItem(event.getNewSlot())));
-		System.out.println(index.get(event.getPlayer().getInventory().getItem(event.getNewSlot())));
+		System.out.println(index.contains(test));
+		if(index.contains(test)) {
+			System.out.println(index.get(test));
+		}
 	}
 	
 	@EventHandler

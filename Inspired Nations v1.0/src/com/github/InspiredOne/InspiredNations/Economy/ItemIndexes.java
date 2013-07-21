@@ -15,6 +15,8 @@ public class ItemIndexes {
 	public ItemIndexes(InspiredNations instance) {
 		plugin = instance;
 		
+		
+		
 		this.put(1, 0, "Stone");
 		this.put(2, 0, "Grass Block");
 		this.put(3, 0, "Dirt");

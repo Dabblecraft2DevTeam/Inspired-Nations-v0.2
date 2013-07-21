@@ -20,7 +20,7 @@ public class NPC {
 		plugin = instance;
 		node = new NodeRef(this);
 		index = plugin.index;
-		buyVector = new BigDecimal[index.index.size() + 1];
+		buyVector = new BigDecimal[index.index.size()];
 	}
 	
 	
