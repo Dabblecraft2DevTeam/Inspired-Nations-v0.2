@@ -16,31 +16,285 @@ public class NodeRef {
 	HashMap<Integer, Node> ref = new HashMap<Integer, Node>();
 	InspiredNations plugin;
 	NPC npc;
+	ItemRefTrees item;
 	
 	Node Begin;
+	Node Smelt;
 	
 	public NodeRef(NPC instance) {
 		npc = instance;
-		Begin = new CobDugNode(npc, 1, new int[] {2}, new double[] {1});
-			new CobDugNode(npc, 2, new int[] {3,4,5,6}, new double[] {1,1,1,1}); // Armor
-				new PerfectSubNode(npc, 3, new int[] {7,8,9,10,11}, new double[] {1,3,4,6,10}); // Helmet
-				
-					new ItemNode(npc, 7, 37, new ItemStack(298, 1, (short) 0)); //Leather Helmet Item
-						new PerfectCompNode(npc, 37, new int[] {38}, new double[] {5}); // Leather
-							new ItemNode(npc, 38, -1, new ItemStack(334, 1, (short) 0)); // Leather
-							
-					new ItemNode(npc, 8, 39, new ItemStack(302, 1, (short) 0)); //Chain Helmet Item
-						new PerfectCompNode(npc, 39, new int[] {40}, new double[] {5}); // Fire
-							new ItemNode(npc, 40, -1, new ItemStack(51, 1, (short) 0)); // Fire
-							
-					new ItemNode(npc, 9, 41, new ItemStack(314, 1, (short) 0)); // Gold Helmet Item
-						new PerfectSubNode(npc, 41, new int[] {32, 33}, new double[] {1,1});
-							new PerfectCompNode(npc, 32, new int[] {38}, new double[] {5}); // Gold Ingot
-								new ItemNode(npc, 38, -1, new ItemStack(334, 1, (short) 0)); // Gold Ingot
-							new PerfectCompNode(npc, 33, new int[] {);
-				new PerfectSubNode(npc, 4, new int[] {12,13,14,15,16}, new double[] {1,3,4,6,10}); // Chestplate
-				new PerfectSubNode(npc, 5, new int[] {17,18,19,20,21}, new double[] {1,3,4,6,10}); // Leggings
-				new PerfectSubNode(npc, 6, new int[] {22,23,24,25,26}, new double[] {1,3,4,6,10}); // Boots
+		item = new ItemRefTrees(npc);
+
+		
+		Begin = new CobDugNode(npc, new double[] {1,1}, new Node[] {
+			// { Armor
+			new CobDugNode(npc, new double[] {1.25,2,1.75,1}, new Node[] { // Armor
+				// { Helmet
+				new PerfectSubNode(npc, new double[] {1,3,4,6,10}, new Node[] { // Helmet
+						new ItemNode(npc, new ItemStack(298, 1, (short) 0), new Node[] { // Leather Helmet
+							new PerfectCompNode(npc, new double[] {5}, new Node[] {
+								new ItemNode(npc, new ItemStack(334, 1, (short) 0)) // Leather
+							})
+						}),
+						new ItemNode(npc, new ItemStack(302, 1, (short) 0), new Node[] { // Chain Helmet
+							new PerfectCompNode(npc, new double[] {5}, new Node[] {
+								new ItemNode(npc, new ItemStack(51, 1, (short) 0)) // Fire
+							})
+						}),
+						new ItemNode(npc, new ItemStack(314, 1, (short) 0), new Node[] { // Gold Helmet
+							new PerfectCompNode(npc, new double[] {5}, new Node[] {
+									item.goldIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(306, 1, (short) 0), new Node[] { // Iron Helmet
+							new PerfectCompNode(npc, new double[] {5}, new Node[] {
+									item.ironIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(310, 1, (short) 0), new Node[] { // Diamond Helmet
+							new PerfectCompNode(npc, new double[] {5}, new Node[] {
+								item.diamond
+							})
+						})
+				}),
+				// }
+				// { ChestPlate
+				new PerfectSubNode(npc, new double[] {1,3,4,6,10}, new Node[] { // Chestplate
+						new ItemNode(npc, new ItemStack(299, 1, (short) 0), new Node[] { // Leather Chestplate
+							new PerfectCompNode(npc, new double[] {8}, new Node[] {
+								new ItemNode(npc, new ItemStack(334, 1, (short) 0)) // Leather
+							})
+						}),
+						new ItemNode(npc, new ItemStack(303, 1, (short) 0), new Node[] { // Chain Chestplate
+							new PerfectCompNode(npc, new double[] {8}, new Node[] {
+								new ItemNode(npc, new ItemStack(51, 1, (short) 0)) // Fire
+							})
+						}),
+						new ItemNode(npc, new ItemStack(315, 1, (short) 0), new Node[] { // Gold Chestplate
+							new PerfectCompNode(npc, new double[] {8}, new Node[] {
+									item.goldIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(307, 1, (short) 0), new Node[] { // Iron Chestplate
+							new PerfectCompNode(npc, new double[] {8}, new Node[] {
+									item.ironIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(311, 1, (short) 0), new Node[] { // Diamond Chestplate
+							new PerfectCompNode(npc, new double[] {8}, new Node[] {
+								item.diamond
+							})
+						})
+				}),
+				// }
+				// { Leggings
+				new PerfectSubNode(npc, new double[] {1,3,4,6,10}, new Node[] { // Leggings
+						new ItemNode(npc, new ItemStack(300, 1, (short) 0), new Node[] { // Leather Leggings
+							new PerfectCompNode(npc, new double[] {7}, new Node[] {
+								new ItemNode(npc, new ItemStack(334, 1, (short) 0)) // Leather
+							})
+						}),
+						new ItemNode(npc, new ItemStack(304, 1, (short) 0), new Node[] { // Chain Leggings
+							new PerfectCompNode(npc, new double[] {7}, new Node[] {
+								new ItemNode(npc, new ItemStack(51, 1, (short) 0)) // Fire
+							})
+						}),
+						new ItemNode(npc, new ItemStack(316, 1, (short) 0), new Node[] { // Gold Leggings
+							new PerfectCompNode(npc, new double[] {7}, new Node[] {
+									item.goldIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(308, 1, (short) 0), new Node[] { // Iron Leggings
+							new PerfectCompNode(npc, new double[] {7}, new Node[] {
+									item.ironIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(312, 1, (short) 0), new Node[] { // Diamond Leggings
+							new PerfectCompNode(npc, new double[] {7}, new Node[] {
+								item.diamond
+							})
+						})
+				}),
+				// }
+				// { Boots
+				new PerfectSubNode(npc, new double[] {1,3,4,6,10}, new Node[] { // Boots
+						new ItemNode(npc, new ItemStack(301, 1, (short) 0), new Node[] { // Leather Leggings
+							new PerfectCompNode(npc, new double[] {4}, new Node[] {
+								new ItemNode(npc, new ItemStack(334, 1, (short) 0)) // Leather
+							})
+						}),
+						new ItemNode(npc, new ItemStack(305, 1, (short) 0), new Node[] { // Chain Leggings
+							new PerfectCompNode(npc, new double[] {4}, new Node[] {
+								new ItemNode(npc, new ItemStack(51, 1, (short) 0)) // Fire
+							})
+						}),
+						new ItemNode(npc, new ItemStack(317, 1, (short) 0), new Node[] { // Gold Leggings
+							new PerfectCompNode(npc, new double[] {4}, new Node[] {
+									item.goldIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(309, 1, (short) 0), new Node[] { // Iron Leggings
+							new PerfectCompNode(npc, new double[] {4}, new Node[] {
+									item.ironIngot
+							})
+						}),
+						new ItemNode(npc, new ItemStack(313, 1, (short) 0), new Node[] { // Diamond Leggings
+							new PerfectCompNode(npc, new double[] {4}, new Node[] {
+								item.diamond
+							})
+						})
+				})
+				// }
+			}),
+			// }
+			// { Tools
+			new CobDugNode(npc, new double[] {5,4,3.5,2,1}, new Node[] { // Tools
+					// { Pickaxe
+					new PerfectSubNode(npc, new double[] {1,2,2.5,5,7}, new Node[] { // Pickaxe
+							new ItemNode(npc, new ItemStack(270, 1, (short) 0), new Node[] { // Wooden Pickaxe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.plank
+								})
+							}),
+							new ItemNode(npc, new ItemStack(274, 1, (short) 0), new Node[] { // Stone Pickaxe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										new ItemNode(npc, new ItemStack(4, 1, (short) 0)) // Cobblestone
+								})
+							}),
+							new ItemNode(npc, new ItemStack(285, 1, (short) 0), new Node[] { // Gold Pickaxe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.goldIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(257, 1, (short) 0), new Node[] { // Iron Pickaxe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.ironIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(278, 1, (short) 0), new Node[] { // Diamond Pickaxe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.diamond
+								})
+							})
+					}),
+					// }
+					// { Shovel
+					new PerfectSubNode(npc, new double[] {1,2,4,7}, new Node[] { // Shovel
+							new ItemNode(npc, new ItemStack(269, 1, (short) 0), new Node[] { // Wooden Shovel
+								new PerfectCompNode(npc, new double[] {2,1}, new Node[] {
+										item.stick,
+										item.plank
+								})
+							}),
+							new ItemNode(npc, new ItemStack(273, 1, (short) 0), new Node[] { // Stone Shovel
+								new PerfectCompNode(npc, new double[] {2,1}, new Node[] {
+										item.stick,
+										new ItemNode(npc, new ItemStack(4, 1, (short) 0)) // Cobblestone
+								})
+							}),
+							new ItemNode(npc, new ItemStack(284, 1, (short) 0), new Node[] { // Gold Shovel
+								new PerfectCompNode(npc, new double[] {2,1}, new Node[] {
+										item.stick,
+										item.goldIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(256, 1, (short) 0), new Node[] { // Iron Shovel
+								new PerfectCompNode(npc, new double[] {2,1}, new Node[] {
+										item.stick,
+										item.ironIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(277, 1, (short) 0), new Node[] { // Diamond Shovel
+								new PerfectCompNode(npc, new double[] {2,1}, new Node[] {
+										item.stick,
+										item.diamond
+								})
+							})
+					}),
+					// }
+					// { Axe
+					new PerfectSubNode(npc, new double[] {1,2,4,7}, new Node[] { // Axe
+							new ItemNode(npc, new ItemStack(271, 1, (short) 0), new Node[] { // Wooden Axe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.plank
+								})
+							}),
+							new ItemNode(npc, new ItemStack(275, 1, (short) 0), new Node[] { // Stone Axe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										new ItemNode(npc, new ItemStack(4, 1, (short) 0)) // Cobblestone
+								})
+							}),
+							new ItemNode(npc, new ItemStack(286, 1, (short) 0), new Node[] { // Gold Axe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.goldIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(258, 1, (short) 0), new Node[] { // Iron Axe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.ironIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(279, 1, (short) 0), new Node[] { // Diamond Axe
+								new PerfectCompNode(npc, new double[] {2,3}, new Node[] {
+										item.stick,
+										item.diamond
+								})
+							})
+					}),
+					// }
+					// { Shears
+					new ItemNode(npc, new ItemStack(359, 1, (short) 0), new Node[] { // Shears
+						new PerfectCompNode(npc, new double[] {2}, new Node[] {
+								item.ironIngot
+						})
+					}),
+					// }
+					// { Hoe
+					new PerfectSubNode(npc, new double[] {1,2,2.3,2.4}, new Node[] { // Hoe
+							new ItemNode(npc, new ItemStack(290, 1, (short) 0), new Node[] { // Wooden Hoe
+								new PerfectCompNode(npc, new double[] {2,2}, new Node[] {
+										item.stick,
+										item.plank
+								})
+							}),
+							new ItemNode(npc, new ItemStack(291, 1, (short) 0), new Node[] { // Stone Hoe
+								new PerfectCompNode(npc, new double[] {2,2}, new Node[] {
+										item.stick,
+										new ItemNode(npc, new ItemStack(4, 1, (short) 0)) // Cobblestone
+								})
+							}),
+							new ItemNode(npc, new ItemStack(294, 1, (short) 0), new Node[] { // Gold Hoe
+								new PerfectCompNode(npc, new double[] {2,2}, new Node[] {
+										item.stick,
+										item.goldIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(292, 1, (short) 0), new Node[] { // Iron Hoe
+								new PerfectCompNode(npc, new double[] {2,2}, new Node[] {
+										item.stick,
+										item.ironIngot
+								})
+							}),
+							new ItemNode(npc, new ItemStack(293, 1, (short) 0), new Node[] { // Diamond Hoe
+								new PerfectCompNode(npc, new double[] {2,2}, new Node[] {
+										item.stick,
+										item.diamond
+								})
+							}),
+					})
+					// }
+			})
+			// }
+		});
 	}
 	
 	public Node get(int id) {

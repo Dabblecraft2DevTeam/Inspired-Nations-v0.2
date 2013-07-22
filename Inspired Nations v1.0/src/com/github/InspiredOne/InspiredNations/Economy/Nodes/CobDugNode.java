@@ -11,8 +11,8 @@ public class CobDugNode extends Node {
 	double[] power;
 	double[] ratios;
 	
-	public CobDugNode(NPC instance, int id, int[] elems, double[] power) {
-		super(instance, id, elems);
+	public CobDugNode(NPC instance, double[] power, Node[] elems) {
+		super(instance, elems);
 		this.power = power;
 	}
 
@@ -22,7 +22,7 @@ public class CobDugNode extends Node {
 		double coeftemp = 1;
 		
 		for(int i = 0; i<elems.length; i++) {
-			double holder = Math.pow(ref.get(elems[i]).getCoef(), power[i]);
+			double holder = Math.pow(elems[i].getCoef(), power[i]);
 			
 			if(holder >= thresh) {
 				ratios[i] = 1;
@@ -50,7 +50,7 @@ public class CobDugNode extends Node {
 		}	
 		for(int i = 0; i < elems.length; i++) {
 			if(ratios[i] > 0) {
-				ref.get(elems[i]).buy(amount.multiply(new BigDecimal(power[i])).divide(new BigDecimal(divisor)));
+				elems[i].buy(amount.multiply(new BigDecimal(power[i])).divide(new BigDecimal(divisor)));
 			}
 		}
 	}

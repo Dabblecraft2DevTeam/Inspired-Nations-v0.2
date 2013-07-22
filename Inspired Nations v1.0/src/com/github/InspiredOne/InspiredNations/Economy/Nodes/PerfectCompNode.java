@@ -9,8 +9,8 @@ public class PerfectCompNode extends Node {
 
 	double[] ratio;
 	
-	public PerfectCompNode(NPC instance, int id, int[] elems, double[] ratio) {
-		super(instance, id, elems);
+	public PerfectCompNode(NPC instance, double[] ratio, Node[] elems) {
+		super(instance, elems);
 		this.ratio = ratio;
 	}
 
@@ -18,7 +18,7 @@ public class PerfectCompNode extends Node {
 	public double getCoef() {
 		double coeftemp = 0;
 		for(int i = 0; i < elems.length;i++) {
-			double holder = ref.get(elems[i]).getCoef()*ratio[i];
+			double holder = elems[i].getCoef()*ratio[i];
 			if(holder >= thresh) {
 				coeftemp += holder;
 			}
@@ -35,7 +35,7 @@ public class PerfectCompNode extends Node {
 		
 		double divisor = 0;
 		for(int i = 0; i < elems.length; i++){
-			double holder = ref.get(elems[i]).getCoef()*ratio[i];
+			double holder = elems[i].getCoef()*ratio[i];
 			divisor += holder;
 		}
 		if(divisor <= thresh) {
@@ -43,7 +43,7 @@ public class PerfectCompNode extends Node {
 		}
 		
 		for(int i = 0; i< elems.length; i++) {
-			ref.get(elems[i]).buy( amount.multiply(new BigDecimal(ratio[i])).divide(new BigDecimal(divisor)));
+			elems[i].buy( amount.multiply(new BigDecimal(ratio[i])).divide(new BigDecimal(divisor)));
 		}
 
 	}

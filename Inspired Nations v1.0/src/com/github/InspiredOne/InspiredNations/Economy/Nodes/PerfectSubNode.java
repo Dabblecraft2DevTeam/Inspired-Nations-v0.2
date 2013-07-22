@@ -9,10 +9,10 @@ import com.github.InspiredOne.InspiredNations.Economy.NPC;
 public class PerfectSubNode extends Node {
 
 	double[] coefs;
-	int choice = -1;
+	Node choice = null;
 	
-	public PerfectSubNode(NPC instance, int id, int[] elems, double[] coefs) {
-		super(instance, id, elems);
+	public PerfectSubNode(NPC instance, double[] coefs, Node[] elems) {
+		super(instance, elems);
 		this.coefs = coefs;
 	}
 
@@ -20,10 +20,10 @@ public class PerfectSubNode extends Node {
 	public double getCoef() {
 		
 		double coefTemp = 0;
-		Vector<Integer> ids = new Vector<Integer>();
+		Vector<Node> ids = new Vector<Node>();
 		
 		for(int i = 0; i < elems.length; i++) {
-			double holder = ref.get(elems[i]).getCoef()*coefs[i];
+			double holder = elems[i].getCoef()*coefs[i];
 			if(holder > coefTemp) {
 				ids.clear();
 				coefTemp = holder;
@@ -39,20 +39,20 @@ public class PerfectSubNode extends Node {
 				rand = (int) Math.floor(Math.random()*ids.size());
 			}
 			choice = ids.get(rand);
-			return ref.get(ids.get(rand)).getCoef();
+			return ids.get(rand).getCoef();
 		}
 
 		else{
 			choice = ids.get(0);
-			return ref.get(ids.get(0)).getCoef();
+			return ids.get(0).getCoef();
 		}
 	}
 
 	@Override
 	public void buy(BigDecimal amount) {
-		if(choice == -1) {
+		if(choice == null) {
 			this.getCoef();
 		}
-		ref.get(choice).buy(amount);
+		choice.buy(amount);
 	}
 }

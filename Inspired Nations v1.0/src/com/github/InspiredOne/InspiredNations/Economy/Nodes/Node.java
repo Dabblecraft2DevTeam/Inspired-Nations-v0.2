@@ -10,18 +10,15 @@ public abstract class Node {
 
 	InspiredNations plugin;
 	NPC npc;
-	int ID;
 	NodeRef ref;
 	double thresh = 0.0000001;
-	int[] elems;
+	Node[] elems;
 	
-	public Node(NPC instance, int id, int[] elems) {
+	public Node(NPC instance, Node[] elems) {
 		npc = instance;
 		plugin = npc.plugin;
-		ID = id;
 		ref = npc.node;
 		this.elems = elems;
-		ref.put(ID, this);
 	}
 	
 	public abstract double getCoef();
