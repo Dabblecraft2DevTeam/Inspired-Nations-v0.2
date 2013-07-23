@@ -31,9 +31,6 @@ public class CountryMethods {
 		tools = new Tools(plugin);
 	}
 	
-	
-	
-	
 	public BigDecimal getFederalParkTax(Object obj, int level, int countrylevel, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
 		switch(ver) {

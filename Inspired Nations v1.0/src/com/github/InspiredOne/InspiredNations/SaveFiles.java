@@ -21,6 +21,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.github.InspiredOne.InspiredNations.Economy.NPC;
 import com.github.InspiredOne.InspiredNations.Regions.Cell;
 import com.github.InspiredOne.InspiredNations.Regions.ChestShop;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
@@ -131,6 +132,8 @@ public class SaveFiles {
 			dataFileConfig.addDefault(key + ".money.oldchunkbase", country.getOldChunkBase());
 			dataFileConfig.addDefault(key + ".money.oldfedparkbase", country.getOldFedParkBase());
 			dataFileConfig.addDefault(key + ".money.oldmilitarybase", country.getOldMilitaryBase());
+			dataFileConfig.addDefault(key + ".money.npcaccount", country.getRawNPCaccount().toString());
+			dataFileConfig.addDefault(key + ".money.refund", country.getRawRefund().toString());
 			
 			// Updating file.
 			count = 0;
@@ -167,6 +170,8 @@ public class SaveFiles {
 			dataFileConfig.set(key + ".money.oldchunkbase", country.getOldChunkBase());
 			dataFileConfig.set(key + ".money.oldfedparkbase", country.getOldFedParkBase());
 			dataFileConfig.set(key + ".money.oldmilitarybase", country.getOldMilitaryBase());
+			dataFileConfig.set(key + ".money.npcaccount", country.getRawNPCaccount().toString());
+			dataFileConfig.set(key + ".money.refund", country.getRawRefund().toString());
 		}
 	}
 	
@@ -210,6 +215,8 @@ public class SaveFiles {
 			countrytemp.setOldChunkBase(dataFileConfig.getDouble(key + ".money.oldchunkbase"));
 			countrytemp.setOldFedParkBase(dataFileConfig.getDouble(key + ".money.oldfedparkbase"));
 			countrytemp.setOldMilitaryBase(dataFileConfig.getDouble(key + ".money.oldmilitarybase"));
+			countrytemp.setRawNPCaccount(new BigDecimal(dataFileConfig.getString(key + ".money.npcaccount")));
+			countrytemp.setRawRefund(new BigDecimal(dataFileConfig.getString(key + ".money.refund")));
 			temp.put(countrytemp.getName(), countrytemp);
 		}
 		return temp;
@@ -241,6 +248,14 @@ public class SaveFiles {
 			PDC.addDefault(key + ".prisonIn", null);
 			PDC.addDefault(key + ".localParkIn", null);
 			PDC.addDefault(key + ".federalParkIn", null);
+			
+			// NPC
+			int count = 0;
+			PDC.addDefault(key + ".npc.size", PDI.getNpcs().size());
+			for(NPC npc:PDI.getNpcs()) {
+				this.serializeNPC(npc, key + ".npc." + count);
+				count ++;
+			}
 			
 			// House
 			PDC.addDefault(key + ".isHouseOwner", PDI.isHouseOwner());
@@ -364,6 +379,9 @@ public class SaveFiles {
 			PDC.set(key + ".inFederalPark", PDI.getIsInFederalPark());
 			PDC.set(key + ".federalPrisonIn", null);
 			
+			// NPC
+			PDC.set(key + ".npc.size", PDI.getNpcs().size());
+			
 			// House
 			PDC.set(key + ".isHouseOwner", PDI.isHouseOwner());
 			PDC.set(key + ".houseOwned.size.size", PDI.getHouseOwned().size());
@@ -457,9 +475,15 @@ public class SaveFiles {
 		for (Iterator<?> i = PDC.getKeys(false).iterator(); i.hasNext();) {
 			String key = (String) i.next();
 			PlayerData PDI = new PlayerData(plugin, key);
+			
 			PDI.setHouseIn(null);
 
 			PDI.setInCapital(PDC.getBoolean(key + ".inCapital"));
+			
+			// NPC
+			for(int j = 0; j<PDC.getInt(key + ".npc.size"); j++) {
+				PDI.getNpcs().set(j, this.deSerializeNPC(key + ".npc." + j));
+			}
 			
 			// House
 			for (int j = 0; j < PDC.getInt(key + ".houseOwned.size.size"); j++) {
@@ -1811,6 +1835,41 @@ public class SaveFiles {
 		}
 		
 		return new ChestShop(item, price, quantity, chests);
+	}
+	
+	public void serializeNPC(NPC npc, String key) {
+		
+		PDC.addDefault(key + ".money", npc.getRawMoney().toString());
+		PDC.addDefault(key + ".moneymultiplyer", npc.getMoneyMultiplyer().toString());
+		int count = 0;
+		PDC.addDefault(key + ".buy.size", npc.buyVector.length);
+		for(BigDecimal buy:npc.buyVector) {
+			PDC.addDefault(key + ".buy." + count, buy.toString());
+			count++;
+		}
+		
+		// Update
+		PDC.set(key + ".money", npc.getRawMoney().toString());
+		PDC.set(key + ".moneymultiplyer", npc.getMoneyMultiplyer().toString());
+		int count2 = 0;
+		PDC.addDefault(key + ".buy.size", npc.buyVector.length);
+		for(BigDecimal buy:npc.buyVector) {
+			PDC.set(key + ".buy." + count2, buy.toString());
+			count2++;
+		}
+	}
+	
+	public NPC deSerializeNPC(String key) {
+		NPC npc = new NPC(plugin);
+		
+		npc.setRawMoney(new BigDecimal(PDC.getString(key + ".money")));
+		npc.setMoneyMultiplyer(new BigDecimal(PDC.getString(key + ".moneymultiplyer")));
+		
+		for(int i = 0; i<PDC.getInt(key + ".buy.size"); i++) {
+			npc.buyVector[i] = new BigDecimal(PDC.getString(key + ".buy." + i));
+		}
+		
+		return npc;
 	}
 	
 	// Method to deserialize and serialize vectors

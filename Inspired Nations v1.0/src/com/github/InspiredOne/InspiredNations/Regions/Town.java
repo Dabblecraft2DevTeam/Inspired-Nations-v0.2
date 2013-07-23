@@ -392,6 +392,14 @@ public class Town {
 		moneyMultiplyer = multiplyer;
 	}
 	
+	public void changeMoneyMultiplyer(BigDecimal multiplyer) {
+		BigDecimal money = this.getMoney();
+		BigDecimal loan = this.getLoan();
+		this.moneyMultiplyer = multiplyer;
+		this.setMoney(money);
+		this.setLoan(loan);
+	}
+	
 	public void setLoan(double amounttemp) {
 		BigDecimal amount = new BigDecimal(amounttemp);
 		loan = amount.divide(moneyMultiplyer, mcup);

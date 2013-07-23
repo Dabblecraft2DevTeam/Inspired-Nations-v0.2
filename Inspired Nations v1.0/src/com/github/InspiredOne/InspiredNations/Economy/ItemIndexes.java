@@ -276,6 +276,7 @@ public class ItemIndexes {
 		this.put(171, 14, "Red Carpet");
 		this.put(171, 15, "Black Carpet");
 		this.put(172, 0, "Hardened Clay");
+		this.put(173, 0, "Coal Block");
 		this.put(256, 0, "Iron Shovel");
 		this.put(257, 0, "Iron Pickaxe");
 		this.put(258, 0, "Iron Axe");

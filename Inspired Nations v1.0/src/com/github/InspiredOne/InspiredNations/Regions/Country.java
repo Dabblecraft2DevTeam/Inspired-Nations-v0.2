@@ -43,6 +43,8 @@ public class Country {
 	private BigDecimal money;
 	private BigDecimal loan;
 	private BigDecimal maxLoan;
+	private BigDecimal NPCaccount = BigDecimal.ZERO; // Used to pass money back to the NPCs
+	private BigDecimal refund = BigDecimal.ZERO; // used to correct the amount owed back to the country
 	private int protectionLevel = 0;
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
@@ -346,6 +348,9 @@ public class Country {
 				PlayerData PDI = plugin.playerdata.get(resident);
 				PDI.setMoneyMultiplyer(multiplyer);
 			}
+			for(Town town: towns) {
+				town.setMoneyMultiplyer(multiplyer);
+			}
 		} catch (Exception e) {
 
 		}
@@ -358,9 +363,34 @@ public class Country {
 				PlayerData PDI = plugin.playerdata.get(resident);
 				PDI.setMoneyMultiplyer(multiplyer);
 			}
+			for(Town town: towns) {
+				town.setMoneyMultiplyer(multiplyer);
+			}
 		} catch (Exception e) {
 
 		}
+	}
+	
+	public void changeMoneyMultiplyer(BigDecimal multiplyer) {
+		/** use this for inflation and deflation */
+		
+		BigDecimal money = this.getMoney();
+		BigDecimal loan = this.getLoanAmount();
+		BigDecimal refund = this.getRefund();
+		BigDecimal npc = this.getNPCaccount();
+		this.moneyMultiplyer = multiplyer;
+		this.setMoney(money);
+		this.setLoan(loan);
+		this.setRefund(refund);
+		this.setNPCaccount(npc);
+		for(String resident: this.getResidents()) {
+			PlayerData PDI = plugin.playerdata.get(resident);
+			PDI.changeMoneyMultiplyer(multiplyer);
+		}
+		for(Town town:this.towns) {
+			town.changeMoneyMultiplyer(multiplyer);
+		}
+		
 	}
 	
 	public void setMoney(double amounttemp) {
@@ -773,5 +803,37 @@ public class Country {
 
 	public void setOldMilitaryBase(double oldMilitaryBase) {
 		this.oldMilitaryBase = oldMilitaryBase;
+	}
+
+	public BigDecimal getRawNPCaccount() {
+		return NPCaccount;
+	}
+
+	public void setRawNPCaccount(BigDecimal nPCaccount) {
+		NPCaccount = nPCaccount;
+	}
+
+	public BigDecimal getRawRefund() {
+		return refund;
+	}
+
+	public void setRawRefund(BigDecimal refund) {
+		this.refund = refund;
+	}
+	
+	public BigDecimal getNPCaccount() {
+		return this.NPCaccount.multiply(this.moneyMultiplyer);
+	}
+	
+	public void setNPCaccount(BigDecimal money) {
+		this.NPCaccount = money.divide(this.moneyMultiplyer);
+	}
+	
+	public BigDecimal getRefund() {
+		return this.refund.multiply(this.moneyMultiplyer);
+	}
+	
+	public void setRefund(BigDecimal money) {
+		this.refund = money.divide(this.moneyMultiplyer);
 	}
 }

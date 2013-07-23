@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import org.bukkit.conversations.Conversation;
 
+import com.github.InspiredOne.InspiredNations.Economy.NPC;
 import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.GoodBusiness;
@@ -70,6 +71,8 @@ public class PlayerData {
 	private MathContext mcup = new MathContext(100, RoundingMode.UP);
 	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	
+	private Vector<NPC> npcs = new Vector<NPC>();
+	
 	private Conversation convo = null;
 	
 	// Grabbing instance of plugin
@@ -77,6 +80,12 @@ public class PlayerData {
 		plugin = instance;
 		tools = new Tools(plugin);
 		this.playername = playername;
+		
+		int npcpop = plugin.getConfig().getInt("player_npc_pop");
+		
+		for(int i = 0; i < npcpop; i++) {
+			this.npcs.add(i, new NPC(plugin));
+		}
 	}
 
 	// Economy Setters
@@ -232,6 +241,20 @@ public class PlayerData {
 	
 	public void setMoneyMultiplyer(BigDecimal multiplyer) {
 		moneyMultiplyer = multiplyer;
+	}
+	
+	public void changeMoneyMultiplyer(BigDecimal multiplyer) {
+		BigDecimal money = this.getMoney();
+		BigDecimal loan = this.getLoanAmount();
+		BigDecimal bank = this.getMoneyInBank();
+		this.setMoneyMultiplyer(multiplyer);
+		this.setMoney(money);
+		this.setMoneyInBank(bank);
+		this.setLoanAmount(loan);
+		for(NPC npc: this.npcs) {
+			npc.changeMoneyMultiplyer(multiplyer);
+		}
+		
 	}
 	
 	public void setPluralMoney(String plural) {
@@ -869,5 +892,13 @@ public class PlayerData {
 
 	public void setNotification(Vector<String> notification) {
 		this.notification = notification;
+	}
+
+	public Vector<NPC> getNpcs() {
+		return npcs;
+	}
+
+	public void setNpcs(Vector<NPC> npcs) {
+		this.npcs = npcs;
 	}
 }
