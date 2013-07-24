@@ -49,4 +49,10 @@ public class LocalPrison extends InspiredRegion {
 		}
 		return occupants;
 	}
+
+	@Override
+	public void changeProtectionLevel(int level) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -90,17 +90,23 @@ public class TownMilitaryLevel extends Menu {
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					
-					oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+					oldtax = oldtax.multiply(fraction);
 					newtax = newtax.multiply(fraction);
 					
 					difference = oldtax.subtract(newtax);
 					
-					if(difference.negate().compareTo(town.getMoney()) > 0) {
-						return new TownMilitaryLevel(plugin, player, 25);
+					if(difference.compareTo(BigDecimal.ZERO) > 0) {
+						town.changeMilitaryLevel(newlevel);
+						return new TownMilitaryLevel(plugin, player, 0);
 					}
 					else {
-						town.setMilitaryLevel(newlevel);
-						return new TownMilitaryLevel(plugin, player, 0);
+						if(newtax.compareTo(town.getMoney()) > 0) {
+							return new TownMilitaryLevel(plugin, player, 25);
+						}
+						else {
+							town.changeMilitaryLevel(newlevel);
+							return new TownMilitaryLevel(plugin, player, 0);
+						}
 					}
 				}
 				catch (Exception ex) {

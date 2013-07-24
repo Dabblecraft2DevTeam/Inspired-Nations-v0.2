@@ -622,6 +622,7 @@ public class SaveFiles {
 		dataFileConfig.addDefault(key + ".money.multiplyer", town.getMoneyMultiplyer().toString());
 		dataFileConfig.addDefault(key + ".money.loan", town.getRawLoan().toString());
 		dataFileConfig.addDefault(key + ".money.maxLoan", town.getRawMaxLoan().toString());
+		dataFileConfig.addDefault(key + ".money.refund", town.getRawRefund().toString());
 		dataFileConfig.addDefault(key + ".isCapital", town.isCapital());
 		
 		// Updating values.
@@ -661,6 +662,7 @@ public class SaveFiles {
 		dataFileConfig.set(key + ".money.multiplyer", town.getMoneyMultiplyer().toString());
 		dataFileConfig.set(key + ".money.loan", town.getRawLoan().toString());
 		dataFileConfig.set(key + ".money.maxLoan", town.getRawMaxLoan().toString());
+		dataFileConfig.set(key + ".money.refund", town.getRawRefund().toString());
 		dataFileConfig.set(key + ".isCapital", town.isCapital());
 	}	
 	
@@ -727,6 +729,7 @@ public class SaveFiles {
 		town.setMilitaryLevel(dataFileConfig.getInt(key + ".militarylevel"));
 		town.setRawLoan(new BigDecimal(dataFileConfig.getString(key + ".money.loan")));
 		town.setRawMaxLoan(new BigDecimal(dataFileConfig.getString(key + ".money.maxLoan")));
+		town.setRawRefund(new BigDecimal(dataFileConfig.getString(key + ".money.refund")));
 		town.setIsCapital(dataFileConfig.getBoolean(key + ".isCapital"));
 		return town;
 	}

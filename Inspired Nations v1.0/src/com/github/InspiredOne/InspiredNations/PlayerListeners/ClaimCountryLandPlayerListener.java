@@ -71,7 +71,7 @@ public class ClaimCountryLandPlayerListener {
 			allowed = true;
 		}*/
 
-		if (country.getMoney().compareTo(countryMethods.getCostPerChunk(country.getProtectionLevel(),true, version.NEW).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
+		if (country.getMoney().compareTo(countryMethods.getCostPerChunk(country.getProtectionLevel(),true, version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft()))) < 0) {
 			allowed = false;
 		}
 		if (allowed && !area.isIn(spot) && plugin.chunks.containsKey(tile)){

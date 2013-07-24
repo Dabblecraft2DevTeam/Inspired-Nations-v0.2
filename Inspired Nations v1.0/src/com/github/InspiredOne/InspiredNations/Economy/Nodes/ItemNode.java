@@ -32,7 +32,9 @@ public class ItemNode extends Node {
 	@Override
 	public double getCoef() {
 
-
+		if(cost.signum() < 0) {
+			return 0;
+		}
 		if(cost.compareTo(new BigDecimal(thresh)) < 0) {
 			cost = new BigDecimal(thresh);
 		}

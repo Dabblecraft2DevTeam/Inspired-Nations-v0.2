@@ -472,19 +472,23 @@ public class Country {
 	public void transferMoneyToNPC(double amounttemp) {
 		BigDecimal amount = new BigDecimal(amounttemp);
 		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
+		this.NPCaccount = this.NPCaccount.add(amount.divide(moneyMultiplyer, mcup));
 	}
 	
 	public void transferMoneyToNPC(BigDecimal amount) {
 		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
+		this.NPCaccount = this.NPCaccount.add(amount.divide(moneyMultiplyer, mcup));
 	}
 	
 	public void transferMoneyFromNPC(double amounttemp) {
 		BigDecimal amount = new BigDecimal(amounttemp);
 		money = money.add((amount.divide(moneyMultiplyer, mcup)));
+		this.NPCaccount = this.NPCaccount.subtract(amount.divide(moneyMultiplyer, mcdown));
 	}
 	
 	public void transferMoneyFromNPC(BigDecimal amount) {
 		money = money.add((amount.divide(moneyMultiplyer, mcup)));
+		this.NPCaccount = this.NPCaccount.subtract(amount.divide(moneyMultiplyer, mcdown));
 	}
 	
 	public void setLoan(double amounttemp) {
@@ -532,6 +536,10 @@ public class Country {
 	}
 	
 	public void setProtectionLevel(int level) {
+		this.protectionLevel = level;
+	}
+	
+	public void changeProtectionLevel(int level) {
 		try {
 			BigDecimal oldtax = CM.getTaxAmount(true, version.OLD);
 			BigDecimal newtax = CM.getTaxAmount(level, true, version.OLD);
@@ -780,6 +788,32 @@ public class Country {
 	public void setMilitaryLevel(int militaryLevel) {
 		this.militaryLevel = militaryLevel;
 	}
+	
+	public void changeMilitaryLevel(int level) {
+		try {
+			BigDecimal oldtax = CM.getMilitaryFunding(true, version.OLD);
+			BigDecimal newtax = CM.getMilitaryFunding(level, true, version.OLD);
+			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
+			BigDecimal difference;
+			
+			oldtax = oldtax.multiply(fraction);
+			newtax = newtax.multiply(fraction);
+			
+			difference = oldtax.subtract(newtax);
+			
+			if(difference.compareTo(BigDecimal.ZERO) > 0) {
+				this.transferMoneyFromNPC(difference);
+			}
+			else {
+				this.transferMoneyToNPC(CM.getMilitaryFunding(level, true, version.OLD));
+				this.addRefund(CM.getMilitaryFunding(level, true, version.OLD).add(difference));
+			}
+		} catch (Exception e) {
+
+		}
+
+		militaryLevel = level;
+	}
 
 	public double getOldChunkBase() {
 		return oldChunkBase;
@@ -835,5 +869,9 @@ public class Country {
 	
 	public void setRefund(BigDecimal money) {
 		this.refund = money.divide(this.moneyMultiplyer);
+	}
+	
+	public void addRefund(BigDecimal money) {
+		this.refund = this.refund.add(money.divide(moneyMultiplyer));
 	}
 }

@@ -101,7 +101,7 @@ public class CountryProtectionLevel extends Menu{
 						return new CountryProtectionLevel(plugin, player, 25);
 					}
 					else {
-						country.setProtectionLevel(level);
+						country.changeProtectionLevel(level);
 						return new CountryProtectionLevel(plugin, player, 0);
 					}
 				}

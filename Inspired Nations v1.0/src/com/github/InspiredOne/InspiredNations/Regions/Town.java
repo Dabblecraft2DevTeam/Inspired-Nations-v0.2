@@ -46,6 +46,7 @@ public class Town {
 	private BigDecimal moneyMultiplyer = new BigDecimal(1);
 	private BigDecimal loan = new BigDecimal(0);
 	private BigDecimal maxLoan;
+	private BigDecimal refund = BigDecimal.ZERO;
 	private boolean isCapital = false;
 	private int protectionLevel = 0;
 	private int militaryLevel = 0;
@@ -395,9 +396,11 @@ public class Town {
 	public void changeMoneyMultiplyer(BigDecimal multiplyer) {
 		BigDecimal money = this.getMoney();
 		BigDecimal loan = this.getLoan();
+		BigDecimal refund = this.getRefund();
 		this.moneyMultiplyer = multiplyer;
 		this.setMoney(money);
 		this.setLoan(loan);
+		this.setRefund(refund);
 	}
 	
 	public void setLoan(double amounttemp) {
@@ -489,7 +492,11 @@ public class Town {
 		towntarget.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(towntarget.getMoneyMultiplyer()));
 	}
 	
-	public void setProtectionLevel(int protection) {
+	public void setProtectionLevel(int level) {
+		this.protectionLevel = level;
+	}
+	
+	public void changeProtectionLevel(int protection) {
 	
 		try {
 			BigDecimal oldtax = TM.getTaxAmount(true, version.OLD);
@@ -497,7 +504,7 @@ public class Town {
 			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 			BigDecimal difference;
 			
-			oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+			oldtax = oldtax.multiply(fraction);
 			newtax = newtax.multiply(fraction);
 			
 			
@@ -807,5 +814,52 @@ public class Town {
 
 	public void setMilitaryLevel(int militaryLevel) {
 		this.militaryLevel = militaryLevel;
+	}
+	
+	public void changeMilitaryLevel(int level) {
+		try {
+			BigDecimal oldtax = TM.getMilitaryFunding(true, version.OLD);
+			BigDecimal newtax = TM.getMilitaryFunding(level, true, version.OLD);
+			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
+			BigDecimal difference;
+			
+			oldtax = oldtax.multiply(fraction);
+			newtax = newtax.multiply(fraction);
+			
+			difference = oldtax.subtract(newtax);
+			
+			if(difference.compareTo(BigDecimal.ZERO) > 0) {
+				plugin.countrydata.get(tools.findCountry(this.getCountry()).get(0)).transferMoneyToTown(difference, name, this.getCountry());
+			}
+			else {
+				this.transferMoneyToCountry(newtax, this.getCountry());
+				this.addRefund(newtax.add(difference));
+			}
+			
+		} catch (Exception e) {
+
+		}
+
+		militaryLevel = level;
+	}
+
+	public BigDecimal getRawRefund() {
+		return refund;
+	}
+
+	public void setRawRefund(BigDecimal refund) {
+		this.refund = refund;
+	}
+	
+	public BigDecimal getRefund() {
+		return refund.multiply(this.moneyMultiplyer);
+	}
+
+	public void setRefund(BigDecimal refund) {
+		this.refund = refund.divide(moneyMultiplyer);
+	}
+	
+	public void addRefund(BigDecimal refund) {
+		this.refund.add(refund.divide(moneyMultiplyer));
 	}
 }

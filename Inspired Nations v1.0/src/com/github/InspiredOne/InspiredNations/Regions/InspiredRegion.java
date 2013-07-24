@@ -1,14 +1,16 @@
 package com.github.InspiredOne.InspiredNations.Regions;
 
 import java.awt.Rectangle;
+import java.math.BigDecimal;
 import java.util.Vector;
 
 import org.bukkit.Location;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
-public class InspiredRegion {
+public abstract class InspiredRegion {
 	Tools tools;
 	String country;
 	int town;
@@ -117,6 +119,9 @@ public class InspiredRegion {
 	public void setProtectionLevel(int level) {
 		protectionLevel = level;
 	}
+	
+	abstract public void changeProtectionLevel(int level);
+
 	
 	public int getProtectionLevel() {
 		return protectionLevel;

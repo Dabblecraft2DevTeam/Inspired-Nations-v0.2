@@ -16,8 +16,11 @@ import java.math.BigDecimal;
 
 import org.bukkit.Location;
 
+import com.github.InspiredOne.InspiredNations.CountryMethods;
 import com.github.InspiredOne.InspiredNations.InspiredNations;
 import com.github.InspiredOne.InspiredNations.Tools;
+import com.github.InspiredOne.InspiredNations.Tools.version;
+import com.github.InspiredOne.InspiredNations.TownMethods;
 
 public class Park extends InspiredRegion{
 	private String country;
@@ -110,5 +113,56 @@ public class Park extends InspiredRegion{
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void changeProtectionLevel(int level) {
+		CountryMethods CM = new CountryMethods(plugin, plugin.countrydata.get(this.country));
+		Country country = plugin.countrydata.get(this.country);
+		
+		try {
+			BigDecimal oldtax;
+			BigDecimal newtax; 
+			if(this.town == -1) {
+				oldtax = CM.getFederalParkTax(this, country.getProtectionLevel(), true, version.OLD);
+				newtax = CM.getFederalParkTax(this, level, country.getProtectionLevel(), true, version.OLD);
+			}
+			else {
+				Town town = country.getTowns().get(this.town);
+				TownMethods TM = new TownMethods(plugin, town);
+				oldtax = TM.getLocalParkTax(this, true, version.OLD);
+				newtax = TM.getLocalParkTax(this, level, town.getProtectionLevel(), true, version.OLD);
+			}
+			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
+			BigDecimal difference;
+			
+			oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+			newtax = newtax.multiply(fraction);
+			
+			difference = oldtax.subtract(newtax);
+			
+			if(this.town == -1) {
+				if(difference.compareTo(BigDecimal.ZERO) > 0) {
+					country.transferMoneyFromNPC(difference);
+				}
+				else {
+					country.transferMoneyToNPC(difference.negate());
+				}	
+			}
+			else {
+				Town town = country.getTowns().get(this.town);
+				if(difference.compareTo(BigDecimal.ZERO) > 0) {
+					country.transferMoneyToTown(difference, name, this.getCountry());
+				}
+				else {
+					town.transferMoneyToCountry(difference.negate(), this.getCountry());
+				}
+			}
+			
+		} catch (Exception e) {
+
+		}
+
+		protectionLevel = level;
 	}
 }

@@ -24,5 +24,11 @@ public class LocalBank extends InspiredRegion{
 	public LocalBank(InspiredNations instance, polygonPrism space, String countrytemp, int towntemp) {
 		super(instance, space, countrytemp, towntemp, "bank");
 	}
+
+	@Override
+	public void changeProtectionLevel(int level) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

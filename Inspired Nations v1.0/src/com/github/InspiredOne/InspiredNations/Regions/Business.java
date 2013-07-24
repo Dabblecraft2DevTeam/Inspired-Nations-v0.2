@@ -1,10 +1,14 @@
 package com.github.InspiredOne.InspiredNations.Regions;
 
+import java.math.BigDecimal;
 import java.util.Vector;
 
 import org.bukkit.entity.Player;
 
 import com.github.InspiredOne.InspiredNations.InspiredNations;
+import com.github.InspiredOne.InspiredNations.PlayerData;
+import com.github.InspiredOne.InspiredNations.PlayerMethods;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class Business extends InspiredRegion{
 	
@@ -155,5 +159,46 @@ public class Business extends InspiredRegion{
 		
 	public Vector<String> getOwners() {
 		return owners;
+	}
+
+	@Override
+	public void changeProtectionLevel(int level) {
+	try {
+		
+		BigDecimal oldtax;
+		BigDecimal newtax;
+		PlayerMethods PM = new PlayerMethods(plugin, this.getOwners().get(0));
+		if(this instanceof GoodBusiness) {
+			oldtax = PM.goodBusinessTax(this, true, false, version.OLD);
+			newtax = PM.goodBusinessTax(this, level, true, false, version.OLD);
+		}
+		else {
+			oldtax = PM.serviceBusinessTax(this, true, false, version.OLD);
+			newtax = PM.serviceBusinessTax(this, level, true, false, version.OLD);
+		}
+		BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
+		BigDecimal difference;
+		
+		oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+		newtax = newtax.multiply(fraction);
+		
+		difference = oldtax.subtract(newtax);
+		
+		for(String owner:this.owners) {
+			PlayerData PDI = plugin.playerdata.get(owner);
+			Town town = plugin.countrydata.get(this.getCountry()).getTowns().get(this.town);
+			
+			if(difference.compareTo(BigDecimal.ZERO) > 0) {
+				town.transferMoney(difference, owner);
+			}
+			else {
+				PDI.transferMoneyToTown(difference.negate(), town.getName(), this.country);
+			}
+		}
+
+	} catch (Exception e) {
+
+	}
+		
 	}
 }

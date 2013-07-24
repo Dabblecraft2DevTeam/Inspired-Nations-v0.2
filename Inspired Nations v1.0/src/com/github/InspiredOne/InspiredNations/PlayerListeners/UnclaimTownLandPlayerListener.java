@@ -27,7 +27,9 @@ import com.github.InspiredOne.InspiredNations.TownMethods;
 import com.github.InspiredOne.InspiredNations.ManageTown.UnclaimTownLand;
 import com.github.InspiredOne.InspiredNations.Regions.ChunkData;
 import com.github.InspiredOne.InspiredNations.Regions.Chunks;
+import com.github.InspiredOne.InspiredNations.Regions.Country;
 import com.github.InspiredOne.InspiredNations.Regions.Town;
+import com.github.InspiredOne.InspiredNations.Tools.version;
 
 public class UnclaimTownLandPlayerListener {
 	
@@ -70,6 +72,10 @@ public class UnclaimTownLandPlayerListener {
 		else aloud = true;
 		if (aloud) {
 			town.removeChunk(tile);
+			
+			//TODO fix this so that it refunds the town the fractional cost it didn't use for protection ( already did it but check to make sure it's right)
+			Country country = plugin.countrydata.get(town.getCountry());
+			country.transferMoneyToTown(TMI.getCostPerChunk(true, version.OLD).multiply(new BigDecimal(plugin.taxTimer.getFractionLeft())), town.getName(), country.getName());
 			for(Player playertarget:plugin.getServer().getOnlinePlayers()) {
 				PlayerMethods PM = new PlayerMethods(plugin, playertarget);
 				PM.resetLocationBooleans();

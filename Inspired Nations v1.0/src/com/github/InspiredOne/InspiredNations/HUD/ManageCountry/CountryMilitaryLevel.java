@@ -90,17 +90,22 @@ public class CountryMilitaryLevel extends Menu {
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					
-					oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+					oldtax = oldtax.multiply(fraction);
 					newtax = newtax.multiply(fraction);
 					
 					difference = oldtax.subtract(newtax);
-					
-					if(difference.negate().compareTo(country.getMoney()) > 0) {
-						return new CountryMilitaryLevel(plugin, player, 25);
+					if(difference.compareTo(BigDecimal.ZERO) > 0) {
+						country.changeMilitaryLevel(newlevel);
+						return new CountryMilitaryLevel(plugin, player, 0);
 					}
 					else {
-						country.setMilitaryLevel(newlevel);
-						return new CountryMilitaryLevel(plugin, player, 0);
+						if(CM.getMilitaryFunding(newlevel, true, version.OLD).compareTo(country.getMoney()) > 0) {
+							return new CountryMilitaryLevel(plugin, player, 25);
+						}
+						else {
+							country.changeMilitaryLevel(newlevel);
+							return new CountryMilitaryLevel(plugin, player, 0);
+						}
 					}
 				}
 				catch (Exception ex) {

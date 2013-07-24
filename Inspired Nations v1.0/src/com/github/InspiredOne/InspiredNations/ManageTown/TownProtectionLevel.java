@@ -91,7 +91,7 @@ public class TownProtectionLevel extends Menu {
 					BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 					BigDecimal difference;
 					
-					oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+					oldtax = oldtax.multiply(fraction);
 					newtax = newtax.multiply(fraction);
 					
 					difference = oldtax.subtract(newtax);
@@ -100,7 +100,7 @@ public class TownProtectionLevel extends Menu {
 						return new TownProtectionLevel(plugin, player, 25);
 					}
 					else {
-						town.setProtectionLevel(level);
+						town.changeProtectionLevel(level);
 						return new TownProtectionLevel(plugin, player, 0);
 					}
 				}
