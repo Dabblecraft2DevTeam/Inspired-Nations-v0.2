@@ -801,8 +801,12 @@ public class Country {
 			
 			difference = oldtax.subtract(newtax);
 			
-			if(difference.compareTo(BigDecimal.ZERO) > 0) {
+			if(this.militaryLevel > level) {
 				this.transferMoneyFromNPC(difference);
+			}
+			
+			if(difference.compareTo(BigDecimal.ZERO) > 0) {
+
 			}
 			else {
 				this.transferMoneyToNPC(CM.getMilitaryFunding(level, true, version.OLD));

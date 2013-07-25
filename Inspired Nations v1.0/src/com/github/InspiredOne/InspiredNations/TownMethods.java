@@ -45,6 +45,19 @@ public class TownMethods {
 	}
 	public BigDecimal getTaxAmount(int levelProt, int levelMil, boolean adjusted, version ver) {
 		BigDecimal amount = BigDecimal.ZERO;
+		amount = getProtectionTax(levelProt, false, ver);// false so we don't adjust twice with moneymultiplyer.
+		amount = amount.add(getLocalParkTax(levelProt, false, ver)); // false so we don't adjust twice with moneymultiplyer.
+		amount = amount.add(this.getMilitaryFunding(levelMil, false, ver)); // false so we don't adjust twice with moneymultiplyer.
+		if(adjusted) {
+			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
+	}
+	
+	public BigDecimal getProtectionTax(int levelProt, boolean adjusted, version ver) {
+		BigDecimal amount = BigDecimal.ZERO;
 		switch(ver) {
 		case OLD:
 			amount = new BigDecimal(town.getArea()*levelProt*town.getNationTaxOld()/100);
@@ -53,8 +66,6 @@ public class TownMethods {
 			amount = new BigDecimal(town.getArea()*levelProt*town.getNationTaxOld()/100);
 			break;
 		}
-		amount = amount.add(getLocalParkTax(levelProt, false, ver)); // false so we don't adjust twice with moneymultiplyer.
-		amount = amount.add(this.getMilitaryFunding(levelMil, false, ver)); // false so we don't adjust twice with moneymultiplyer.
 		if(adjusted) {
 			return tools.cut(amount.multiply(town.getMoneyMultiplyer()));
 		}

@@ -116,6 +116,17 @@ public class CountryMethods {
 		}
 	}
 	
+	public BigDecimal getProtectionTax(int countrylevel, boolean adjused, version ver) {
+		BigDecimal amount = getCostPerChunk(countrylevel, false, ver).multiply(new BigDecimal(country.getChunks().Chunks.size()));
+		
+		if(adjused) {
+			return tools.cut(amount.multiply(country.getMoneyMultiplyer()));
+		}
+		else {
+			return amount;
+		}
+	}
+	
 	public BigDecimal getTaxAmount(int countrylevel, boolean adjusted, version ver) {
 		BigDecimal amount =  getCostPerChunk(countrylevel, false, ver).multiply(new BigDecimal(country.
 				getChunks().Chunks.size())).add(this.getFederalParkTax(countrylevel, false, ver)) // false so we don't adjust twice for the inflation.

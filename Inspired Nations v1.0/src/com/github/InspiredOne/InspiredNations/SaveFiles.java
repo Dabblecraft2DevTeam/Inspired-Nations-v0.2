@@ -481,8 +481,15 @@ public class SaveFiles {
 			PDI.setInCapital(PDC.getBoolean(key + ".inCapital"));
 			
 			// NPC
-			for(int j = 0; j<PDC.getInt(key + ".npc.size"); j++) {
-				PDI.getNpcs().set(j, this.deSerializeNPC(key + ".npc." + j));
+			if(PDC.getInt(key + ".npc.size") > plugin.getConfig().getInt("player_npc_pop")) {
+				for(int j = 0; j<PDC.getInt(key + ".npc.size"); j++) {
+					PDI.getNpcs().set(j, this.deSerializeNPC(key + ".npc." + j));
+				}
+			}
+			else {
+				for(int j = 0; j<plugin.getConfig().getInt("player_npc_pop"); j++) {
+					PDI.getNpcs().set(j, this.deSerializeNPC(key + ".npc." + j));
+				}
 			}
 			
 			// House

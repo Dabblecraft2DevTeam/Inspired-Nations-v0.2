@@ -115,7 +115,7 @@ public class House extends InspiredRegion{
 			BigDecimal fraction = new BigDecimal(plugin.taxTimer.getFractionLeft());
 			BigDecimal difference;
 			
-			oldtax = oldtax.multiply(BigDecimal.ONE.subtract(fraction));
+			oldtax = oldtax.multiply(fraction);
 			newtax = newtax.multiply(fraction);
 			
 			difference = oldtax.subtract(newtax);
