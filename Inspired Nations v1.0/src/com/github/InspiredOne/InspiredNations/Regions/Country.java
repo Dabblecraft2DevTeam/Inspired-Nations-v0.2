@@ -18,6 +18,7 @@ import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
+import com.github.InspiredOne.InspiredNations.Economy.Account;
 
 public class Country {
 	
@@ -39,15 +40,13 @@ public class Country {
 	private double oldFedParkBase;
 	private double oldMilitaryBase;
 	private double taxRate = 1.0;
-	private BigDecimal moneyMultiplyer = new BigDecimal(Math.PI);
-	private BigDecimal money;
+	
+	private Account money;
 	private BigDecimal loan;
 	private BigDecimal maxLoan;
-	private BigDecimal NPCaccount = BigDecimal.ZERO; // Used to pass money back to the NPCs
-	private BigDecimal refund = BigDecimal.ZERO; // used to correct the amount owed back to the country
+	private Account NPCaccount; // Used to pass money back to the NPCs
+	private Account refund; // used to correct the amount owed back to the country
 	private int protectionLevel = 0;
-	private MathContext mcup = new MathContext(100, RoundingMode.UP);
-	private MathContext mcdown = new MathContext(100, RoundingMode.DOWN);
 	private int militaryLevel = 0;
 	
 	CountryMethods CM;
@@ -64,9 +63,12 @@ public class Country {
 		this.addResident(rulertemp);
 		area = areatemp;
 		name = nametemp;
-		money = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
+		money = new Account(plugin);
+		money.addMoney(new BigDecimal(plugin.getConfig().getString("country_start_loan")));
 		loan = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
 		maxLoan =  new BigDecimal(plugin.getConfig().getDouble("country_start_loan"));
+		NPCaccount = new Account(plugin);
+		refund = new Account(plugin);
 		plugin.countrydata.put(this.getName(), this);
 		CM = new CountryMethods(plugin, this);
 	}
@@ -82,9 +84,12 @@ public class Country {
 		name = nametemp;
 		this.setRuler(rulertemp);
 		this.addResident(rulertemp);
-		money = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
+		money = new Account(plugin);
+		money.addMoney(new BigDecimal(plugin.getConfig().getString("country_start_loan")));
 		loan = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
-		new BigDecimal(plugin.getConfig().getDouble("country_start_loan"));
+		maxLoan = new BigDecimal(plugin.getConfig().getDouble("country_start_loan"));
+		NPCaccount = new Account(plugin);
+		refund = new Account(plugin);
 		plugin.countrydata.put(this.getName(), this);
 		CM = new CountryMethods(plugin, this);
 	}
@@ -340,24 +345,8 @@ public class Country {
 		}
 	}
 	
-	public void setMoneyMultiplyer(double multiplyertemp) {
-		BigDecimal multiplyer = new BigDecimal(multiplyertemp, mcup);
-		moneyMultiplyer = multiplyer;
-		try {
-			for(String resident:this.getResidents()) {
-				PlayerData PDI = plugin.playerdata.get(resident);
-				PDI.setMoneyMultiplyer(multiplyer);
-			}
-			for(Town town: towns) {
-				town.setMoneyMultiplyer(multiplyer);
-			}
-		} catch (Exception e) {
-
-		}
-	}
-	
 	public void setMoneyMultiplyer(BigDecimal multiplyer) {
-		moneyMultiplyer = multiplyer;
+		money.setMoneyMultiplyer(multiplyer);
 		try {
 			for(String resident:this.getResidents()) {
 				PlayerData PDI = plugin.playerdata.get(resident);
@@ -378,7 +367,7 @@ public class Country {
 		BigDecimal loan = this.getLoanAmount();
 		BigDecimal refund = this.getRefund();
 		BigDecimal npc = this.getNPCaccount();
-		this.moneyMultiplyer = multiplyer;
+		this.money.setMoneyMultiplyer(multiplyer);
 		this.setMoney(money);
 		this.setLoan(loan);
 		this.setRefund(refund);
@@ -393,50 +382,31 @@ public class Country {
 		
 	}
 	
-	public void setMoney(double amounttemp) {
-		BigDecimal amount = new BigDecimal(amounttemp);
-		money = amount.divide(moneyMultiplyer, mcup);
-	}
-	
 	public void setMoney(BigDecimal amount) {
-		money = amount.divide(moneyMultiplyer, mcup);
+		money.setMoney(amount);
 	}
 	
 	public void setRawMoney(BigDecimal amount) {
-		money = amount;
-	}
-	
-	public void addMoney(double amounttemp) {
-		BigDecimal amount = new BigDecimal(amounttemp);
-		money = money.add((amount.divide(moneyMultiplyer, mcup)));
+		money.setRawMoney(amount);
 	}
 	
 	public void addMoney(BigDecimal amount) {
-		money = money.add((amount.divide(moneyMultiplyer, mcup)));
-	}
-	
-	public void removeMoney(double amounttemp) {
-		BigDecimal amount = new BigDecimal(amounttemp);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
+		money.addMoney(amount);
 	}
 	
 	public void removeMoney(BigDecimal amount) {
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
-	}
-	
-	public void transferMoney(double amounttemp, String targetname) {
-		targetname = tools.findPerson(targetname).get(0);
-		BigDecimal amount = new BigDecimal(amounttemp);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
-		PlayerData targetPDI = plugin.playerdata.get(targetname);
-		targetPDI.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(targetPDI.getMoneyMultiplyer()));
+		money.removeMoney(amount);
 	}
 	
 	public void transferMoney(BigDecimal amount, String targetname) {
 		targetname = tools.findPerson(targetname).get(0);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
 		PlayerData targetPDI = plugin.playerdata.get(targetname);
-		targetPDI.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(targetPDI.getMoneyMultiplyer()));
+		if(amount.compareTo(this.money.getMoney()) > 0) {
+			this.money.transferMoney(this.money.getMoney(), targetPDI.getMoney());
+		}
+		else {
+			this.onHand.transferMoney(amount, targetPDI.onHand);
+		}
 	}
 	
 	public void transferMoneyToCountry(double amounttemp, String targetname) {
@@ -700,11 +670,11 @@ public class Country {
 	}
 	
 	public BigDecimal getMoney() {
-		return tools.cut(money.multiply(moneyMultiplyer, mcup));
+		return tools.cut(money.getMoney());
 	}
 	
 	public BigDecimal getRawMoney() {
-		return money;
+		return money.getRawMoney();
 	}
 	
 	public int size() {

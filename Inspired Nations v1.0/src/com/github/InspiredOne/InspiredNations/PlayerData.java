@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import org.bukkit.conversations.Conversation;
 
+import com.github.InspiredOne.InspiredNations.Economy.Account;
 import com.github.InspiredOne.InspiredNations.Economy.NPC;
 import com.github.InspiredOne.InspiredNations.Regions.Business;
 import com.github.InspiredOne.InspiredNations.Regions.Country;
@@ -54,10 +55,10 @@ public class PlayerData {
 	private Vector<String> notification = new Vector<String>();
 	
 	// Economy Variables
-	private BigDecimal money = new BigDecimal(500);
-	private BigDecimal moneyInBankHigh = new BigDecimal(300);
-	private BigDecimal moneyInBankLow = new BigDecimal(300);
-	private BigDecimal moneyMultiplyer = new BigDecimal(1);
+
+	private Account onHand;
+	private Account bank;
+	
 	private String pluralMoneyName = "coins";
 	private String singularMoneyName = "coin";
 	private double houseTax = 0;
@@ -80,6 +81,8 @@ public class PlayerData {
 		plugin = instance;
 		tools = new Tools(plugin);
 		this.playername = playername;
+		onHand = new Account(plugin);
+		setBank(new Account(plugin));
 		
 		int npcpop = plugin.getConfig().getInt("player_npc_pop");
 		
@@ -89,69 +92,64 @@ public class PlayerData {
 	}
 
 	// Economy Setters
-	public void setMoney(double onHandtemp) {
-		BigDecimal onHand = new BigDecimal(onHandtemp);
-		money = onHand.divide(moneyMultiplyer, mcup);
+
+	
+	public void setOnHand(BigDecimal onHand) {
+		this.onHand.setMoney(onHand);
 	}
 	
-	public void setMoney(BigDecimal onHand) {
-		money = onHand.divide(moneyMultiplyer, mcup);
+	public void setRawOnHand(BigDecimal onHand) {
+		this.onHand.setRawMoney(onHand);
 	}
 	
-	public void setRawMoney(double onHand) {
-		money = new BigDecimal(onHand);
+	public void removeOnHand(BigDecimal take) {
+		this.onHand.removeMoney(take);
 	}
 	
-	public void setRawMoney(BigDecimal onHand) {
-		money = onHand;
+	public void addOnHand(BigDecimal give) {
+		this.onHand.addMoney(give);
 	}
-	
-	public void removeMoney(double taketemp) {
-		BigDecimal take = new BigDecimal(taketemp);
-		money = money.subtract(take.divide(moneyMultiplyer, mcdown));
-	}
-	
-	public void removeMoney(BigDecimal take) {
-		money = money.subtract(take.divide(moneyMultiplyer, mcdown));
-	}
-	
-	public void addMoney(double givetemp) {
-		BigDecimal give = new BigDecimal(givetemp);
-		money = money.add(give.divide(moneyMultiplyer, mcup));
-	}
-	
-	public void addMoney(BigDecimal give) {
-		money = money.add(give.divide(moneyMultiplyer, mcup));
-	}
-	
-	public void transferMoney(double amounttemp, String targetname) {
-		targetname = tools.findPerson(targetname).get(0);
-		BigDecimal amount = new BigDecimal(amounttemp);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
-		PlayerData targetPDI = plugin.playerdata.get(targetname);
-		targetPDI.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(targetPDI.getMoneyMultiplyer()));
-	}
+
 	
 	public void transferMoney(BigDecimal amount, String targetname) {
 		targetname = tools.findPerson(targetname).get(0);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
 		PlayerData targetPDI = plugin.playerdata.get(targetname);
-		targetPDI.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(targetPDI.getMoneyMultiplyer()));
-	}
-	
-	public void transferMoneyToCountry(double amounttemp, String targetname) {
-		BigDecimal amount = new BigDecimal(amounttemp);
-		targetname = tools.findCountry(targetname).get(0);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
-		Country country = plugin.countrydata.get(targetname);
-		country.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(country.getMoneyMultiplyer()));
+		BigDecimal left = BigDecimal.ZERO;
+		if(amount.compareTo(this.onHand.getMoney()) > 0) {
+			left = amount.subtract(this.onHand.getMoney());
+			this.onHand.transferMoney(this.onHand.getMoney(), targetPDI.onHand);
+		}
+		else {
+			this.onHand.transferMoney(amount, targetPDI.onHand);
+		}
+		if(left.compareTo(this.bank.getMoney()) > 0) {
+			this.bank.transferMoney(this.bank.getMoney(), targetPDI.onHand);
+		}
+		else {
+			this.bank.transferMoney(left, targetPDI.onHand);
+		}
+		
+		
 	}
 	
 	public void transferMoneyToCountry(BigDecimal amount, String targetname) {
 		targetname = tools.findCountry(targetname).get(0);
-		money = money.subtract((amount.divide(moneyMultiplyer, mcdown)));
 		Country country = plugin.countrydata.get(targetname);
-		country.addMoney(amount.divide(moneyMultiplyer, mcup).multiply(country.getMoneyMultiplyer()));
+		BigDecimal left = BigDecimal.ZERO;
+		if(amount.compareTo(this.onHand.getMoney()) > 0) {
+			left = amount.subtract(this.onHand.getMoney());
+			this.onHand.transferMoney(this.onHand.getMoney(), country.get);
+		}
+		else {
+			this.onHand.transferMoney(amount, targetPDI.onHand);
+		}
+		if(left.compareTo(this.bank.getMoney()) > 0) {
+			this.bank.transferMoney(this.bank.getMoney(), targetPDI.onHand);
+		}
+		else {
+			this.bank.transferMoney(left, targetPDI.onHand);
+		}
+		
 	}
 	
 	public void transferMoneyToTown(double amounttemp, String townname, String countryname) {
@@ -900,5 +898,13 @@ public class PlayerData {
 
 	public void setNpcs(Vector<NPC> npcs) {
 		this.npcs = npcs;
+	}
+
+	public Account getBank() {
+		return bank;
+	}
+
+	public void setBank(Account bank) {
+		this.bank = bank;
 	}
 }
