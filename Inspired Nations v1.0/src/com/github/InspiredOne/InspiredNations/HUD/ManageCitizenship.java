@@ -94,7 +94,6 @@ public class ManageCitizenship extends Menu {
 					return new ManageCitizenship(plugin, player, 4, countryto);
 				}
 				else {
-					// TODO figure out how to deal with rulers leaving the country
 					if (PDI.getIsCountryResident()) {
 						PMeth.leaveCountry();
 					}
@@ -118,7 +117,6 @@ public class ManageCitizenship extends Menu {
 					return new ManageCitizenship(plugin, player, 4, townto);
 				}
 				else {
-					//TODO figure out how to account for town mayors leaving
 					PMeth.joinTown(tools.findTown(PDI.getCountryResides(), townto.get(0)).get(0));
 				}
 			}

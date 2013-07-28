@@ -117,6 +117,8 @@ public class Tools {
 		errors.add("\nYou must put your sign inside your business.");//75
 		errors.add("\nThe block that you put your sign on must be inside your business.");//76
 		errors.add("\nYou must first place a valid sign.");//77
+		errors.add("\nThat player is not a coruler.");//78
+		errors.add("\nThere are no cells available.");//79
 	}
 	public enum version {
 		OLD, NEW

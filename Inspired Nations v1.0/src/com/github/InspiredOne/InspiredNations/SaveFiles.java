@@ -93,7 +93,6 @@ public class SaveFiles {
 			// Setting new values.
 			Country country = plugin.countrydata.get(keytemp);
 			dataFileConfig.addDefault(key + ".name", country.getName());
-			dataFileConfig.addDefault(key + ".ruler", country.getRuler());
 			dataFileConfig.addDefault(key + ".corulers.size", country.getCoRulers().size());
 			serializeVector(country.getOffers(), key + ".residentoffer");
 			serializeVector(country.getRequests(), key + ".residentrequest");
@@ -139,7 +138,6 @@ public class SaveFiles {
 			count = 0;
 			dataFileConfig.set("size", plugin.countrydata.size());
 			dataFileConfig.set(key + ".name", country.getName());
-			dataFileConfig.set(key + ".ruler", country.getRuler());
 			dataFileConfig.set(key + ".corulers.size", country.getCoRulers().size());
 			for (int i = 0; i < country.getCoRulers().size(); i++) {
 				dataFileConfig.set(key + ".corulers." + i, country.getCoRulers().get(i));
@@ -179,12 +177,10 @@ public class SaveFiles {
 		HashMap<String, Country> temp = new HashMap<String, Country>();
 		plugin.chunks = new HashMap<ChunkData, String>();
 		String name;
-		String ruler;
 		for (int index = 0; index < dataFileConfig.getInt("size"); index++) {
 			String key = index + "";
 			name = dataFileConfig.getString(key + ".name");
-			ruler = dataFileConfig.getString(key + ".ruler");
-			Country countrytemp = new Country(plugin, name, ruler);
+			Country countrytemp = new Country(plugin, name);
 			for (int j = 0; j < dataFileConfig.getInt(key + ".corulers.size"); j++) {
 				countrytemp.addCoRuler(dataFileConfig.getString(key + ".corulers." + j));
 			}
@@ -559,7 +555,6 @@ public class SaveFiles {
 		Chunks chunks = town.getChunks();
 		dataFileConfig.addDefault(key + ".name", town.getName());
 		dataFileConfig.addDefault(key + ".country", town.getCountry());
-		dataFileConfig.addDefault(key + ".mayor", town.getMayor());
 		dataFileConfig.addDefault(key + ".coMayors.size", town.getCoMayors().size());
 		serializeVector(town.getOffers(), key + ".residentoffer");
 		serializeVector(town.getRequests(), key + ".residentrequest");
@@ -635,7 +630,6 @@ public class SaveFiles {
 		// Updating values.
 		dataFileConfig.set(key + ".name", town.getName());
 		dataFileConfig.set(key + ".country", town.getCountry());
-		dataFileConfig.set(key + ".mayor", town.getMayor());
 		dataFileConfig.set(key + ".coMayors.size", town.getCoMayors().size());
 		for (int i = 0; i < town.getCoMayors().size(); i++) {
 			dataFileConfig.set(key + ".coMayors." + i, town.getCoMayors().get(i));

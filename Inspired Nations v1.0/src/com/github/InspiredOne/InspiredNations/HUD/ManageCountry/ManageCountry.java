@@ -154,6 +154,11 @@ public class ManageCountry extends Menu{
 			}
 		}
 		
+		// Manage People
+		else if(inputs.get(answer).equals("Manage People")) {
+			return new ManageCountryPeople(plugin, player, 0);
+		}
+		
 		// Claim Land
 		else if (inputs.get(answer).equals("Claim Land")) {
 			PM.preCountry(true);

@@ -2,6 +2,7 @@ package com.github.InspiredOne.InspiredNations.Economy;
 
 import java.math.BigDecimal;
 
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.github.InspiredOne.InspiredNations.CountryMethods;
@@ -183,9 +184,18 @@ public class TaxTimer {
 				town.transferMoneyToCountry(amount, town.getCountry());
 				
 				// }
+				// { NPC Account distribution
+				for(String player:country.getResidents()) {
+					for(Player online:plugin.getServer().getOnlinePlayers()) {
+						if(online.getName().equals(player)) {
 
+						}
+					}
+				}
+				// }	
 				// { Country Taxes
 				CountryMethods CM = new CountryMethods(plugin, country);
+				
 				afford = false;
 				amount = CM.getProtectionTax(country.getProtectionLevel(), true, version.NEW);
 				
@@ -229,6 +239,12 @@ public class TaxTimer {
 				
 				
 				// }
+				
+				for(PlayerData PDI: plugin.playerdata.values()) {
+					PDI.setOldHouseTax(PDI.getHouseTax());
+					PDI.setOldGoodBusinessTax(PDI.getGoodBusinessTax());
+					PDI.setOldServiceBusinessTax(PDI.getServiceBusinessTax());
+				}
 			}
 		}
 		

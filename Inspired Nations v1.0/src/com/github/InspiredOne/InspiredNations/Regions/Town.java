@@ -23,8 +23,7 @@ public class Town {
 	private Tools tools;
 	private String country;
 	private String name = "";
-	private String mayor = "";
-	private Vector<String> coMayors = new Vector<String>();
+	private Vector<String> Mayors = new Vector<String>();
 	private Vector<House> houses = new Vector<House>();
 	private Vector<GoodBusiness> goodBusinesses = new Vector<GoodBusiness>();
 	private Vector<ServiceBusiness> serviceBusinesses = new Vector<ServiceBusiness>();
@@ -62,7 +61,7 @@ public class Town {
 		area = areatemp;
 		tools = new Tools(plugin);
 		this.setMayor(mayortemp);
-		this.addResident(mayor);
+		this.addResident(mayortemp);
 		Country countryobj = plugin.countrydata.get(countrytemp);
 		this.setNationTax(countryobj.getTaxRate());
 		this.setPluralMoney(countryobj.getPluralMoney());
@@ -79,12 +78,12 @@ public class Town {
 	public Town(InspiredNations instance, String nametemp, String mayortemp, String countrytemp) {
 		plugin = instance;
 		name = nametemp;
-		mayor = mayortemp;
+		Mayors.add(mayortemp);
 		maxLoan =  new BigDecimal(plugin.getConfig().getDouble("town_start_loan"));
 		country = countrytemp;
 		tools = new Tools(plugin);
 		this.setMayor(mayortemp);
-		this.addResident(mayor);
+		this.addResident(mayortemp);
 		Country countryobj = plugin.countrydata.get(countrytemp);
 		this.setNationTax(countryobj.getTaxRate());
 		this.setPluralMoney(countryobj.getPluralMoney());
@@ -119,11 +118,11 @@ public class Town {
 		} catch (Exception e) {
 
 		}
-		mayor = mayortemp;
+		Mayors.add(mayortemp);
 	}
 	
 	public void setCoMayors(Vector<String> coMayorsTemp) {
-		coMayors = coMayorsTemp;
+		Mayors = coMayorsTemp;
 	}
 	
 	public void addCoMayor(Player player) {
@@ -134,7 +133,7 @@ public class Town {
 
 		}
 		
-		coMayors.add(player.getName());
+		Mayors.add(player.getName());
 	}
 	
 	public void addCoMayor(String playername) {
@@ -149,7 +148,7 @@ public class Town {
 		} catch (Exception e) {
 
 		}
-		coMayors.add(playername);
+		Mayors.add(playername);
 	}
 	
 	public void removeCoMayor(Player player) {
@@ -159,7 +158,7 @@ public class Town {
 		} catch (Exception e) {
 
 		}
-		coMayors.remove(player.getName());
+		Mayors.remove(player.getName());
 	}
 	
 	public void removeCoMayor(String playername) {
@@ -170,7 +169,7 @@ public class Town {
 		} catch (Exception e) {
 
 		}
-		coMayors.remove(playername);
+		Mayors.remove(playername);
 	}
 	
 	public void addRequest(String person) {
@@ -535,12 +534,8 @@ public class Town {
 		return name;
 	}
 	
-	public String getMayor() {
-		return mayor;
-	}
-	
 	public Vector<String> getCoMayors() {
-		return coMayors;
+		return Mayors;
 	}
 	
 	public Vector<House> getHouses() {

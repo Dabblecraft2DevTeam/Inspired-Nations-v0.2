@@ -18,14 +18,14 @@ import com.github.InspiredOne.InspiredNations.PlayerMethods;
 import com.github.InspiredOne.InspiredNations.Tools;
 import com.github.InspiredOne.InspiredNations.Tools.version;
 import com.github.InspiredOne.InspiredNations.TownMethods;
+import com.github.InspiredOne.InspiredNations.Economy.Nodes.Node;
 
 public class Country {
 	
 	private InspiredNations plugin;
 	private Tools tools;
 	private String name;
-	private String ruler;
-	private Vector<String> coRulers = new Vector<String>();
+	private Vector<String> Rulers = new Vector<String>();
 	private Vector<Town> towns = new Vector<Town>();
 	private Vector<String> residents = new Vector<String>();
 	private Vector<Park> parks = new Vector<Park>();
@@ -60,6 +60,7 @@ public class Country {
 		} catch (Exception e) {
 
 		}
+		
 		this.setRuler(rulertemp);
 		this.addResident(rulertemp);
 		area = areatemp;
@@ -88,6 +89,16 @@ public class Country {
 		plugin.countrydata.put(this.getName(), this);
 		CM = new CountryMethods(plugin, this);
 	}
+	public Country(InspiredNations instance, String nametemp) {
+		plugin = instance;
+		tools = new Tools(plugin);
+		name = nametemp;
+		money = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
+		loan = new BigDecimal(plugin.getConfig().getString("country_start_loan"));
+		new BigDecimal(plugin.getConfig().getDouble("country_start_loan"));
+		plugin.countrydata.put(this.getName(), this);
+		CM = new CountryMethods(plugin, this);
+	}
 	
 	public void setName(String nametemp) {
 		name = nametemp;
@@ -103,7 +114,7 @@ public class Country {
 		} catch (Exception e1) {
 
 		}
-		ruler = rulername;
+		Rulers.add(rulername);
 		try {
 			PlayerData PDITarget = plugin.playerdata.get(rulername);
 			PDITarget.setCountryRuled(this);
@@ -114,7 +125,7 @@ public class Country {
 	}
 	// this method takes care of the player data, and country data
 	public void setCoRulers(Vector<String> rulernames) {
-		coRulers = rulernames;
+		Rulers = rulernames;
 		try {
 			for(String corulers:rulernames) {
 				PlayerData PDITarget = plugin.playerdata.get(corulers);
@@ -127,7 +138,7 @@ public class Country {
 	// this method takes care of the player data, and country data
 	public void addCoRuler(Player rulertemp) {
 		if (!this.getCoRulers().contains(rulertemp.getName())) {
-			coRulers.add(rulertemp.getName());
+			Rulers.add(rulertemp.getName());
 		}
 		try {
 			PlayerData PDITarget = plugin.playerdata.get(rulertemp.getName());
@@ -144,25 +155,24 @@ public class Country {
 			
 		}
 		if(!this.getCoRulers().contains(rulertemp)){
-			coRulers.add(rulertemp);
+			Rulers.add(rulertemp);
 		}
 		try {
 			PlayerData PDITarget = plugin.playerdata.get(rulertemp);
 			PDITarget.setCountryRuled(this);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	// this method takes care of the player data, and country data
 	public void removeCoRuler(Player rulertemp) {
-		coRulers.remove(rulertemp.getName());
+		Rulers.remove(rulertemp.getName());
 		PlayerData PDITarget = plugin.playerdata.get(rulertemp.getName());
 		PDITarget.setCountryRuled(null);
 	}
 	// this method takes care of the player data, and country data
 	public void removeCoRuler(String rulertemp) {
 		rulertemp = tools.findPerson(rulertemp).get(0);
-		coRulers.remove(rulertemp);
+		Rulers.remove(rulertemp);
 		PlayerData PDITarget = plugin.playerdata.get(rulertemp);
 		PDITarget.setCountryRuled(null);
 	}
@@ -572,12 +582,8 @@ public class Country {
 		return name;
 	}
 	
-	public String getRuler() {
-		return ruler;
-	}
-	
 	public Vector<String> getCoRulers() {
-		return coRulers;
+		return Rulers;
 	}
 	
 	public Vector<Town> getTowns() {
