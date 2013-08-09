@@ -22,7 +22,7 @@ public class Cuboid {
 	private int zmax = 0;
 	private String world;
 	
-	// Setters
+
 	public Cuboid(String worldname) {
 		xmin = 1;
 		ymin = 1;
@@ -59,6 +59,7 @@ public class Cuboid {
 		world = worldtemp;
 	}
 	
+	// Setters
 	public void setXmin(int xmintemp) {
 		xmin = xmintemp;
 	}
